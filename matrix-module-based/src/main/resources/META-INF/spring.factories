@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  matrix.module.based.config.ExceptionAspectAutoConfiguration,\
+  matrix.module.based.config.WebMvcAutoConfiguration
