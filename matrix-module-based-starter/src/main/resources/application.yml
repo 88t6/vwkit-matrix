@@ -10,6 +10,9 @@ spring:
       max-file-size: 10000MB
       max-request-size: 10000MB
 
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.freemarker.FreeMarkerAutoConfiguration, org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration,org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration,org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration
+
   devtools:
     restart:
       enabled: false
