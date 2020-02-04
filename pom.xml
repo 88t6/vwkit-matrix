@@ -10,7 +10,60 @@
 	<packaging>pom</packaging>
 
     <modules>
-        <module>matrix-based</module>
-        <module>matrix-common</module>
+        <module>matrix-module-based</module>
+        <module>matrix-module-common</module>
     </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <compiler.version>3.3</compiler.version>
+        <compiler.jdk>1.8</compiler.jdk>
+        <junit.version>4.12</junit.version>
+        <springboot.version>2.0.4.RELEASE</springboot.version>
+        <public.url>http://nexus.88t6.com/repository/maven-public/</public.url>
+        <releases.url>http://nexus.88t6.com/repository/maven-releases/</releases.url>
+        <snapshots.url>http://nexus.88t6.com/repository/maven-snapshots/</snapshots.url>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler.version}</version>
+                <configuration>
+                    <source>${compiler.jdk}</source>
+                    <target>${compiler.jdk}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>plugin</id>
+            <layout>default</layout>
+            <url>${public.url}</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <distributionManagement>
+        <repository>
+            <id>Releases</id>
+            <url>${releases.url}</url>
+        </repository>
+        <snapshotRepository>
+            <id>Snapshots</id>
+            <url>${snapshots.url}</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>

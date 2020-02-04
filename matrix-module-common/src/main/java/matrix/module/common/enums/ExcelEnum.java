@@ -1,0 +1,40 @@
+package matrix.module.common.enums;
+
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+/**
+ * @author wangcheng
+ * @date 2019/3/26
+ */
+public enum ExcelEnum {
+
+    HSSF(HSSFWorkbook.class, ".xls"),
+    XSSF(XSSFWorkbook.class, ".xlsx"),
+    SXSSF(SXSSFWorkbook.class, ".xlsx");
+
+    private Class<?> clazz;
+
+    private String suffix;
+
+    public Class<?> getClazz() {
+        return clazz;
+    }
+
+    public void setClazz(Class<?> clazz) {
+        this.clazz = clazz;
+    }
+
+    public String getSuffix() {
+        return suffix;
+    }
+
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
+    }
+
+    ExcelEnum(Class<?> clazz, String suffix) {
+        this.clazz = clazz;
+        this.suffix = suffix;
+    }}

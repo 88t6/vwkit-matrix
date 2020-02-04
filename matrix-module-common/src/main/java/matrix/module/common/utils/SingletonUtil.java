@@ -1,0 +1,51 @@
+package matrix.module.common.utils;
+
+import matrix.module.common.helper.Assert;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * 单例工具
+ * @author wangcheng
+ * @date 2019/3/28
+ */
+public class SingletonUtil {
+
+    /**
+     * 单例字典
+     */
+    private static final Map<Object, Object> SINGLETON_DICT = new HashMap<>();
+
+    /**
+     * 获取实例
+     */
+    @SuppressWarnings("unchecked")
+	public static <T> T get(Object key, CallBack<T> callBack) {
+        Assert.isNotNull(key, "key");
+        T result = (T) SINGLETON_DICT.get(key);
+        if (result != null) {
+            return result;
+        }
+        if (callBack != null) {
+            result = callBack.execute();
+            if (result != null) {
+                SINGLETON_DICT.put(key, result);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 回调函数
+     */
+    public interface CallBack<T> {
+
+        /**
+         * 执行函数
+         *
+         * @return T
+         */
+        T execute();
+    }
+}
