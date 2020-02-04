@@ -9,4 +9,22 @@
     <artifactId>matrix-based</artifactId>
     <name>matrix-module-based</name>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.vwkit</groupId>
+            <artifactId>matrix-module-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+    </dependencies>
 </project>

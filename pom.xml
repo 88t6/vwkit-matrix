@@ -12,6 +12,7 @@
     <modules>
         <module>matrix-module-based</module>
         <module>matrix-module-common</module>
+        <module>matrix-module-dependencies</module>
     </modules>
 
     <properties>
@@ -19,7 +20,6 @@
         <compiler.version>3.3</compiler.version>
         <compiler.jdk>1.8</compiler.jdk>
         <junit.version>4.12</junit.version>
-        <springboot.version>2.0.4.RELEASE</springboot.version>
         <public.url>http://nexus.88t6.com/repository/maven-public/</public.url>
         <releases.url>http://nexus.88t6.com/repository/maven-releases/</releases.url>
         <snapshots.url>http://nexus.88t6.com/repository/maven-snapshots/</snapshots.url>
@@ -66,4 +66,23 @@
             <url>${snapshots.url}</url>
         </snapshotRepository>
     </distributionManagement>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>2.2.4.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.vwkit</groupId>
+                <artifactId>matrix-module-dependencies</artifactId>
+                <version>1.0.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>
