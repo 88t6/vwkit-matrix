@@ -1,5 +1,9 @@
 package matrix.module.common.utils;
 
+import com.alibaba.fastjson.JSONObject;
+import matrix.module.common.exception.ServiceException;
+
+import javax.net.ssl.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -12,15 +16,6 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Iterator;
 import java.util.Map;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-
-import com.alibaba.fastjson.JSONObject;
-import com.vwkit.common.exception.ServiceException;
 
 /**
  * @author wangcheng
