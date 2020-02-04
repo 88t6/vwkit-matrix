@@ -5,7 +5,12 @@
     <groupId>com.vwkit</groupId>
     <artifactId>vwkit-matrix</artifactId>
     <version>1.0.0</version>
+
     <name>vwkit-matrix</name>
 	<packaging>pom</packaging>
-	
+
+    <modules>
+        <module>matrix-based</module>
+        <module>matrix-common</module>
+    </modules>
 </project>
