@@ -6,7 +6,7 @@
         <artifactId>vwkit-matrix</artifactId>
         <version>1.0.0</version>
     </parent>
-    <artifactId>matrix-based</artifactId>
+    <artifactId>matrix-module-based</artifactId>
     <name>matrix-module-based</name>
 
     <dependencies>
@@ -26,5 +26,26 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.vwkit</groupId>
+                <artifactId>matrix-module-dependencies</artifactId>
+                <version>1.0.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>
