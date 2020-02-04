@@ -10,22 +10,15 @@ import java.io.Serializable;
  * @author WangCheng
  * @date 2020/2/4
  */
-@ConfigurationProperties(prefix = "view")
+@ConfigurationProperties(prefix = "mvc")
 @Data
 @Accessors(chain = true)
 public class MvcViewProperties implements Serializable {
 
-    private MvcViewProperties.Mvc mvc = new MvcViewProperties.Mvc();
+    private boolean enabled = false;
 
-    @Data
-    @Accessors(chain = true)
-    public static class Mvc implements Serializable {
+    private String staticPath;
 
-        private boolean enabled = false;
-
-        private String staticPath;
-
-        private String index;
-    }
+    private String index;
 
 }

@@ -1,12 +1,14 @@
 package matrix.module.freemarker.config;
 
+import matrix.module.common.constant.BaseCodeConstant;
 import matrix.module.common.helper.Assert;
+import matrix.module.freemarker.properties.FreeMarkerProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.EnvironmentAware;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
-import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
@@ -18,31 +20,33 @@ import java.util.Properties;
  * @author wangcheng
  */
 @Configuration
-@ConditionalOnProperty(value = {"view.freemarker.enabled"}, matchIfMissing = false)
-public class FreeMarkerAutoConfiguration implements EnvironmentAware {
+@EnableConfigurationProperties(FreeMarkerProperties.class)
+@ConditionalOnProperty(value = {"freemarker.enabled"})
+public class FreeMarkerAutoConfiguration {
 
-    private Environment env;
+    @Autowired
+    private FreeMarkerProperties freeMarkerProperties;
 
     @Bean
     public FreeMarkerConfigurer freeMarkerConfigurer() {
-        String updateDelay = env.getProperty("view.freemarker.update-delay");
-        String templatePath = env.getProperty("view.freemarker.template-path");
-        Assert.isNotNull(updateDelay, "view.freemarker.update-delay");
-        Assert.isNotNull(templatePath, "view.freemarker.template-path");
+        Integer updateDelay = freeMarkerProperties.getUpdateDelay();
+        Assert.isNotNull(updateDelay, "freemarker.update-delay");
+        String templatePath = freeMarkerProperties.getTemplatePath();
+        Assert.isNotNull(templatePath, "freemarker.template-path");
         FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
-        configurer.setTemplateLoaderPaths(new String[]{templatePath});
+        configurer.setTemplateLoaderPaths(templatePath);
         configurer.setPreferFileSystemAccess(true);
-        configurer.setDefaultEncoding("UTF-8");
+        configurer.setDefaultEncoding(BaseCodeConstant.DEFAULT_CHARSET);
         Properties settings = new Properties();
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put("classic_compatible", "true");
-        map.put("default_encoding", "UTF-8");
-        map.put("output_encoding", "UTF-8");
+        map.put("default_encoding", BaseCodeConstant.DEFAULT_CHARSET);
+        map.put("output_encoding", BaseCodeConstant.DEFAULT_CHARSET);
         map.put("locale", "zh_CN");
         map.put("date_format", "yyyy-MM-dd");
         map.put("time_format", "yyyy-MM-dd HH:mm:ss");
         map.put("number_format", "#");
-        map.put("template_update_delay", updateDelay);
+        map.put("template_update_delay", String.valueOf(updateDelay));
         map.put("template_exception_handler", "rethrow");
         settings.putAll(map);
         configurer.setFreemarkerSettings(settings);
@@ -51,11 +55,9 @@ public class FreeMarkerAutoConfiguration implements EnvironmentAware {
 
     @Bean
     public FreeMarkerViewResolver freeMarkerViewResolver() {
-        String cache = env.getProperty("view.freemarker.cache");
-        String prefix = env.getProperty("view.freemarker.prefix");
-        String suffix = env.getProperty("view.freemarker.suffix");
-        Assert.isNotNull(cache, "view.freemarker.cache");
-        Assert.isNotNull(suffix, "view.freemarker.suffix");
+        String prefix = freeMarkerProperties.getPrefix();
+        String suffix = freeMarkerProperties.getSuffix();
+        Assert.isNotNull(suffix, "freemarker.suffix");
         FreeMarkerViewResolver resolver = new FreeMarkerViewResolver();
         resolver.setRequestContextAttribute("context");
         resolver.setAllowRequestOverride(true);
@@ -63,16 +65,11 @@ public class FreeMarkerAutoConfiguration implements EnvironmentAware {
         resolver.setExposeRequestAttributes(true);
         resolver.setExposeSessionAttributes(true);
         resolver.setExposeSpringMacroHelpers(true);
-        resolver.setCache("true".equals(cache));
+        resolver.setCache(freeMarkerProperties.isCache());
         resolver.setPrefix(prefix);
         resolver.setSuffix(suffix);
         resolver.setContentType("text/html;charset=UTF-8");
         resolver.setOrder(Ordered.LOWEST_PRECEDENCE - 5);
         return resolver;
-    }
-
-    @Override
-    public void setEnvironment(Environment env) {
-        this.env = env;
     }
 }

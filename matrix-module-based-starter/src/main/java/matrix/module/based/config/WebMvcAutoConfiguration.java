@@ -16,7 +16,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 @EnableConfigurationProperties(MvcViewProperties.class)
-@ConditionalOnProperty(value = {"view.mvc.enabled"})
+@ConditionalOnProperty(value = {"mvc.enabled"})
 public class WebMvcAutoConfiguration implements WebMvcConfigurer {
 
     @Autowired
@@ -24,16 +24,16 @@ public class WebMvcAutoConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        String staticPath = mvcViewProperties.getMvc().getStaticPath();
-        Assert.isNotNull(staticPath, "view.mvc.static-path");
+        String staticPath = mvcViewProperties.getStaticPath();
+        Assert.isNotNull(staticPath, "mvc.static-path");
         registry.addResourceHandler("/static/**").addResourceLocations(staticPath);
         WebMvcConfigurer.super.addResourceHandlers(registry);
     }
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        String index = mvcViewProperties.getMvc().getIndex();
-        Assert.isNotNull(index, "view.mvc.index");
+        String index = mvcViewProperties.getIndex();
+        Assert.isNotNull(index, "mvc.index");
         registry.addViewController("/").setViewName("forward:" + index);
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
         WebMvcConfigurer.super.addViewControllers(registry);

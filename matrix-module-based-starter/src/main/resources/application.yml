@@ -14,8 +14,7 @@ spring:
   main:
     banner-mode: off
 
-view:
-  mvc:
-    enabled: false
-    static-path: classpath:/static/
-    index: index.html
+mvc:
+  enabled: false
+  static-path: classpath:/static/
+  index: index.html
