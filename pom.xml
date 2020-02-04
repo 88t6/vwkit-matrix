@@ -15,6 +15,7 @@
         <module>matrix-module-parent</module>
         <module>matrix-module-based-starter</module>
         <module>matrix-module-freemarker-starter</module>
+        <module>matrix-module-jdbc-starter</module>
     </modules>
 
     <properties>
