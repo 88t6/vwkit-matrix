@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>com.vwkit</groupId>
-            <artifactId>matrix-module-based</artifactId>
+            <artifactId>matrix-module-based-starter</artifactId>
         </dependency>
     </dependencies>
 

@@ -10,10 +10,10 @@
 	<packaging>pom</packaging>
 
     <modules>
-        <module>matrix-module-based</module>
         <module>matrix-module-common</module>
         <module>matrix-module-dependencies</module>
         <module>matrix-module-parent</module>
+        <module>matrix-module-based-starter</module>
     </modules>
 
     <properties>
