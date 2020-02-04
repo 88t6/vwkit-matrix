@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  
+  matrix.module.jdbc.config.DatabaseAutoConfiguration,\
+  matrix.module.jdbc.config.JdbcAutoConfiguration
