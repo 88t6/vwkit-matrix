@@ -1,3 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   matrix.module.jdbc.config.DatabaseAutoConfiguration,\
-  matrix.module.jdbc.config.JdbcAutoConfiguration
+  matrix.module.jdbc.config.JdbcTemplateAutoConfiguration
+org.springframework.boot.autoconfigure.AutoConfigurationImportFilter=\
+  matrix.module.jdbc.config.ExcludeAutoConfigurationFilter

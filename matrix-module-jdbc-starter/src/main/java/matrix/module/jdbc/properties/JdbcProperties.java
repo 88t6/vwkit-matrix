@@ -19,27 +19,27 @@ public class JdbcProperties implements Serializable {
 
     private String driverClass;
 
-    private JdbcParam master = new JdbcParam();
+    private JdbcParam db1 = new JdbcParam();
 
-    private JdbcParam slave1 = new JdbcParam();
+    private JdbcParam db1Slave = new JdbcParam();
 
-    private JdbcParam slave2 = new JdbcParam();
+    private JdbcParam db2 = new JdbcParam();
 
-    private JdbcParam slave3 = new JdbcParam();
+    private JdbcParam db3 = new JdbcParam();
 
-    private JdbcParam slave4 = new JdbcParam();
+    private JdbcParam db4 = new JdbcParam();
 
-    private JdbcParam slave5 = new JdbcParam();
+    private JdbcParam db5 = new JdbcParam();
 
-    private JdbcParam slave6 = new JdbcParam();
+    private JdbcParam db6 = new JdbcParam();
 
-    private JdbcParam slave7 = new JdbcParam();
+    private JdbcParam db7 = new JdbcParam();
 
-    private JdbcParam slave8 = new JdbcParam();
+    private JdbcParam db8 = new JdbcParam();
 
-    private JdbcParam slave9 = new JdbcParam();
+    private JdbcParam db9 = new JdbcParam();
 
-    private JdbcParam slave10 = new JdbcParam();
+    private JdbcParam db10 = new JdbcParam();
 
     @Data
     @Accessors(chain = true)

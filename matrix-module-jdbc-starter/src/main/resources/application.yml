@@ -1,0 +1,8 @@
+jdbc:
+  enabled: false
+  driver-class: com.mysql.cj.jdbc.Driver
+  db1:
+    enabled: false
+    url:
+    username:
+    password:

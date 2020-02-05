@@ -27,3 +27,12 @@ freemarker:
   template-path: classpath:/templates/
   prefix:
   suffix: .ftl
+
+jdbc:
+  enabled: true
+  driver-class: com.mysql.cj.jdbc.Driver
+  db1:
+    enabled: true
+    url: jdbc:mysql://www.xwsos.com:3306/test?useUnicode=true&characterEncoding=utf-8
+    username: mhw
+    password: 456321

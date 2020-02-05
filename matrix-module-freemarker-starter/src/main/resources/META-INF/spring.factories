@@ -1,2 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   matrix.module.freemarker.config.FreeMarkerAutoConfiguration
+org.springframework.boot.autoconfigure.AutoConfigurationImportFilter=\
+  matrix.module.freemarker.config.ExcludeAutoConfigurationFilter
+

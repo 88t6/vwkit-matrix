@@ -16,7 +16,7 @@ import javax.sql.DataSource;
 @Configuration
 @AutoConfigureAfter({DatabaseAutoConfiguration.class})
 @ConditionalOnProperty(value = {"jdbc.enabled"})
-public class JdbcAutoConfiguration {
+public class JdbcTemplateAutoConfiguration {
 
     @Autowired
     private DataSource dataSource;
