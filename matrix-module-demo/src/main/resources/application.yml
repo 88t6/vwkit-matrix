@@ -38,13 +38,13 @@ jdbc:
     password: admin
   db1:
     enabled: true
-    base-package: matrix.module.demo.controller
+    base-package: aaa
     url: jdbc:mysql://www.xwsos.com:3306/test?useUnicode=true&characterEncoding=utf-8
     username: mhw
     password: 456321
   db2:
     enabled: true
-    base-package: aaa
+    base-package: matrix.module.demo.controller
     url: jdbc:mysql://www.xwsos.com:3306/mhw?useUnicode=true&characterEncoding=utf-8
     username: mhw
     password: 456321

@@ -42,8 +42,4 @@ public class DynamicDataSourceHolder {
     public static void setDataSource(String key) {
         holder.set(key);
     }
-
-    public static void clearDataSource() {
-        holder.remove();
-    }
 }
