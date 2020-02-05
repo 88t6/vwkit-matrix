@@ -21,7 +21,7 @@ public class DemoController {
 
     @GetMapping("/jdbc")
     public Result jdbc() {
-        jdbcTemplate.execute("insert into test values (123)");
+        jdbcTemplate.execute("insert into test (aaa) values (123)");
         return Result.success(true);
     }
 

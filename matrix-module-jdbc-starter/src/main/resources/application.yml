@@ -3,6 +3,7 @@ jdbc:
   driver-class: com.mysql.cj.jdbc.Driver
   db1:
     enabled: false
+    base-package:
     url:
     username:
     password:
