@@ -33,7 +33,7 @@ jdbc:
   driver-class: com.mysql.cj.jdbc.Driver
   druid:
     enabled: true
-    context-path: /druid1/*
+    context-path: /druid/*
     username: admin
     password: admin
   db1:
