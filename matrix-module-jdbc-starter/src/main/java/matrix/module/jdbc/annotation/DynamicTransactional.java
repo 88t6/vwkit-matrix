@@ -24,9 +24,4 @@ public @interface DynamicTransactional {
     int timeout() default -1;
 
     boolean readOnly() default false;
-
-    Class<? extends Throwable>[] rollbackFor() default Exception.class;
-
-    Class<? extends Throwable>[] noRollbackFor() default {};
-
 }
