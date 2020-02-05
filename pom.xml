@@ -16,6 +16,7 @@
         <module>matrix-module-based-starter</module>
         <module>matrix-module-freemarker-starter</module>
         <module>matrix-module-jdbc-starter</module>
+        <module>matrix-module-mybatis-starter</module>
     </modules>
 
     <properties>

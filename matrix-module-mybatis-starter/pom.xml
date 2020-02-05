@@ -8,25 +8,18 @@
         <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>matrix-module-jdbc-starter</artifactId>
+
+    <artifactId>matrix-module-mybatis-starter</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.vwkit</groupId>
-            <artifactId>matrix-module-based-starter</artifactId>
+            <artifactId>matrix-module-jdbc-starter</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-            <version>1.1.10</version>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus</artifactId>
+            <version>3.3.1</version>
         </dependency>
     </dependencies>
 

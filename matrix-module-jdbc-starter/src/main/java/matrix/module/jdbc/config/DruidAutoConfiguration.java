@@ -45,12 +45,13 @@ public class DruidAutoConfiguration {
 
     @Bean
     public FilterRegistrationBean<Filter> registerDruidFilter() {
+        JdbcProperties.DruidParam druidParam = jdbcProperties.getDruid();
         FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>();
         registration.setFilter(new WebStatFilter());
         registration.addUrlPatterns("/*");
         registration.setName("druidFilter");
         Map<String, String> params = new HashMap<>();
-        params.put("exclusions", "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*");
+        params.put("exclusions", "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico," + druidParam.getContextPath());
         registration.setInitParameters(params);
         registration.setOrder(1);
         return registration;
