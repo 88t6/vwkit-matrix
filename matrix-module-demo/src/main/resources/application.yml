@@ -16,7 +16,7 @@ spring:
     banner-mode: off
 
 mvc:
-  enabled: false
+  enabled: true
   static-path: classpath:/static/
   index: index.html
 
@@ -31,6 +31,11 @@ freemarker:
 jdbc:
   enabled: true
   driver-class: com.mysql.cj.jdbc.Driver
+  druid:
+    enabled: true
+    context-path: /druid1/*
+    username: admin
+    password: admin
   db1:
     enabled: true
     base-package: matrix.module.demo.controller

@@ -19,6 +19,8 @@ public class JdbcProperties implements Serializable {
 
     private String driverClass;
 
+    private DruidParam druid;
+
     private JdbcParam db1 = new JdbcParam();
 
     private JdbcParam db1Slave = new JdbcParam();
@@ -40,6 +42,19 @@ public class JdbcProperties implements Serializable {
     private JdbcParam db9 = new JdbcParam();
 
     private JdbcParam db10 = new JdbcParam();
+
+    @Data
+    @Accessors(chain = true)
+    public static class DruidParam implements Serializable {
+
+        private boolean enabled = false;
+
+        private String contextPath;
+
+        private String username;
+
+        private String password;
+    }
 
     @Data
     @Accessors(chain = true)

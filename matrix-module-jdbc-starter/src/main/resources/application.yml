@@ -1,6 +1,11 @@
 jdbc:
   enabled: false
   driver-class: com.mysql.cj.jdbc.Driver
+  druid:
+    enabled: false
+    context-path: /druid/*
+    username: admin
+    password: admin
   db1:
     enabled: false
     base-package:
