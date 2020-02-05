@@ -2,6 +2,7 @@ package matrix.module.demo.controller;
 
 import matrix.module.common.bean.Result;
 import matrix.module.common.exception.ServiceException;
+import matrix.module.jdbc.annotation.DynamicTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +21,15 @@ public class DemoController {
     private JdbcTemplate jdbcTemplate;
 
     @GetMapping("/jdbc")
+    @DynamicTransactional
     public Result jdbc() {
-        jdbcTemplate.execute("insert into test (aaa) values (123)");
+        jdbcTemplate.execute("insert into test (aaa) values (456)");
+        jdbcTemplate.execute("insert into test (aaa) values (456)");
         return Result.success(true);
     }
 
     @GetMapping("/demo")
+    @DynamicTransactional
     public Result demo() {
         throw new ServiceException("aaaa");
     }

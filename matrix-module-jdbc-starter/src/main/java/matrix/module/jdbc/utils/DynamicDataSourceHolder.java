@@ -31,7 +31,7 @@ public class DynamicDataSourceHolder {
 
     private static final ThreadLocal<String> holder = new ThreadLocal<>();
 
-    static String getDataSource() {
+    public static String getDataSource() {
         String key = holder.get();
         if (StringUtils.isEmpty(key)) {
             return DB1;

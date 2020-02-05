@@ -1,12 +1,12 @@
 package matrix.module.jdbc.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 /**
@@ -18,7 +18,7 @@ import javax.sql.DataSource;
 @ConditionalOnProperty(value = {"jdbc.enabled"})
 public class JdbcTemplateAutoConfiguration {
 
-    @Autowired
+    @Resource
     private DataSource dataSource;
 
     @Bean
