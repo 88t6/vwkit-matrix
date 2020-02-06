@@ -1,10 +1,11 @@
 package com.matrix.demo.controller;
 
+import com.matrix.demo.dao.mybatis.test1.service.TestService1;
+import com.matrix.demo.dao.mybatis.test2.service.TestService2;
 import matrix.module.common.bean.Result;
 import matrix.module.common.exception.ServiceException;
 import matrix.module.jdbc.annotation.DynamicTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,12 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class DemoController {
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private TestService1 testService1;
+
+    @Autowired
+    private TestService2 testService2;
 
     @GetMapping("/jdbc")
     public Result jdbc() {
-        jdbcTemplate.execute("insert into test (bbb) values (456)");
-        jdbcTemplate.execute("insert into test (aaa) values (456)");
+        testService1.save(new com.matrix.demo.dao.mybatis.test1.model.Test().setBbb("123"));
+        testService2.save(new com.matrix.demo.dao.mybatis.test2.model.Test().setAaa("456"));
         return Result.success(true);
     }
 
