@@ -53,11 +53,9 @@ mybatis:
   enabled: true
   db1:
     enabled: true
-    mapper-package: com.matrix.demo.dao.mybatis.test1.mapper
     type-aliases-package: com.matrix.demo.dao.mybatis.test1.model
     mapper-locations: classpath:/mapper/test1/*Mapper.xml
   db2:
     enabled: true
-    mapper-package: com.matrix.demo.dao.mybatis.test2.mapper
     type-aliases-package: com.matrix.demo.dao.mybatis.test2.model
     mapper-locations: classpath:/mapper/test2/*Mapper.xml

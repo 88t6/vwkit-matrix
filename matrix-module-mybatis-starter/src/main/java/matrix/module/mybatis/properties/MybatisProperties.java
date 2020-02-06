@@ -34,12 +34,13 @@ public class MybatisProperties {
     @Data
     @Accessors(chain = true)
     public static class Params implements Serializable {
-        // Mapper Java文件路径
-        public String mapperPackage;
+
+        private boolean enabled = false;
+
         // 实体路径
         public String typeAliasesPackage;
+
         //xml文件路径
         public String mapperLocations;
-        private boolean enabled = false;
     }
 }

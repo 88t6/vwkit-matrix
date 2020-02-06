@@ -15,7 +15,6 @@ import org.apache.ibatis.type.JdbcType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.mybatis.spring.annotation.MapperScan;
 import org.mybatis.spring.mapper.ClassPathMapperScanner;
 import org.mybatis.spring.mapper.MapperFactoryBean;
 import org.springframework.beans.BeansException;
@@ -49,16 +48,6 @@ import java.util.List;
 @EnableConfigurationProperties(MybatisProperties.class)
 @AutoConfigureAfter(DatabaseAutoConfiguration.class)
 @ConditionalOnProperty(value = {"mybatis.enabled"})
-@MapperScan(basePackages = "${mybatis.db1.mapper-package:E8316547E656EF451921A497D6FE665D}", sqlSessionFactoryRef = "db1SqlSessionFactory")
-@MapperScan(basePackages = "${mybatis.db2.mapper-package:E8316547E656EF451921A497D6FE665D}", sqlSessionFactoryRef = "db2SqlSessionFactory")
-@MapperScan(basePackages = "${mybatis.db3.mapper-package:E8316547E656EF451921A497D6FE665D}", sqlSessionFactoryRef = "db3SqlSessionFactory")
-@MapperScan(basePackages = "${mybatis.db4.mapper-package:E8316547E656EF451921A497D6FE665D}", sqlSessionFactoryRef = "db4SqlSessionFactory")
-@MapperScan(basePackages = "${mybatis.db5.mapper-package:E8316547E656EF451921A497D6FE665D}", sqlSessionFactoryRef = "db5SqlSessionFactory")
-@MapperScan(basePackages = "${mybatis.db6.mapper-package:E8316547E656EF451921A497D6FE665D}", sqlSessionFactoryRef = "db6SqlSessionFactory")
-@MapperScan(basePackages = "${mybatis.db7.mapper-package:E8316547E656EF451921A497D6FE665D}", sqlSessionFactoryRef = "db7SqlSessionFactory")
-@MapperScan(basePackages = "${mybatis.db8.mapper-package:E8316547E656EF451921A497D6FE665D}", sqlSessionFactoryRef = "db8SqlSessionFactory")
-@MapperScan(basePackages = "${mybatis.db9.mapper-package:E8316547E656EF451921A497D6FE665D}", sqlSessionFactoryRef = "db9SqlSessionFactory")
-@MapperScan(basePackages = "${mybatis.db10.mapper-package:E8316547E656EF451921A497D6FE665D}", sqlSessionFactoryRef = "db10SqlSessionFactory")
 public class MybatisPlusAutoConfiguration {
 
     private static Logger logger = LogManager.getLogger(MybatisPlusAutoConfiguration.class);
