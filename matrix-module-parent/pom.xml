@@ -24,10 +24,10 @@
             <groupId>com.vwkit</groupId>
             <artifactId>matrix-module-jdbc-starter</artifactId>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>com.vwkit</groupId>-->
-        <!--            <artifactId>matrix-module-mybatis-starter</artifactId>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>com.vwkit</groupId>
+            <artifactId>matrix-module-mybatis-starter</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
