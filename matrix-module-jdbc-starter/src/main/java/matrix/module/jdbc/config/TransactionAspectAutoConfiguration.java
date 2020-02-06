@@ -14,7 +14,6 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.annotation.Resource;
@@ -46,25 +45,14 @@ public class TransactionAspectAutoConfiguration implements Serializable {
     public Object around(ProceedingJoinPoint joinPoint) {
         try {
             DynamicTransactional dynamicTransactional = joinPoint.getTarget().getClass().getAnnotation(DynamicTransactional.class);
-            Transactional transactional = joinPoint.getTarget().getClass().getAnnotation(Transactional.class);
             Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
             if (method.getAnnotation(DynamicTransactional.class) != null) {
                 dynamicTransactional = method.getAnnotation(DynamicTransactional.class);
             }
-            if (method.getAnnotation(Transactional.class) != null) {
-                transactional = method.getAnnotation(Transactional.class);
-            }
-            if (dynamicTransactional != null) {
-                transactionTemplate.setPropagationBehavior(dynamicTransactional.propagation().value());
-                transactionTemplate.setIsolationLevel(dynamicTransactional.isolation().value());
-                transactionTemplate.setTimeout(dynamicTransactional.timeout());
-                transactionTemplate.setReadOnly(dynamicTransactional.readOnly());
-            } else {
-                transactionTemplate.setPropagationBehavior(transactional.propagation().value());
-                transactionTemplate.setIsolationLevel(transactional.isolation().value());
-                transactionTemplate.setTimeout(transactional.timeout());
-                transactionTemplate.setReadOnly(transactional.readOnly());
-            }
+            transactionTemplate.setPropagationBehavior(dynamicTransactional.propagation().value());
+            transactionTemplate.setIsolationLevel(dynamicTransactional.isolation().value());
+            transactionTemplate.setTimeout(dynamicTransactional.timeout());
+            transactionTemplate.setReadOnly(dynamicTransactional.readOnly());
             PlatformTransactionManager platformTransactionManager = transactionTemplate.getTransactionManager();
             if (platformTransactionManager == null) {
                 logger.error("platformTransactionManager not found!");
