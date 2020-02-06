@@ -17,6 +17,7 @@
         <module>matrix-module-freemarker-starter</module>
         <module>matrix-module-jdbc-starter</module>
         <module>matrix-module-mybatis-starter</module>
+        <module>matrix-module-jpa-starter</module>
     </modules>
 
     <properties>

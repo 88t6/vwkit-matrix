@@ -28,6 +28,10 @@
             <groupId>com.vwkit</groupId>
             <artifactId>matrix-module-mybatis-starter</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.vwkit</groupId>
+            <artifactId>matrix-module-jpa-starter</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

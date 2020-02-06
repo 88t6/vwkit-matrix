@@ -38,6 +38,11 @@
                 <artifactId>matrix-module-mybatis-starter</artifactId>
                 <version>1.0.0</version>
             </dependency>
+            <dependency>
+                <groupId>com.vwkit</groupId>
+                <artifactId>matrix-module-jpa-starter</artifactId>
+                <version>1.0.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>
