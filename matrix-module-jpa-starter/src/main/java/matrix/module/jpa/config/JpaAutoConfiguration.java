@@ -52,11 +52,11 @@ public class JpaAutoConfiguration {
         factory.setPackagesToScan(basePackage);
         factory.setDataSource(dataSource);
         Map<String, Object> jpaProperties = new HashMap<>();
-        jpaProperties.put("hibernate.connection.autocommit", "true");
         jpaProperties.put("hibernate.show_sql", String.valueOf(showSql));
         jpaProperties.put("hibernate.dialect", dialect);
         jpaProperties.put("hibernate.ejb.naming_strategy", "org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy");
         jpaProperties.put("hibernate.jdbc.batch_size", 50);
+        jpaProperties.put("hibernate.current_session_context_class", "thread");
         //jpaProperties.put("hibernate.hbm2ddl.auto", "update");
         factory.setJpaPropertyMap(jpaProperties);
         factory.afterPropertiesSet();
