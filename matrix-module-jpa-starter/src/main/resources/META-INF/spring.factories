@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  matrix.module.jpa.config.ExcludeAutoConfigurationFilter
