@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 
 import java.io.Serializable;
 
@@ -24,6 +25,7 @@ import java.io.Serializable;
 @EnableConfigurationProperties(JdbcProperties.class)
 @ConditionalOnProperty(value = {"jdbc.enabled"})
 @Aspect
+@Order(1)
 public class SwitchDbAspectAutoConfiguration implements Serializable {
 
     private static final long serialVersionUID = 1L;

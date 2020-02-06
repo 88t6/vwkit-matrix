@@ -13,6 +13,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -28,6 +29,7 @@ import java.lang.reflect.Method;
 @AutoConfigureAfter(TransactionAutoConfiguration.class)
 @ConditionalOnProperty(value = {"jdbc.enabled"})
 @Aspect
+@Order(2)
 public class TransactionAspectAutoConfiguration implements Serializable {
 
     private static final long serialVersionUID = 1L;
