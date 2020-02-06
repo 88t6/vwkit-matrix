@@ -1,11 +1,11 @@
-package matrix.module.jdbc.config;
+package matrix.module.jpa.config;
 
+import matrix.module.jdbc.config.DatabaseAutoConfiguration;
 import matrix.module.jdbc.properties.JdbcProperties;
 import matrix.module.jdbc.utils.DynamicDataSource;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -32,17 +32,7 @@ public class SwitchDbAspectAutoConfiguration implements Serializable {
     @Autowired
     private JdbcProperties jdbcProperties;
 
-    @Pointcut("!execution(* org..*.*(..)) " +
-            "&& !execution(* java..*.*(..)) " +
-            "&& !execution(* javax..*.*(..)) " +
-            "&& !execution(* sun..*.*(..)) " +
-            "&& !execution(* com.sun.jmx..*.*(..)) " +
-            "&& !execution(* com.fasterxml..*.*(..)) " +
-            "&& !execution(* matrix.module.jdbc..*.*(..)) ")
-    public void dbSwitchPointCut() {
-    }
-
-    @Before("dbSwitchPointCut()")
+    @Before("")
     public void dbSwitchBefore(JoinPoint joinPoint) {
         DynamicDataSource.switchDatabase(joinPoint.getTarget(), jdbcProperties);
     }

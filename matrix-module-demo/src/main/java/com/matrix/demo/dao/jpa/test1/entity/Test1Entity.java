@@ -15,12 +15,10 @@ import javax.persistence.Table;
 @Data
 @Accessors(chain = true)
 @Entity
-@Table(name = "test1")
+@Table(name = "test")
 public class Test1Entity {
 
     @Id
-    private Long id;
-
     @Column(name = "aaa")
     private String aaa;
 

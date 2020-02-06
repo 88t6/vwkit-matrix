@@ -15,13 +15,11 @@ import javax.persistence.Table;
 @Data
 @Accessors(chain = true)
 @Entity
-@Table(name = "test2")
+@Table(name = "test")
 public class Test2Entity {
 
     @Id
-    private Long id;
-
-    @Column(name = "aaa")
-    private String aaa;
+    @Column(name = "bbb")
+    private String bbb;
 
 }
