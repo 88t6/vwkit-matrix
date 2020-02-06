@@ -1,6 +1,8 @@
 package com.matrix.demo.controller;
 
+import com.matrix.demo.dao.mybatis.test1.model.Test1;
 import com.matrix.demo.dao.mybatis.test1.service.TestService1;
+import com.matrix.demo.dao.mybatis.test2.model.Test2;
 import com.matrix.demo.dao.mybatis.test2.service.TestService2;
 import matrix.module.common.bean.Result;
 import matrix.module.common.exception.ServiceException;
@@ -27,8 +29,8 @@ public class DemoController {
 
     @GetMapping("/jdbc")
     public Result jdbc() {
-        testService1.save(new com.matrix.demo.dao.mybatis.test1.model.Test().setBbb("123"));
-        testService2.save(new com.matrix.demo.dao.mybatis.test2.model.Test().setAaa("456"));
+        testService1.save(new Test1().setAaa("123"));
+        testService2.save(new Test2().setBbb("456"));
         return Result.success(true);
     }
 

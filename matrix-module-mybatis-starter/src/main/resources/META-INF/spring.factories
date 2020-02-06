@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  matrix.module.mybatis.config.MybatisPlusAutoConfiguration
+org.springframework.boot.autoconfigure.AutoConfigurationImportFilter=\
+  matrix.module.mybatis.config.ExcludeAutoConfigurationFilter

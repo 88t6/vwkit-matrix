@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 @TableName("test")
-public class Test {
+public class Test1 {
 
-    private String bbb;
+    private String aaa;
 }
