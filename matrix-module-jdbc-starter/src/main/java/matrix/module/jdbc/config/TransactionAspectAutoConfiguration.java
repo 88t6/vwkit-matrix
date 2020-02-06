@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -39,11 +38,8 @@ public class TransactionAspectAutoConfiguration implements Serializable {
     @Resource
     private TransactionTemplate transactionTemplate;
 
-    @Pointcut("@annotation(matrix.module.jdbc.annotation.DynamicTransactional))")
-    public void transactionPoint() {
-    }
-
-    @Around("transactionPoint()")
+    @Around("@within(matrix.module.jdbc.annotation.DynamicTransactional) " +
+            "|| @annotation(matrix.module.jdbc.annotation.DynamicTransactional)")
     public Object around(ProceedingJoinPoint joinPoint) {
         try {
             DynamicTransactional dynamicTransactional = joinPoint.getTarget().getClass().getAnnotation(DynamicTransactional.class);

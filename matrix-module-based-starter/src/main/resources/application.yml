@@ -16,6 +16,9 @@ spring:
       - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
       - org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration
 
+  aop:
+    proxy-target-class: true
+
   devtools:
     restart:
       enabled: false
