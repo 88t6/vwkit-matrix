@@ -3,7 +3,7 @@ package matrix.module.jdbc.config;
 import org.springframework.boot.autoconfigure.AutoConfigurationImportFilter;
 import org.springframework.boot.autoconfigure.AutoConfigurationMetadata;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,8 +13,10 @@ import java.util.Set;
  */
 public class ExcludeAutoConfigurationFilter implements AutoConfigurationImportFilter {
 
-    private static final Set<String> SHOULD_SKIP = new HashSet<>(Collections.singletonList(
-            "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration"));
+    private static final Set<String> SHOULD_SKIP = new HashSet<>(Arrays.asList(
+            "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration",
+            "org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration",
+            "org.springframework.boot.autoconfigure.transaction.TransactionAutoConfiguration"));
 
     @Override
     public boolean[] match(String[] classNames, AutoConfigurationMetadata metadata) {

@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -37,6 +38,7 @@ public class JpaAutoConfiguration {
     private DataSource dataSource;
 
     @Bean
+    @Primary
     public EntityManagerFactory entityManagerFactory() {
         String basePackage = jpaProperties.getBasePackage();
         Assert.isNotNull(basePackage, "jpa.base-package");
@@ -52,13 +54,11 @@ public class JpaAutoConfiguration {
         Map<String, Object> jpaProperties = new HashMap<>();
         jpaProperties.put("hibernate.show_sql", String.valueOf(showSql));
         jpaProperties.put("hibernate.dialect", dialect);
-        jpaProperties.put("hibernate.ejb.naming_strategy", "org.hibernate.cfg.ImprovedNamingStrategy");
+        jpaProperties.put("hibernate.ejb.naming_strategy", "org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy");
         jpaProperties.put("hibernate.jdbc.batch_size", 50);
         //jpaProperties.put("hibernate.hbm2ddl.auto", "update");
         factory.setJpaPropertyMap(jpaProperties);
         factory.afterPropertiesSet();
         return factory.getObject();
     }
-
-
 }

@@ -64,4 +64,4 @@ jpa:
   enabled: true
   dialect: org.hibernate.dialect.MySQL5InnoDBDialect
   show-sql: true
-  base-package: com.matrix.demo.dao
+  base-package: com.matrix.demo.dao.jpa
