@@ -152,6 +152,7 @@ public class MybatisPlusAutoConfiguration {
         sqlSessionFactory.setTypeAliasesPackage(typeAliasesPackage);
         sqlSessionFactory.setPlugins(paginationInterceptor());
         GlobalConfig globalConfig = new GlobalConfig();
+        globalConfig.setBanner(false);
         globalConfig.setDbConfig(new GlobalConfig.DbConfig()
                 .setIdType(IdType.INPUT));
         sqlSessionFactory.setGlobalConfig(globalConfig);
