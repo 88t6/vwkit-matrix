@@ -54,7 +54,7 @@ public class JpaAutoConfiguration {
         jpaProperties.put("hibernate.dialect", dialect);
         jpaProperties.put("hibernate.ejb.naming_strategy", "org.hibernate.cfg.ImprovedNamingStrategy");
         jpaProperties.put("hibernate.jdbc.batch_size", 50);
-        jpaProperties.put("hibernate.hbm2ddl.auto", "update");
+        //jpaProperties.put("hibernate.hbm2ddl.auto", "update");
         factory.setJpaPropertyMap(jpaProperties);
         factory.afterPropertiesSet();
         return factory.getObject();
