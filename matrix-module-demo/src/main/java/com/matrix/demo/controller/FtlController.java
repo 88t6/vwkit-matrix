@@ -1,4 +1,4 @@
-package matrix.module.demo.controller;
+package com.matrix.demo.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

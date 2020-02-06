@@ -2,7 +2,6 @@ package matrix.module.jdbc.annotation;
 
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.annotation.*;
 
@@ -14,7 +13,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented
-@Transactional
 public @interface DynamicTransactional {
 
     Propagation propagation() default Propagation.REQUIRED;

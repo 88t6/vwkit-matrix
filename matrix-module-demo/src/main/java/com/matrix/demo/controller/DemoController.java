@@ -1,4 +1,4 @@
-package matrix.module.demo.controller;
+package com.matrix.demo.controller;
 
 import matrix.module.common.bean.Result;
 import matrix.module.common.exception.ServiceException;

@@ -44,7 +44,7 @@ jdbc:
     password: 456321
   db2:
     enabled: true
-    base-package: matrix.module.demo.controller
+    base-package: com.matrix.demo.controller
     url: jdbc:mysql://www.xwsos.com:3306/mhw?useUnicode=true&characterEncoding=utf-8
     username: mhw
     password: 456321
