@@ -38,13 +38,13 @@ jdbc:
     password: admin
   db1:
     enabled: true
-    base-packages: com.matrix.demo.dao.mybatis.test1
+    base-packages: com.matrix.demo.dao.mybatis.test1,com.matrix.demo.dao.jpa.test1
     url: jdbc:mysql://www.xwsos.com:3306/test?useUnicode=true&characterEncoding=utf-8
     username: mhw
     password: 456321
   db2:
     enabled: true
-    base-packages: com.matrix.demo.dao.mybatis.test2
+    base-packages: com.matrix.demo.dao.mybatis.test2, com.matrix.demo.dao.jpa.test2
     url: jdbc:mysql://www.xwsos.com:3306/mhw?useUnicode=true&characterEncoding=utf-8
     username: mhw
     password: 456321
@@ -59,3 +59,9 @@ mybatis:
     enabled: true
     type-aliases-package: com.matrix.demo.dao.mybatis.test2.model
     mapper-locations: classpath:/mapper/test2/*Mapper.xml
+
+jpa:
+  enabled: true
+  dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+  show-sql: true
+  base-package: com.matrix.demo.dao

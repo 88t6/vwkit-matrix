@@ -15,4 +15,9 @@ public class JpaProperties {
 
     private boolean enabled = false;
 
+    private String dialect;
+
+    private boolean showSql = false;
+
+    private String basePackage;
 }
