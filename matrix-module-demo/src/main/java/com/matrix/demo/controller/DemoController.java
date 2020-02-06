@@ -23,7 +23,7 @@ public class DemoController {
     @GetMapping("/jdbc")
     @DynamicTransactional
     public Result jdbc() {
-        jdbcTemplate.execute("insert into test (aaa) values (456)");
+        jdbcTemplate.execute("insert into test (bbb) values (456)");
         jdbcTemplate.execute("insert into test (aaa) values (456)");
         return Result.success(true);
     }

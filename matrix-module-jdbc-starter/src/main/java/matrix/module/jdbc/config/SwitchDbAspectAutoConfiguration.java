@@ -1,12 +1,11 @@
 package matrix.module.jdbc.config;
 
-import matrix.module.common.exception.GlobalControllerException;
 import matrix.module.common.helper.Assert;
 import matrix.module.jdbc.properties.JdbcProperties;
 import matrix.module.jdbc.utils.DynamicDataSourceHolder;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -34,6 +33,7 @@ public class SwitchDbAspectAutoConfiguration implements Serializable {
 
     @Pointcut("!execution(* org..*.*(..)) " +
             "&& !execution(* java..*.*(..)) " +
+            "&& !execution(* javax..*.*(..)) " +
             "&& !execution(* sun..*.*(..)) " +
             "&& !execution(* com.sun.jmx..*.*(..)) " +
             "&& !execution(* com.fasterxml..*.*(..)) " +
@@ -41,18 +41,9 @@ public class SwitchDbAspectAutoConfiguration implements Serializable {
     public void dbSwitchPointCut() {
     }
 
-    @Around("dbSwitchPointCut()")
-    public Object dbSwitchAround(ProceedingJoinPoint joinPoint) {
-        try {
-            boolean isSwitch = switchDatabase(joinPoint.getTarget());
-            Object result = joinPoint.proceed(joinPoint.getArgs());
-            if (isSwitch) {
-                DynamicDataSourceHolder.clearDataSource();
-            }
-            return result;
-        } catch (Throwable e) {
-            throw new GlobalControllerException(e);
-        }
+    @Before("dbSwitchPointCut()")
+    public void dbSwitchBefore(JoinPoint joinPoint) {
+        switchDatabase(joinPoint.getTarget());
     }
 
     /**
@@ -60,16 +51,13 @@ public class SwitchDbAspectAutoConfiguration implements Serializable {
      *
      * @param target
      */
-    public boolean switchDatabase(Object target) {
-        if (jdbcProperties == null) {
-            return false;
-        }
+    public void switchDatabase(Object target) {
         if (jdbcProperties.getDb1().isEnabled()) {
             String basePackages = jdbcProperties.getDb1().getBasePackages();
             Assert.isNotNull(basePackages, "jdbc.db1.base-packages");
             if (isHasValue(target.getClass().getName(), basePackages)) {
                 DynamicDataSourceHolder.setDataSource(DynamicDataSourceHolder.DB1);
-                return true;
+                return;
             }
         }
         if (jdbcProperties.getDb2().isEnabled()) {
@@ -77,7 +65,7 @@ public class SwitchDbAspectAutoConfiguration implements Serializable {
             Assert.isNotNull(basePackages, "jdbc.db2.base-packages");
             if (isHasValue(target.getClass().getName(), basePackages)) {
                 DynamicDataSourceHolder.setDataSource(DynamicDataSourceHolder.DB2);
-                return true;
+                return;
             }
         }
         if (jdbcProperties.getDb3().isEnabled()) {
@@ -85,7 +73,7 @@ public class SwitchDbAspectAutoConfiguration implements Serializable {
             Assert.isNotNull(basePackages, "jdbc.db3.base-packages");
             if (isHasValue(target.getClass().getName(), basePackages)) {
                 DynamicDataSourceHolder.setDataSource(DynamicDataSourceHolder.DB3);
-                return true;
+                return;
             }
         }
         if (jdbcProperties.getDb4().isEnabled()) {
@@ -93,7 +81,7 @@ public class SwitchDbAspectAutoConfiguration implements Serializable {
             Assert.isNotNull(basePackages, "jdbc.db4.base-packages");
             if (isHasValue(target.getClass().getName(), basePackages)) {
                 DynamicDataSourceHolder.setDataSource(DynamicDataSourceHolder.DB4);
-                return true;
+                return;
             }
         }
         if (jdbcProperties.getDb5().isEnabled()) {
@@ -101,7 +89,7 @@ public class SwitchDbAspectAutoConfiguration implements Serializable {
             Assert.isNotNull(basePackages, "jdbc.db5.base-packages");
             if (isHasValue(target.getClass().getName(), basePackages)) {
                 DynamicDataSourceHolder.setDataSource(DynamicDataSourceHolder.DB5);
-                return true;
+                return;
             }
         }
         if (jdbcProperties.getDb6().isEnabled()) {
@@ -109,7 +97,7 @@ public class SwitchDbAspectAutoConfiguration implements Serializable {
             Assert.isNotNull(basePackages, "jdbc.db6.base-packages");
             if (isHasValue(target.getClass().getName(), basePackages)) {
                 DynamicDataSourceHolder.setDataSource(DynamicDataSourceHolder.DB6);
-                return true;
+                return;
             }
         }
         if (jdbcProperties.getDb7().isEnabled()) {
@@ -117,7 +105,7 @@ public class SwitchDbAspectAutoConfiguration implements Serializable {
             Assert.isNotNull(basePackages, "jdbc.db7.base-packages");
             if (isHasValue(target.getClass().getName(), basePackages)) {
                 DynamicDataSourceHolder.setDataSource(DynamicDataSourceHolder.DB7);
-                return true;
+                return;
             }
         }
         if (jdbcProperties.getDb8().isEnabled()) {
@@ -125,7 +113,7 @@ public class SwitchDbAspectAutoConfiguration implements Serializable {
             Assert.isNotNull(basePackages, "jdbc.db8.base-packages");
             if (isHasValue(target.getClass().getName(), basePackages)) {
                 DynamicDataSourceHolder.setDataSource(DynamicDataSourceHolder.DB8);
-                return true;
+                return;
             }
         }
         if (jdbcProperties.getDb9().isEnabled()) {
@@ -133,7 +121,7 @@ public class SwitchDbAspectAutoConfiguration implements Serializable {
             Assert.isNotNull(basePackages, "jdbc.db9.base-packages");
             if (isHasValue(target.getClass().getName(), basePackages)) {
                 DynamicDataSourceHolder.setDataSource(DynamicDataSourceHolder.DB9);
-                return true;
+                return;
             }
         }
         if (jdbcProperties.getDb10().isEnabled()) {
@@ -141,10 +129,8 @@ public class SwitchDbAspectAutoConfiguration implements Serializable {
             Assert.isNotNull(basePackages, "jdbc.db10.base-packages");
             if (isHasValue(target.getClass().getName(), basePackages)) {
                 DynamicDataSourceHolder.setDataSource(DynamicDataSourceHolder.DB10);
-                return true;
             }
         }
-        return false;
     }
 
     private boolean isHasValue(String className, String basePackages) {

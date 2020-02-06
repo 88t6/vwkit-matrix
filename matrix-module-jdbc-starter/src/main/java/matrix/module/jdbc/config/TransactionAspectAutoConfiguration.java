@@ -13,8 +13,8 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.annotation.Resource;
@@ -29,7 +29,6 @@ import java.lang.reflect.Method;
 @AutoConfigureAfter(TransactionAutoConfiguration.class)
 @ConditionalOnProperty(value = {"jdbc.enabled"})
 @Aspect
-@Order(2)
 public class TransactionAspectAutoConfiguration implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,7 +38,7 @@ public class TransactionAspectAutoConfiguration implements Serializable {
     @Resource
     private TransactionTemplate transactionTemplate;
 
-    @Pointcut("@annotation(matrix.module.jdbc.annotation.DynamicTransactional)")
+    @Pointcut("@annotation(matrix.module.jdbc.annotation.DynamicTransactional))")
     public void transactionPoint() {
     }
 
@@ -47,14 +46,25 @@ public class TransactionAspectAutoConfiguration implements Serializable {
     public Object around(ProceedingJoinPoint joinPoint) {
         try {
             DynamicTransactional dynamicTransactional = joinPoint.getTarget().getClass().getAnnotation(DynamicTransactional.class);
+            Transactional transactional = joinPoint.getTarget().getClass().getAnnotation(Transactional.class);
             Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
             if (method.getAnnotation(DynamicTransactional.class) != null) {
                 dynamicTransactional = method.getAnnotation(DynamicTransactional.class);
             }
-            transactionTemplate.setPropagationBehavior(dynamicTransactional.propagation().value());
-            transactionTemplate.setIsolationLevel(dynamicTransactional.isolation().value());
-            transactionTemplate.setTimeout(dynamicTransactional.timeout());
-            transactionTemplate.setReadOnly(dynamicTransactional.readOnly());
+            if (method.getAnnotation(Transactional.class) != null) {
+                transactional = method.getAnnotation(Transactional.class);
+            }
+            if (dynamicTransactional != null) {
+                transactionTemplate.setPropagationBehavior(dynamicTransactional.propagation().value());
+                transactionTemplate.setIsolationLevel(dynamicTransactional.isolation().value());
+                transactionTemplate.setTimeout(dynamicTransactional.timeout());
+                transactionTemplate.setReadOnly(dynamicTransactional.readOnly());
+            } else {
+                transactionTemplate.setPropagationBehavior(transactional.propagation().value());
+                transactionTemplate.setIsolationLevel(transactional.isolation().value());
+                transactionTemplate.setTimeout(transactional.timeout());
+                transactionTemplate.setReadOnly(transactional.readOnly());
+            }
             PlatformTransactionManager platformTransactionManager = transactionTemplate.getTransactionManager();
             if (platformTransactionManager == null) {
                 logger.error("platformTransactionManager not found!");
