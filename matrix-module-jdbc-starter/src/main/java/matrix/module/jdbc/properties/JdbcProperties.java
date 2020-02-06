@@ -62,7 +62,7 @@ public class JdbcProperties implements Serializable {
 
         private boolean enabled = false;
 
-        private String basePackage;
+        private String basePackages;
 
         private String url;
 

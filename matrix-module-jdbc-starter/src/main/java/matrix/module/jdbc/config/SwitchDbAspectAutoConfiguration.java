@@ -42,7 +42,7 @@ public class SwitchDbAspectAutoConfiguration implements Serializable {
     }
 
     @Around("dbSwitchPointCut()")
-    public Object dbSwitchBefore(ProceedingJoinPoint joinPoint) {
+    public Object dbSwitchAround(ProceedingJoinPoint joinPoint) {
         try {
             boolean isSwitch = switchDatabase(joinPoint.getTarget());
             Object result = joinPoint.proceed(joinPoint.getArgs());
@@ -65,82 +65,91 @@ public class SwitchDbAspectAutoConfiguration implements Serializable {
             return false;
         }
         if (jdbcProperties.getDb1().isEnabled()) {
-            String basePackage = jdbcProperties.getDb1().getBasePackage();
-            Assert.isNotNull(basePackage, "jdbc.db1.base-package");
-            if (target.getClass().getName().startsWith(basePackage)) {
+            String basePackages = jdbcProperties.getDb1().getBasePackages();
+            Assert.isNotNull(basePackages, "jdbc.db1.base-packages");
+            if (isHasValue(target.getClass().getName(), basePackages)) {
                 DynamicDataSourceHolder.setDataSource(DynamicDataSourceHolder.DB1);
                 return true;
             }
         }
         if (jdbcProperties.getDb2().isEnabled()) {
-            String basePackage = jdbcProperties.getDb2().getBasePackage();
-            Assert.isNotNull(basePackage, "jdbc.db2.base-package");
-            if (target.getClass().getName().startsWith(basePackage)) {
+            String basePackages = jdbcProperties.getDb2().getBasePackages();
+            Assert.isNotNull(basePackages, "jdbc.db2.base-packages");
+            if (isHasValue(target.getClass().getName(), basePackages)) {
                 DynamicDataSourceHolder.setDataSource(DynamicDataSourceHolder.DB2);
                 return true;
             }
         }
         if (jdbcProperties.getDb3().isEnabled()) {
-            String basePackage = jdbcProperties.getDb3().getBasePackage();
-            Assert.isNotNull(basePackage, "jdbc.db3.base-package");
-            if (target.getClass().getName().startsWith(basePackage)) {
+            String basePackages = jdbcProperties.getDb3().getBasePackages();
+            Assert.isNotNull(basePackages, "jdbc.db3.base-packages");
+            if (isHasValue(target.getClass().getName(), basePackages)) {
                 DynamicDataSourceHolder.setDataSource(DynamicDataSourceHolder.DB3);
                 return true;
             }
         }
         if (jdbcProperties.getDb4().isEnabled()) {
-            String basePackage = jdbcProperties.getDb4().getBasePackage();
-            Assert.isNotNull(basePackage, "jdbc.db4.base-package");
-            if (target.getClass().getName().startsWith(basePackage)) {
+            String basePackages = jdbcProperties.getDb4().getBasePackages();
+            Assert.isNotNull(basePackages, "jdbc.db4.base-packages");
+            if (isHasValue(target.getClass().getName(), basePackages)) {
                 DynamicDataSourceHolder.setDataSource(DynamicDataSourceHolder.DB4);
                 return true;
             }
         }
         if (jdbcProperties.getDb5().isEnabled()) {
-            String basePackage = jdbcProperties.getDb5().getBasePackage();
-            Assert.isNotNull(basePackage, "jdbc.db5.base-package");
-            if (target.getClass().getName().startsWith(basePackage)) {
+            String basePackages = jdbcProperties.getDb5().getBasePackages();
+            Assert.isNotNull(basePackages, "jdbc.db5.base-packages");
+            if (isHasValue(target.getClass().getName(), basePackages)) {
                 DynamicDataSourceHolder.setDataSource(DynamicDataSourceHolder.DB5);
                 return true;
             }
         }
         if (jdbcProperties.getDb6().isEnabled()) {
-            String basePackage = jdbcProperties.getDb6().getBasePackage();
-            Assert.isNotNull(basePackage, "jdbc.db6.base-package");
-            if (target.getClass().getName().startsWith(basePackage)) {
+            String basePackages = jdbcProperties.getDb6().getBasePackages();
+            Assert.isNotNull(basePackages, "jdbc.db6.base-packages");
+            if (isHasValue(target.getClass().getName(), basePackages)) {
                 DynamicDataSourceHolder.setDataSource(DynamicDataSourceHolder.DB6);
                 return true;
             }
         }
         if (jdbcProperties.getDb7().isEnabled()) {
-            String basePackage = jdbcProperties.getDb7().getBasePackage();
-            Assert.isNotNull(basePackage, "jdbc.db7.base-package");
-            if (target.getClass().getName().startsWith(basePackage)) {
+            String basePackages = jdbcProperties.getDb7().getBasePackages();
+            Assert.isNotNull(basePackages, "jdbc.db7.base-packages");
+            if (isHasValue(target.getClass().getName(), basePackages)) {
                 DynamicDataSourceHolder.setDataSource(DynamicDataSourceHolder.DB7);
                 return true;
             }
         }
         if (jdbcProperties.getDb8().isEnabled()) {
-            String basePackage = jdbcProperties.getDb8().getBasePackage();
-            Assert.isNotNull(basePackage, "jdbc.db8.base-package");
-            if (target.getClass().getName().startsWith(basePackage)) {
+            String basePackages = jdbcProperties.getDb8().getBasePackages();
+            Assert.isNotNull(basePackages, "jdbc.db8.base-packages");
+            if (isHasValue(target.getClass().getName(), basePackages)) {
                 DynamicDataSourceHolder.setDataSource(DynamicDataSourceHolder.DB8);
                 return true;
             }
         }
         if (jdbcProperties.getDb9().isEnabled()) {
-            String basePackage = jdbcProperties.getDb9().getBasePackage();
-            Assert.isNotNull(basePackage, "jdbc.db9.base-package");
-            if (target.getClass().getName().startsWith(basePackage)) {
+            String basePackages = jdbcProperties.getDb9().getBasePackages();
+            Assert.isNotNull(basePackages, "jdbc.db9.base-packages");
+            if (isHasValue(target.getClass().getName(), basePackages)) {
                 DynamicDataSourceHolder.setDataSource(DynamicDataSourceHolder.DB9);
                 return true;
             }
         }
         if (jdbcProperties.getDb10().isEnabled()) {
-            String basePackage = jdbcProperties.getDb10().getBasePackage();
-            Assert.isNotNull(basePackage, "jdbc.db10.base-package");
-            if (target.getClass().getName().startsWith(basePackage)) {
+            String basePackages = jdbcProperties.getDb10().getBasePackages();
+            Assert.isNotNull(basePackages, "jdbc.db10.base-packages");
+            if (isHasValue(target.getClass().getName(), basePackages)) {
                 DynamicDataSourceHolder.setDataSource(DynamicDataSourceHolder.DB10);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isHasValue(String className, String basePackages) {
+        for (String basePackage : basePackages.split(",")) {
+            if (className.startsWith(basePackage)) {
                 return true;
             }
         }

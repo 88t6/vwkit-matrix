@@ -8,7 +8,7 @@ jdbc:
     password: admin
   db1:
     enabled: false
-    base-package:
+    base-packages:
     url:
     username:
     password:
