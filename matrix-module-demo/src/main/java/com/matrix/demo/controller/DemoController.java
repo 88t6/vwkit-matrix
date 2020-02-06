@@ -1,9 +1,9 @@
 package com.matrix.demo.controller;
 
 import com.matrix.demo.dao.jpa.test1.entity.Test1Entity;
-import com.matrix.demo.dao.jpa.test1.repository.Test1Repository;
+import com.matrix.demo.dao.jpa.test1.service.Test1Service;
 import com.matrix.demo.dao.jpa.test2.entity.Test2Entity;
-import com.matrix.demo.dao.jpa.test2.repository.Test2Repository;
+import com.matrix.demo.dao.jpa.test2.service.Test2Service;
 import com.matrix.demo.dao.mybatis.test1.model.Test1;
 import com.matrix.demo.dao.mybatis.test1.service.TestService1;
 import com.matrix.demo.dao.mybatis.test2.model.Test2;
@@ -31,10 +31,10 @@ public class DemoController {
     private TestService2 testService2;
 
     @Autowired
-    private Test1Repository test1Repository;
+    private Test1Service test1Service;
 
     @Autowired
-    private Test2Repository test2Repository;
+    private Test2Service test2Service;
 
     @GetMapping("/jdbc")
     public Result jdbc() {
@@ -45,8 +45,8 @@ public class DemoController {
 
     @GetMapping("/jpa")
     public Result jpa() {
-        test1Repository.save(new Test1Entity().setAaa("bbb"));
-        test2Repository.save(new Test2Entity().setBbb("bbb"));
+        test1Service.save(new Test1Entity().setAaa("bbb"));
+        test2Service.save(new Test2Entity().setBbb("bbb"));
         return Result.success(true);
     }
 
