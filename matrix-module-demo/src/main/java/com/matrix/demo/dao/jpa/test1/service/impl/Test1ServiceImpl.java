@@ -19,5 +19,11 @@ public class Test1ServiceImpl implements Test1Service {
     @Override
     public void save(Test1Entity test1Entity) {
         test1Repository.save(test1Entity);
+
+    }
+
+    @Override
+    public Iterable<Test1Entity> findAll() {
+        return test1Repository.findAll();
     }
 }

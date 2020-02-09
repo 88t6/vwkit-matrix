@@ -9,4 +9,6 @@ import com.matrix.demo.dao.jpa.test2.entity.Test2Entity;
 public interface Test2Service {
 
     void save(Test2Entity test2Entity);
+
+    Iterable<Test2Entity> findAll();
 }

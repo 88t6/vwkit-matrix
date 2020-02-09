@@ -10,6 +10,7 @@ import com.matrix.demo.dao.mybatis.test2.model.Test2;
 import com.matrix.demo.dao.mybatis.test2.service.TestService2;
 import matrix.module.common.bean.Result;
 import matrix.module.common.exception.ServiceException;
+import matrix.module.jdbc.annotation.DynamicTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,9 +45,11 @@ public class DemoController {
     }
 
     @GetMapping("/jpa")
+    @DynamicTransactional
     public Result jpa() {
-        test1Service.save(new Test1Entity().setAaa("bbb"));
-        test2Service.save(new Test2Entity().setBbb("bbb"));
+        test1Service.save(new Test1Entity().setAaa("abc"));
+        test2Service.save(new Test2Entity().setBbb("def"));
+        //throw new RuntimeException("123");
         return Result.success(true);
     }
 

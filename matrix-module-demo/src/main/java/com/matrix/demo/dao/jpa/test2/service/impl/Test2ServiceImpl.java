@@ -21,4 +21,9 @@ public class Test2ServiceImpl implements Test2Service {
     public void save(Test2Entity test2Entity) {
         test2Repository.save(test2Entity);
     }
+
+    @Override
+    public Iterable<Test2Entity> findAll() {
+        return test2Repository.findAll();
+    }
 }
