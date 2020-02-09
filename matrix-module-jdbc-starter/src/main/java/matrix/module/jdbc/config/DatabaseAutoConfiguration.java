@@ -39,15 +39,18 @@ public class DatabaseAutoConfiguration {
         }
         String driverClass = jdbcProperties.getDriverClass();
         Assert.isNotNull(driverClass, "jdbc.driver-class");
-        beanFactory.registerSingleton(DynamicDataSourceHolder.MASTER_DB, build(jdbcProperties.getMaster(), DynamicDataSourceHolder.MASTER_DB, driverClass));
+        DataSource masterDataSource = build(jdbcProperties.getMaster(), DynamicDataSourceHolder.MASTER_DB, driverClass);
+        beanFactory.registerSingleton(DynamicDataSourceHolder.MASTER_DB, masterDataSource);
         if (jdbcProperties.getSlave().isEnabled()) {
-            beanFactory.registerSingleton(DynamicDataSourceHolder.SLAVE_DB, build(jdbcProperties.getSlave(), DynamicDataSourceHolder.SLAVE_DB, driverClass));
+            DataSource slaveDataSource = build(jdbcProperties.getSlave(), DynamicDataSourceHolder.SLAVE_DB, driverClass);
+            beanFactory.registerSingleton(DynamicDataSourceHolder.SLAVE_DB, slaveDataSource);
         }
         Map<String, JdbcProperties.JdbcParam> dbList = jdbcProperties.getDbList();
         if (!CollectionUtils.isEmpty(dbList)) {
             dbList.forEach((key, jdbcParam) -> {
                 if (jdbcParam.isEnabled()) {
-                    beanFactory.registerSingleton(key + "DB", DatabaseAutoConfiguration.build(jdbcParam, "db-list." + key, driverClass));
+                    DataSource db = DatabaseAutoConfiguration.build(jdbcParam, "db-list." + key, driverClass);
+                    beanFactory.registerSingleton(key + "DB", db);
                 }
             });
         }

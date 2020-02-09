@@ -2,7 +2,6 @@ package com.matrix.demo.controller;
 
 import com.matrix.demo.dao.jpa.test1.entity.Test1Entity;
 import com.matrix.demo.dao.jpa.test1.service.Test1Service;
-import com.matrix.demo.dao.jpa.test2.entity.Test2Entity;
 import com.matrix.demo.dao.jpa.test2.service.Test2Service;
 import com.matrix.demo.dao.mybatis.test1.model.Test1;
 import com.matrix.demo.dao.mybatis.test1.service.TestService1;
@@ -50,7 +49,7 @@ public class DemoController {
     @DynamicTransactional
     public Result jpa() {
         test1Service.save(new Test1Entity().setAaa("abc"));
-        test2Service.save(new Test2Entity().setBbb("def"));
+        //test2Service.save(new Test2Entity().setBbb("def"));
         //throw new RuntimeException("123");
         return Result.success(true);
     }
