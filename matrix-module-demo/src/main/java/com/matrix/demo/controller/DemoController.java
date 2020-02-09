@@ -38,9 +38,11 @@ public class DemoController {
     private Test2Service test2Service;
 
     @GetMapping("/jdbc")
+    //@DynamicTransactional
     public Result jdbc() {
         testService1.save(new Test1().setAaa("123"));
         testService2.save(new Test2().setBbb("456"));
+        //throw new RuntimeException("123");
         return Result.success(true);
     }
 
