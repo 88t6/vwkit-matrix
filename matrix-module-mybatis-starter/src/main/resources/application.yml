@@ -1,7 +1,12 @@
 mybatis:
   enabled: false
-  db1:
+  master:
     enabled: false
     type-aliases-package: #实体路径
     mapper-locations: #xml文件路径
+    db-list:
+      db1:
+        enabled: false
+        type-aliases-package: #实体路径
+        mapper-locations: #xml文件路径
 

@@ -36,29 +36,31 @@ jdbc:
     context-path: /druid/*
     username: admin
     password: admin
-  db1:
+  master:
     enabled: true
     base-packages: com.matrix.demo.dao.mybatis.test1,com.matrix.demo.dao.jpa.test1
     url: jdbc:mysql://128.0.1.3:3306/test1?useUnicode=true&characterEncoding=utf-8
     username: root
     password: 123456
-  db2:
-    enabled: true
-    base-packages: com.matrix.demo.dao.mybatis.test2,com.matrix.demo.dao.jpa.test2
-    url: jdbc:mysql://128.0.1.3:3306/test2?useUnicode=true&characterEncoding=utf-8
-    username: root
-    password: 123456
+  db-list:
+    db1:
+      enabled: true
+      base-packages: com.matrix.demo.dao.mybatis.test2,com.matrix.demo.dao.jpa.test2
+      url: jdbc:mysql://128.0.1.3:3306/test2?useUnicode=true&characterEncoding=utf-8
+      username: root
+      password: 123456
 
 mybatis:
   enabled: true
-  db1:
+  master:
     enabled: true
     type-aliases-package: com.matrix.demo.dao.mybatis.test1.model
     mapper-locations: classpath:/mapper/test1/*Mapper.xml
-  db2:
-    enabled: true
-    type-aliases-package: com.matrix.demo.dao.mybatis.test2.model
-    mapper-locations: classpath:/mapper/test2/*Mapper.xml
+  db-list:
+    db1:
+      enabled: true
+      type-aliases-package: com.matrix.demo.dao.mybatis.test2.model
+      mapper-locations: classpath:/mapper/test2/*Mapper.xml
 
 jpa:
   enabled: true

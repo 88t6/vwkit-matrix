@@ -6,6 +6,8 @@ import org.apache.ibatis.session.ExecutorType;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author WangCheng
@@ -20,16 +22,11 @@ public class MybatisProperties {
 
     private ExecutorType executorType;
 
-    private Params db1;
-    private Params db2;
-    private Params db3;
-    private Params db4;
-    private Params db5;
-    private Params db6;
-    private Params db7;
-    private Params db8;
-    private Params db9;
-    private Params db10;
+    private Params master = new Params();
+
+    private Params slave = new Params();
+
+    private Map<String, Params> dbList = new HashMap<>();
 
     @Data
     @Accessors(chain = true)

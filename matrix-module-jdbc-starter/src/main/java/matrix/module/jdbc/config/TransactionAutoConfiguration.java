@@ -36,9 +36,9 @@ public class TransactionAutoConfiguration {
         return new DataSourceTransactionManager(dataSource) {
             @Override
             protected void doBegin(Object transaction, TransactionDefinition definition) {
-                if (DynamicDataSourceHolder.DB1.equals(DynamicDataSourceHolder.getDataSource())
-                        && jdbcProperties.getDb1Slave().isEnabled() && definition.isReadOnly()) {
-                    DynamicDataSourceHolder.setDataSource(DynamicDataSourceHolder.DB1_SLAVE);
+                if (DynamicDataSourceHolder.MASTER_DB.equals(DynamicDataSourceHolder.getDataSource())
+                        && jdbcProperties.getSlave().isEnabled() && definition.isReadOnly()) {
+                    DynamicDataSourceHolder.setDataSource(DynamicDataSourceHolder.SLAVE_DB);
                 }
                 super.doBegin(transaction, definition);
             }

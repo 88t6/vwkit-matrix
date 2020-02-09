@@ -1,18 +1,20 @@
 package matrix.module.jdbc.config;
 
+import matrix.module.common.exception.ServiceException;
 import matrix.module.common.helper.Assert;
 import matrix.module.jdbc.properties.JdbcProperties;
 import matrix.module.jdbc.utils.DynamicDataSource;
 import matrix.module.jdbc.utils.DynamicDataSourceHolder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.util.CollectionUtils;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
@@ -31,211 +33,38 @@ public class DatabaseAutoConfiguration {
 
     private static final String TYPE = "com.alibaba.druid.pool.DruidDataSource";
 
-    @Autowired
-    private JdbcProperties jdbcProperties;
-
-    @Bean(name = "db1")
-    @ConditionalOnProperty(value = {"jdbc.db1.enabled"})
-    public DataSource db1() {
-        JdbcProperties.JdbcParam jdbcParam = jdbcProperties.getDb1();
-        String url = jdbcParam.getUrl();
-        String username = jdbcParam.getUsername();
-        String password = jdbcParam.getPassword();
-        Assert.isNotNull(url, "jdbc.db1.url");
-        Assert.isNotNull(username, "jdbc.db1.username");
-        Assert.isNotNull(password, "jdbc.db1.password");
-        return this.build(url, username, password);
-    }
-
-    @Bean(name = "db1Slave")
-    @ConditionalOnProperty(value = {"jdbc.db1-slave.enabled"})
-    public DataSource db1Slave() {
-        JdbcProperties.JdbcParam jdbcParam = jdbcProperties.getDb1Slave();
-        String url = jdbcParam.getUrl();
-        String username = jdbcParam.getUsername();
-        String password = jdbcParam.getPassword();
-        Assert.isNotNull(url, "jdbc.db1-slave.url");
-        Assert.isNotNull(username, "jdbc.db1-slave.username");
-        Assert.isNotNull(password, "jdbc.db1-slave.password");
-        return this.build(url, username, password);
-    }
-
-    @Bean(name = "db2")
-    @ConditionalOnProperty(value = {"jdbc.db2.enabled"})
-    public DataSource db2() {
-        JdbcProperties.JdbcParam jdbcParam = jdbcProperties.getDb2();
-        String url = jdbcParam.getUrl();
-        String username = jdbcParam.getUsername();
-        String password = jdbcParam.getPassword();
-        Assert.isNotNull(url, "jdbc.db2.url");
-        Assert.isNotNull(username, "jdbc.db2.username");
-        Assert.isNotNull(password, "jdbc.db2.password");
-        return this.build(url, username, password);
-    }
-
-    @Bean(name = "db3")
-    @ConditionalOnProperty(value = {"jdbc.db3.enabled"})
-    public DataSource db3() {
-        JdbcProperties.JdbcParam jdbcParam = jdbcProperties.getDb3();
-        String url = jdbcParam.getUrl();
-        String username = jdbcParam.getUsername();
-        String password = jdbcParam.getPassword();
-        Assert.isNotNull(url, "jdbc.db3.url");
-        Assert.isNotNull(username, "jdbc.db3.username");
-        Assert.isNotNull(password, "jdbc.db3.password");
-        return this.build(url, username, password);
-    }
-
-    @Bean(name = "db4")
-    @ConditionalOnProperty(value = {"jdbc.db4.enabled"})
-    public DataSource db4() {
-        JdbcProperties.JdbcParam jdbcParam = jdbcProperties.getDb4();
-        String url = jdbcParam.getUrl();
-        String username = jdbcParam.getUsername();
-        String password = jdbcParam.getPassword();
-        Assert.isNotNull(url, "jdbc.db4.url");
-        Assert.isNotNull(username, "jdbc.db4.username");
-        Assert.isNotNull(password, "jdbc.db4.password");
-        return this.build(url, username, password);
-    }
-
-    @Bean(name = "db5")
-    @ConditionalOnProperty(value = {"jdbc.db5.enabled"})
-    public DataSource db5() {
-        JdbcProperties.JdbcParam jdbcParam = jdbcProperties.getDb5();
-        String url = jdbcParam.getUrl();
-        String username = jdbcParam.getUsername();
-        String password = jdbcParam.getPassword();
-        Assert.isNotNull(url, "jdbc.db5.url");
-        Assert.isNotNull(username, "jdbc.db5.username");
-        Assert.isNotNull(password, "jdbc.db5.password");
-        return this.build(url, username, password);
-    }
-
-    @Bean(name = "db6")
-    @ConditionalOnProperty(value = {"jdbc.db6.enabled"})
-    public DataSource db6() {
-        JdbcProperties.JdbcParam jdbcParam = jdbcProperties.getDb6();
-        String url = jdbcParam.getUrl();
-        String username = jdbcParam.getUsername();
-        String password = jdbcParam.getPassword();
-        Assert.isNotNull(url, "jdbc.db6.url");
-        Assert.isNotNull(username, "jdbc.db6.username");
-        Assert.isNotNull(password, "jdbc.db6.password");
-        return this.build(url, username, password);
-    }
-
-    @Bean(name = "db7")
-    @ConditionalOnProperty(value = {"jdbc.db7.enabled"})
-    public DataSource db7() {
-        JdbcProperties.JdbcParam jdbcParam = jdbcProperties.getDb7();
-        String url = jdbcParam.getUrl();
-        String username = jdbcParam.getUsername();
-        String password = jdbcParam.getPassword();
-        Assert.isNotNull(url, "jdbc.db7.url");
-        Assert.isNotNull(username, "jdbc.db7.username");
-        Assert.isNotNull(password, "jdbc.db7.password");
-        return this.build(url, username, password);
-    }
-
-    @Bean(name = "db8")
-    @ConditionalOnProperty(value = {"jdbc.db8.enabled"})
-    public DataSource db8() {
-        JdbcProperties.JdbcParam jdbcParam = jdbcProperties.getDb8();
-        String url = jdbcParam.getUrl();
-        String username = jdbcParam.getUsername();
-        String password = jdbcParam.getPassword();
-        Assert.isNotNull(url, "jdbc.db8.url");
-        Assert.isNotNull(username, "jdbc.db8.username");
-        Assert.isNotNull(password, "jdbc.db8.password");
-        return this.build(url, username, password);
-    }
-
-    @Bean(name = "db9")
-    @ConditionalOnProperty(value = {"jdbc.db9.enabled"})
-    public DataSource db9() {
-        JdbcProperties.JdbcParam jdbcParam = jdbcProperties.getDb9();
-        String url = jdbcParam.getUrl();
-        String username = jdbcParam.getUsername();
-        String password = jdbcParam.getPassword();
-        Assert.isNotNull(url, "jdbc.db9.url");
-        Assert.isNotNull(username, "jdbc.db9.username");
-        Assert.isNotNull(password, "jdbc.db9.password");
-        return this.build(url, username, password);
-    }
-
-    @Bean(name = "db10")
-    @ConditionalOnProperty(value = {"jdbc.db10.enabled"})
-    public DataSource db10() {
-        JdbcProperties.JdbcParam jdbcParam = jdbcProperties.getDb10();
-        String url = jdbcParam.getUrl();
-        String username = jdbcParam.getUsername();
-        String password = jdbcParam.getPassword();
-        Assert.isNotNull(url, "jdbc.db10.url");
-        Assert.isNotNull(username, "jdbc.db10.username");
-        Assert.isNotNull(password, "jdbc.db10.password");
-        return this.build(url, username, password);
-    }
-
-    @Bean(name = "dynamicDataSource")
-    @Primary
-    public DynamicDataSource dynamicDataSource(@Qualifier("db1") DataSource db1,
-                                               @Autowired(required = false) @Qualifier("db1Slave") DataSource db1Slave,
-                                               @Autowired(required = false) @Qualifier("db2") DataSource db2,
-                                               @Autowired(required = false) @Qualifier("db3") DataSource db3,
-                                               @Autowired(required = false) @Qualifier("db4") DataSource db4,
-                                               @Autowired(required = false) @Qualifier("db5") DataSource db5,
-                                               @Autowired(required = false) @Qualifier("db6") DataSource db6,
-                                               @Autowired(required = false) @Qualifier("db7") DataSource db7,
-                                               @Autowired(required = false) @Qualifier("db8") DataSource db8,
-                                               @Autowired(required = false) @Qualifier("db9") DataSource db9,
-                                               @Autowired(required = false) @Qualifier("db10") DataSource db10) {
-        DynamicDataSource dynamicDataSource = new DynamicDataSource();
-        Map<Object, Object> targetDataSources = new HashMap<>();
-        targetDataSources.put(DynamicDataSourceHolder.DB1, db1);
-        if (jdbcProperties.getDb1Slave().isEnabled()) {
-            targetDataSources.put(DynamicDataSourceHolder.DB1_SLAVE, db1Slave);
+    public DatabaseAutoConfiguration(JdbcProperties jdbcProperties, ConfigurableBeanFactory beanFactory) {
+        if (!jdbcProperties.getMaster().isEnabled()) {
+            throw new ServiceException("master db not found!");
         }
-        if (jdbcProperties.getDb2().isEnabled()) {
-            targetDataSources.put(DynamicDataSourceHolder.DB2, db2);
-        }
-        if (jdbcProperties.getDb3().isEnabled()) {
-            targetDataSources.put(DynamicDataSourceHolder.DB3, db3);
-        }
-        if (jdbcProperties.getDb4().isEnabled()) {
-            targetDataSources.put(DynamicDataSourceHolder.DB4, db4);
-        }
-        if (jdbcProperties.getDb5().isEnabled()) {
-            targetDataSources.put(DynamicDataSourceHolder.DB5, db5);
-        }
-        if (jdbcProperties.getDb6().isEnabled()) {
-            targetDataSources.put(DynamicDataSourceHolder.DB6, db6);
-        }
-        if (jdbcProperties.getDb7().isEnabled()) {
-            targetDataSources.put(DynamicDataSourceHolder.DB7, db7);
-        }
-        if (jdbcProperties.getDb8().isEnabled()) {
-            targetDataSources.put(DynamicDataSourceHolder.DB8, db8);
-        }
-        if (jdbcProperties.getDb9().isEnabled()) {
-            targetDataSources.put(DynamicDataSourceHolder.DB9, db9);
-        }
-        if (jdbcProperties.getDb10().isEnabled()) {
-            targetDataSources.put(DynamicDataSourceHolder.DB10, db10);
-        }
-        dynamicDataSource.setTargetDataSources(targetDataSources);
-        dynamicDataSource.setDefaultTargetDataSource(db1);
-        return dynamicDataSource;
-    }
-
-    private DataSource build(String url, String userName, String password) {
         String driverClass = jdbcProperties.getDriverClass();
         Assert.isNotNull(driverClass, "jdbc.driver-class");
+        beanFactory.registerSingleton(DynamicDataSourceHolder.MASTER_DB, build(jdbcProperties.getMaster(), DynamicDataSourceHolder.MASTER_DB, driverClass));
+        if (jdbcProperties.getSlave().isEnabled()) {
+            beanFactory.registerSingleton(DynamicDataSourceHolder.SLAVE_DB, build(jdbcProperties.getSlave(), DynamicDataSourceHolder.SLAVE_DB, driverClass));
+        }
+        Map<String, JdbcProperties.JdbcParam> dbList = jdbcProperties.getDbList();
+        if (!CollectionUtils.isEmpty(dbList)) {
+            dbList.forEach((key, jdbcParam) -> {
+                if (jdbcParam.isEnabled()) {
+                    beanFactory.registerSingleton(key + "DB", DatabaseAutoConfiguration.build(jdbcParam, "db-list." + key, driverClass));
+                }
+            });
+        }
+    }
+
+    private static DataSource build(JdbcProperties.JdbcParam jdbcParam, String key, String driverClass) {
+        String url = jdbcParam.getUrl();
+        Assert.isNotNull(url, "jdbc." + key + ".url");
+        String username = jdbcParam.getUsername();
+        String password = jdbcParam.getPassword();
+        Assert.isNotNull(username, "jdbc." + key + ".username");
+        Assert.isNotNull(password, "jdbc." + key + ".password");
         com.alibaba.druid.pool.DruidDataSource dataSource = new com.alibaba.druid.pool.DruidDataSource();
         dataSource.setDbType(DatabaseAutoConfiguration.TYPE);
         dataSource.setDriverClassName(driverClass);
         dataSource.setUrl(url);
-        dataSource.setUsername(userName);
+        dataSource.setUsername(username);
         dataSource.setPassword(password);
         //打开PSCache，并且指定每个连接上PSCache的大小
         dataSource.setPoolPreparedStatements(true);
@@ -260,5 +89,25 @@ public class DatabaseAutoConfiguration {
             logger.debug(e);
         }
         return dataSource;
+    }
+
+    @Bean("dynamicDataSource")
+    @Qualifier("dynamicDataSource")
+    @Primary
+    public DataSource dynamicDataSource(ConfigurableBeanFactory beanFactory, JdbcProperties jdbcProperties) {
+        DynamicDataSource dynamicDataSource = new DynamicDataSource();
+        DataSource masterDB = beanFactory.getBean(DynamicDataSourceHolder.MASTER_DB, DataSource.class);
+        dynamicDataSource.setDefaultTargetDataSource(masterDB);
+        Map<Object, Object> targetDataSources = new HashMap<>();
+        targetDataSources.put(DynamicDataSourceHolder.MASTER_DB, masterDB);
+        if (jdbcProperties.getSlave().isEnabled()) {
+            targetDataSources.put(DynamicDataSourceHolder.SLAVE_DB, beanFactory.getBean(DynamicDataSourceHolder.SLAVE_DB, DataSource.class));
+        }
+        Map<String, JdbcProperties.JdbcParam> dbList = jdbcProperties.getDbList();
+        if (!CollectionUtils.isEmpty(dbList)) {
+            dbList.keySet().forEach(key -> targetDataSources.put(key + "DB", beanFactory.getBean(key + "DB", DataSource.class)));
+        }
+        dynamicDataSource.setTargetDataSources(targetDataSources);
+        return dynamicDataSource;
     }
 }

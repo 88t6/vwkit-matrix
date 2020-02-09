@@ -5,6 +5,8 @@ import lombok.experimental.Accessors;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author WangCheng
@@ -21,27 +23,11 @@ public class JdbcProperties implements Serializable {
 
     private DruidParam druid;
 
-    private JdbcParam db1 = new JdbcParam();
+    private JdbcParam master = new JdbcParam();
 
-    private JdbcParam db1Slave = new JdbcParam();
+    private JdbcParam slave = new JdbcParam();
 
-    private JdbcParam db2 = new JdbcParam();
-
-    private JdbcParam db3 = new JdbcParam();
-
-    private JdbcParam db4 = new JdbcParam();
-
-    private JdbcParam db5 = new JdbcParam();
-
-    private JdbcParam db6 = new JdbcParam();
-
-    private JdbcParam db7 = new JdbcParam();
-
-    private JdbcParam db8 = new JdbcParam();
-
-    private JdbcParam db9 = new JdbcParam();
-
-    private JdbcParam db10 = new JdbcParam();
+    private Map<String, JdbcParam> dbList = new HashMap<>();
 
     @Data
     @Accessors(chain = true)
