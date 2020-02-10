@@ -5,7 +5,6 @@ import matrix.module.jdbc.utils.DynamicDataSourceHolder;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -17,7 +16,6 @@ import java.io.Serializable;
  * @date 2020/2/5
  */
 @Configuration
-@AutoConfigureAfter({DatabaseAutoConfiguration.class})
 @ConditionalOnProperty(value = {"jdbc.enabled"})
 @Aspect
 @Order(1)

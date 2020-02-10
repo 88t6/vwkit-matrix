@@ -4,7 +4,6 @@ import matrix.module.common.exception.GlobalControllerException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.hibernate.engine.spi.SessionImplementor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -35,7 +34,7 @@ public class JpaAspectAutoConfiguration {
             throw new GlobalControllerException(e);
         } finally {
             try {
-                entityManager.unwrap(SessionImplementor.class).disconnect();
+                //entityManager.unwrap(SessionImplementor.class).disconnect();
             } catch (Exception e) {
                 System.out.println(123);
             }

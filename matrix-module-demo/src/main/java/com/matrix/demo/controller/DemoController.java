@@ -1,6 +1,5 @@
 package com.matrix.demo.controller;
 
-import com.matrix.demo.dao.jpa.test1.entity.Test1Entity;
 import com.matrix.demo.dao.jpa.test1.repository.Test1Repository;
 import com.matrix.demo.dao.jpa.test2.entity.Test2Entity;
 import com.matrix.demo.dao.jpa.test2.repository.Test2Repository;
@@ -52,24 +51,22 @@ public class DemoController {
     }
 
     @GetMapping("/mybatis")
-    @Transactional
-    @DynamicDataSource("db1")
+    @Transactional(rollbackFor = Exception.class)
     public Result mybatis() {
 //        testService1.find();
 //        testService2.find();
         //testService1.save(new Test1().setAaa("123"));
         testService2.save(new Test2().setBbb("456"));
-        throw new RuntimeException("123123");
-        //throw new RuntimeException("123");
+        throw new RuntimeException("123");
         //return Result.success(true);
     }
 
     @GetMapping("/jpa")
-    //@DynamicTransactional
+    @Transactional(rollbackFor = Exception.class)
     public Result jpa() {
-        test1Repository.findAllByAaaEquals("123");
+        //test1Repository.findAllByAaaEquals("123");
         test2Repository.findAllByBbbEquals("456");
-        test1Repository.save(new Test1Entity().setAaa("abc"));
+        //test1Repository.save(new Test1Entity().setAaa("abc"));
         test2Repository.save(new Test2Entity().setBbb("def"));
         //throw new RuntimeException("123");
         return Result.success(true);
