@@ -4,21 +4,18 @@ import com.matrix.demo.dao.jpa.test1.entity.Test1Entity;
 import com.matrix.demo.dao.jpa.test1.repository.Test1Repository;
 import com.matrix.demo.dao.jpa.test2.entity.Test2Entity;
 import com.matrix.demo.dao.jpa.test2.repository.Test2Repository;
-import com.matrix.demo.dao.mybatis.test1.mapper.Test1Mapper;
 import com.matrix.demo.dao.mybatis.test1.service.TestService1;
-import com.matrix.demo.dao.mybatis.test2.mapper.Test2Mapper;
 import com.matrix.demo.dao.mybatis.test2.model.Test2;
 import com.matrix.demo.dao.mybatis.test2.service.TestService2;
 import matrix.module.common.bean.Result;
 import matrix.module.common.exception.ServiceException;
 import matrix.module.jdbc.annotation.DynamicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
 
 /**
  * @author WangCheng
@@ -35,11 +32,8 @@ public class DemoController {
     @Autowired
     private TestService2 testService2;
 
-    @Resource
-    private Test1Mapper test1Mapper;
-
-    @Resource
-    private Test2Mapper test2Mapper;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     private Test1Repository test1Repository;
@@ -51,6 +45,16 @@ public class DemoController {
     @Transactional
     @DynamicDataSource("db1")
     public Result jdbc() {
+        jdbcTemplate.execute("insert into test (bbb) values (1234)");
+        //throw new RuntimeException("123123");
+        //throw new RuntimeException("123");
+        return Result.success(true);
+    }
+
+    @GetMapping("/mybatis")
+    @Transactional
+    @DynamicDataSource("db1")
+    public Result mybatis() {
 //        testService1.find();
 //        testService2.find();
         //testService1.save(new Test1().setAaa("123"));
