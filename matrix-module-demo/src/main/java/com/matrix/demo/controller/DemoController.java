@@ -7,10 +7,13 @@ import com.matrix.demo.dao.jpa.test2.repository.Test2Repository;
 import com.matrix.demo.dao.mybatis.test1.mapper.Test1Mapper;
 import com.matrix.demo.dao.mybatis.test1.service.TestService1;
 import com.matrix.demo.dao.mybatis.test2.mapper.Test2Mapper;
+import com.matrix.demo.dao.mybatis.test2.model.Test2;
 import com.matrix.demo.dao.mybatis.test2.service.TestService2;
 import matrix.module.common.bean.Result;
 import matrix.module.common.exception.ServiceException;
+import matrix.module.jdbc.annotation.DynamicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,14 +48,16 @@ public class DemoController {
     private Test2Repository test2Repository;
 
     @GetMapping("/jdbc")
-    //@DynamicTransactional
+    @Transactional
+    @DynamicDataSource("db1")
     public Result jdbc() {
-        testService1.find();
-        testService2.find();
+//        testService1.find();
+//        testService2.find();
         //testService1.save(new Test1().setAaa("123"));
-        //testService2.save(new Test2().setBbb("456"));
+        testService2.save(new Test2().setBbb("456"));
+        throw new RuntimeException("123123");
         //throw new RuntimeException("123");
-        return Result.success(true);
+        //return Result.success(true);
     }
 
     @GetMapping("/jpa")

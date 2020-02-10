@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.annotation.Resource;
@@ -22,6 +23,7 @@ import javax.sql.DataSource;
 @Configuration
 @AutoConfigureAfter({DatabaseAutoConfiguration.class})
 @EnableConfigurationProperties(JdbcProperties.class)
+@EnableTransactionManagement
 @ConditionalOnProperty(value = {"jdbc.enabled"})
 public class TransactionAutoConfiguration {
 
