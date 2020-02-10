@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 /**
  * @author wangcheng
@@ -14,4 +16,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @DynamicDataSource(value = "master")
 public interface Test1Repository extends PagingAndSortingRepository<Test1Entity, Long>, JpaSpecificationExecutor<Test1Entity> {
+
+    List<Test1Entity> findAllByAaaEquals(String aaa);
+
 }

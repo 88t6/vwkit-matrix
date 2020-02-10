@@ -58,6 +58,8 @@ public class DemoController {
     @GetMapping("/jpa")
     //@DynamicTransactional
     public Result jpa() {
+        test1Repository.findAllByAaaEquals("123");
+        test2Repository.findAllByBbbEquals("456");
         test1Repository.save(new Test1Entity().setAaa("abc"));
         test2Repository.save(new Test2Entity().setBbb("def"));
         //throw new RuntimeException("123");
