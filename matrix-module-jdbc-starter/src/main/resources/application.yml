@@ -8,14 +8,12 @@ jdbc:
     password: admin
   master:
     enabled: false
-    base-packages:
     url:
     username:
     password:
     db-list:
       db1:
         enabled: false
-        base-packages:
         url:
         username:
         password:

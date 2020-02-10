@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.core.MybatisXMLLanguageDriver;
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
-import matrix.module.common.exception.ServiceException;
 import matrix.module.common.helper.Assert;
 import matrix.module.jdbc.config.DatabaseAutoConfiguration;
 import matrix.module.mybatis.properties.MybatisProperties;
@@ -25,7 +24,6 @@ import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -37,13 +35,11 @@ import org.springframework.context.annotation.*;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.type.AnnotationMetadata;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author WangCheng
@@ -63,36 +59,26 @@ public class MybatisPlusAutoConfiguration {
     @Resource
     private DataSource dataSource;
 
-    public MybatisPlusAutoConfiguration(MybatisProperties mybatisProperties, ConfigurableBeanFactory beanFactory, DataSource dataSource) {
-        if (!mybatisProperties.getMaster().isEnabled()) {
-            throw new ServiceException("master mybatis not found!");
-        }
-        try {
-            if (mybatisProperties.getSlave().isEnabled()) {
-                beanFactory.registerSingleton("slaveSqlSessionFactory", getSqlSessionFactory(dataSource, "slave", mybatisProperties.getSlave()));
-            }
-            Map<String, MybatisProperties.Params> dbList = mybatisProperties.getDbList();
-            if (!CollectionUtils.isEmpty(dbList)) {
-                dbList.forEach((key, params) -> {
-                    if (params.isEnabled()) {
-                        try {
-                            beanFactory.registerSingleton(key + "SqlSessionFactory", getSqlSessionFactory(dataSource, "db-list." + key, params));
-                        } catch (Exception e) {
-                            throw new ServiceException(e);
-                        }
-                    }
-                });
-            }
-        } catch (Exception e) {
-            throw new ServiceException(e);
+    @Bean("sqlSessionFactory")
+    @Qualifier("sqlSessionFactory")
+    @Primary
+    public SqlSessionFactory sqlSessionFactory() throws Exception {
+        return getSqlSessionFactory(dataSource, properties.getTypeAliasesPackage(), properties.getMapperLocations());
+    }
+
+    @Bean
+    public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) {
+        ExecutorType executorType = properties.getExecutorType();
+        if (executorType != null) {
+            return new SqlSessionTemplate(sqlSessionFactory, executorType);
+        } else {
+            return new SqlSessionTemplate(sqlSessionFactory);
         }
     }
 
-    private static SqlSessionFactory getSqlSessionFactory(DataSource dataSource, String key, MybatisProperties.Params params) throws Exception {
-        String typeAliasesPackage = params.getTypeAliasesPackage();
-        Assert.isNotNull(typeAliasesPackage, "mybatis." + key + ".type-aliases-package");
-        String mapperLocations = params.getMapperLocations();
-        Assert.isNotNull(mapperLocations, "mybatis." + key + ".mapper-locations");
+    private SqlSessionFactory getSqlSessionFactory(DataSource dataSource, String typeAliasesPackage, String mapperLocations) throws Exception {
+        Assert.isNotNull(typeAliasesPackage, "mybatis.type-aliases-package");
+        Assert.isNotNull(mapperLocations, "mybatis.mapper-locations");
         MybatisSqlSessionFactoryBean sqlSessionFactory = new MybatisSqlSessionFactoryBean();
         sqlSessionFactory.setDataSource(dataSource);
         MybatisConfiguration configuration = new MybatisConfiguration();
@@ -111,25 +97,6 @@ public class MybatisPlusAutoConfiguration {
         sqlSessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver()
                 .getResources(mapperLocations));
         return sqlSessionFactory.getObject();
-    }
-
-    @Primary
-    @Bean("masterSqlSessionFactory")
-    @Qualifier("masterSqlSessionFactory")
-    @ConditionalOnProperty(value = {"mybatis.master.enabled"})
-    public SqlSessionFactory masterSqlSessionFactory() throws Exception {
-        MybatisProperties.Params params = properties.getMaster();
-        return getSqlSessionFactory(dataSource, "master", params);
-    }
-
-    @Bean
-    public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) {
-        ExecutorType executorType = this.properties.getExecutorType();
-        if (executorType != null) {
-            return new SqlSessionTemplate(sqlSessionFactory, executorType);
-        } else {
-            return new SqlSessionTemplate(sqlSessionFactory);
-        }
     }
 
     /**

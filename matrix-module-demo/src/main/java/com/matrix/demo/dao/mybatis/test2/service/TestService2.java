@@ -8,5 +8,5 @@ import com.matrix.demo.dao.mybatis.test2.model.Test2;
  * @date 2020/2/6
  */
 public interface TestService2 extends IService<Test2> {
-
+    Test2 find();
 }

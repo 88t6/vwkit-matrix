@@ -1,6 +1,7 @@
-package matrix.module.jdbc.config;
+package matrix.module.jpa.config;
 
 import matrix.module.common.exception.GlobalControllerException;
+import matrix.module.jdbc.config.DatabaseAutoConfiguration;
 import matrix.module.jdbc.utils.DynamicDataSourceHolder;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -10,23 +11,19 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 
-import java.io.Serializable;
-
 /**
  * @author WangCheng
- * @date 2020/2/5
+ * @date 2020/2/10
  */
 @Configuration
 @AutoConfigureAfter({DatabaseAutoConfiguration.class})
-@ConditionalOnProperty(value = {"jdbc.enabled"})
+@ConditionalOnProperty(value = {"jpa.enabled"})
 @Aspect
-@Order(1)
-public class SwitchDbAspectAutoConfiguration implements Serializable {
+@Order(2)
+public class SwitchDbAspectAutoConfiguration {
 
-    private static final long serialVersionUID = 1L;
-
-    @Around("@within(matrix.module.jdbc.annotation.DynamicDataSource) " +
-            "|| @annotation(matrix.module.jdbc.annotation.DynamicDataSource)")
+    @Around("within(org.springframework.data.repository.CrudRepository) " +
+            "|| target(org.springframework.data.repository.CrudRepository)")
     public Object dbSwitchAround(ProceedingJoinPoint joinPoint) {
         try {
             return DynamicDataSourceHolder.processDataSource(joinPoint);
@@ -34,5 +31,4 @@ public class SwitchDbAspectAutoConfiguration implements Serializable {
             throw new GlobalControllerException(e);
         }
     }
-
 }

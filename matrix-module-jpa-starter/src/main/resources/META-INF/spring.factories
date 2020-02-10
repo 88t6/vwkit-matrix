@@ -1,4 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   matrix.module.jpa.config.ExcludeAutoConfigurationFilter,\
   matrix.module.jpa.config.JpaAutoConfiguration,\
+  matrix.module.jpa.config.SwitchDbAspectAutoConfiguration,\
   matrix.module.jpa.config.JpaAspectAutoConfiguration
