@@ -6,14 +6,14 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 
 /**
  * @author WangCheng
  * @date 2020/2/10
  */
-@Component
+@Configuration
 @ConditionalOnProperty(value = {"jdbc.enabled"})
 @Aspect
 @Order(1)

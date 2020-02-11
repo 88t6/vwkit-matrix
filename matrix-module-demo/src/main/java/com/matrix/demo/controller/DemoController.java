@@ -1,6 +1,5 @@
 package com.matrix.demo.controller;
 
-import com.matrix.demo.dao.jpa.test1.entity.Test1Entity;
 import com.matrix.demo.dao.jpa.test1.repository.Test1Repository;
 import com.matrix.demo.dao.jpa.test2.entity.Test2Entity;
 import com.matrix.demo.dao.jpa.test2.repository.Test2Repository;
@@ -64,10 +63,11 @@ public class DemoController {
 
     @GetMapping("/jpa")
     @Transactional(rollbackFor = Exception.class)
+    @TargetDataSource("db1")
     public Result jpa() {
         //test1Repository.findAllByAaaEquals("123");
         //test2Repository.findAllByBbbEquals("456");
-        test1Repository.save(new Test1Entity().setAaa("abc"));
+        //test1Repository.save(new Test1Entity().setAaa("abc"));
         test2Repository.save(new Test2Entity().setBbb("def"));
         //throw new RuntimeException("123");
         return Result.success(true);

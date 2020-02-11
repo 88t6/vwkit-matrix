@@ -9,8 +9,8 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
  * @author WangCheng
  * @date 2020/2/5
  */
-@Component
+@Configuration
 @ConditionalOnProperty(value = {"jdbc.enabled"})
 @Aspect
 @Order(100)
