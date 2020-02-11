@@ -19,7 +19,7 @@ import org.springframework.core.annotation.Order;
 @AutoConfigureAfter({DatabaseAutoConfiguration.class})
 @ConditionalOnProperty(value = {"jpa.enabled"})
 @Aspect
-@Order(2)
+@Order(1)
 public class SwitchDbAspectAutoConfiguration {
 
     @Around("within(org.springframework.data.repository.CrudRepository) " +

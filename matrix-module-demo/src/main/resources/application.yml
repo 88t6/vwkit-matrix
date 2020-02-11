@@ -14,6 +14,8 @@ spring:
       enabled: false
   main:
     banner-mode: off
+  jpa:
+    open-in-view: false
 
 mvc:
   enabled: true
@@ -52,6 +54,7 @@ mybatis:
   enabled: true
   type-aliases-package: com.matrix.demo.dao.mybatis.*.model
   mapper-locations: classpath*:mapper/**/*Mapper.xml
+
 
 jpa:
   enabled: true

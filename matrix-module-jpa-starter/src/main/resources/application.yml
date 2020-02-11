@@ -1,5 +1,10 @@
+spring:
+  jpa:
+    open-in-view: false
+
 jpa:
   enabled: false
   dialect: org.hibernate.dialect.MySQL5InnoDBDialect
   show-sql: false
   base-package:
+

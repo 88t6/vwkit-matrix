@@ -1,5 +1,6 @@
 package com.matrix.demo.controller;
 
+import com.matrix.demo.dao.jpa.test1.entity.Test1Entity;
 import com.matrix.demo.dao.jpa.test1.repository.Test1Repository;
 import com.matrix.demo.dao.jpa.test2.entity.Test2Entity;
 import com.matrix.demo.dao.jpa.test2.repository.Test2Repository;
@@ -8,7 +9,7 @@ import com.matrix.demo.dao.mybatis.test2.model.Test2;
 import com.matrix.demo.dao.mybatis.test2.service.TestService2;
 import matrix.module.common.bean.Result;
 import matrix.module.common.exception.ServiceException;
-import matrix.module.jdbc.annotation.DynamicDataSource;
+import matrix.module.jdbc.annotation.TargetDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api")
-//@DynamicTransactional
 public class DemoController {
 
     @Autowired
@@ -42,7 +42,7 @@ public class DemoController {
 
     @GetMapping("/jdbc")
     @Transactional
-    @DynamicDataSource("db1")
+    @TargetDataSource("db1")
     public Result jdbc() {
         jdbcTemplate.execute("insert into test (bbb) values (1234)");
         //throw new RuntimeException("123123");
@@ -52,6 +52,7 @@ public class DemoController {
 
     @GetMapping("/mybatis")
     @Transactional(rollbackFor = Exception.class)
+    @TargetDataSource("db1")
     public Result mybatis() {
 //        testService1.find();
 //        testService2.find();
@@ -65,8 +66,8 @@ public class DemoController {
     @Transactional(rollbackFor = Exception.class)
     public Result jpa() {
         //test1Repository.findAllByAaaEquals("123");
-        test2Repository.findAllByBbbEquals("456");
-        //test1Repository.save(new Test1Entity().setAaa("abc"));
+        //test2Repository.findAllByBbbEquals("456");
+        test1Repository.save(new Test1Entity().setAaa("abc"));
         test2Repository.save(new Test2Entity().setBbb("def"));
         //throw new RuntimeException("123");
         return Result.success(true);

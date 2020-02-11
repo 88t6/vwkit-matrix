@@ -2,7 +2,7 @@ package matrix.module.jdbc.utils;
 
 import com.alibaba.druid.util.StringUtils;
 import matrix.module.common.utils.StringUtil;
-import matrix.module.jdbc.annotation.DynamicDataSource;
+import matrix.module.jdbc.annotation.TargetDataSource;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 
@@ -36,16 +36,16 @@ public class DynamicDataSourceHolder {
     }
 
     public static Object processDataSource(ProceedingJoinPoint joinPoint) throws Throwable {
-        DynamicDataSource dynamicDataSource = joinPoint.getTarget().getClass().getAnnotation(matrix.module.jdbc.annotation.DynamicDataSource.class);
+        TargetDataSource targetDataSource = joinPoint.getTarget().getClass().getAnnotation(TargetDataSource.class);
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
-        if (method.getAnnotation(matrix.module.jdbc.annotation.DynamicDataSource.class) != null) {
-            dynamicDataSource = method.getAnnotation(DynamicDataSource.class);
+        if (method.getAnnotation(TargetDataSource.class) != null) {
+            targetDataSource = method.getAnnotation(TargetDataSource.class);
         }
-        if (dynamicDataSource == null) {
-            dynamicDataSource = joinPoint.getTarget().getClass().getInterfaces()[0].getAnnotation(DynamicDataSource.class);
+        if (targetDataSource == null) {
+            targetDataSource = joinPoint.getTarget().getClass().getInterfaces()[0].getAnnotation(TargetDataSource.class);
         }
-        if (dynamicDataSource != null && !StringUtil.isEmpty(dynamicDataSource.value())) {
-            DynamicDataSourceHolder.setDataSource(dynamicDataSource.value() + "DB");
+        if (targetDataSource != null && !StringUtil.isEmpty(targetDataSource.value())) {
+            DynamicDataSourceHolder.setDataSource(targetDataSource.value() + "DB");
         }
         Object result = joinPoint.proceed(joinPoint.getArgs());
         DynamicDataSourceHolder.clearDataSource();

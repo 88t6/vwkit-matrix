@@ -23,8 +23,8 @@ public class SwitchDbAspectAutoConfiguration implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Around("@within(matrix.module.jdbc.annotation.DynamicDataSource) " +
-            "|| @annotation(matrix.module.jdbc.annotation.DynamicDataSource)")
+    @Around("@within(matrix.module.jdbc.annotation.TargetDataSource) " +
+            "|| @annotation(matrix.module.jdbc.annotation.TargetDataSource)")
     public Object dbSwitchAround(ProceedingJoinPoint joinPoint) {
         try {
             return DynamicDataSourceHolder.processDataSource(joinPoint);

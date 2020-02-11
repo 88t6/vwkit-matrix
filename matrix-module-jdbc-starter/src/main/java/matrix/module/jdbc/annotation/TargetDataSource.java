@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented
-public @interface DynamicDataSource {
+public @interface TargetDataSource {
 
     String value() default "master";
 

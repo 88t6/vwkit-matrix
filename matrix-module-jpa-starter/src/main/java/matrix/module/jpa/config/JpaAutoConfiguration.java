@@ -2,6 +2,8 @@ package matrix.module.jpa.config;
 
 import matrix.module.common.helper.Assert;
 import matrix.module.jdbc.config.DatabaseAutoConfiguration;
+import matrix.module.jdbc.properties.JdbcProperties;
+import matrix.module.jdbc.utils.DynamicDataSourceHolder;
 import matrix.module.jpa.properties.JpaProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -11,8 +13,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.TransactionDefinition;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityManagerFactory;
@@ -25,11 +29,14 @@ import java.util.Map;
  * @date 2020/2/6
  */
 @Configuration
-@EnableConfigurationProperties(JpaProperties.class)
+@EnableConfigurationProperties({JdbcProperties.class, JpaProperties.class})
 @AutoConfigureAfter(DatabaseAutoConfiguration.class)
 @ConditionalOnProperty(value = {"jpa.enabled"})
-@EnableJpaRepositories(basePackages = {"${jpa.base-package}"})
+@EnableJpaRepositories(basePackages = {"${jpa.base-package}"}, transactionManagerRef = "jpaTransactionManager")
 public class JpaAutoConfiguration {
+
+    @Autowired
+    private JdbcProperties jdbcProperties;
 
     @Autowired
     private JpaProperties jpaProperties;
@@ -56,10 +63,26 @@ public class JpaAutoConfiguration {
         jpaProperties.put("hibernate.dialect", dialect);
         jpaProperties.put("hibernate.ejb.naming_strategy", "org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy");
         jpaProperties.put("hibernate.jdbc.batch_size", 50);
-        jpaProperties.put("hibernate.current_session_context_class", "thread");
+        //jpaProperties.put("hibernate.transaction.auto_close_session", "true");
+        //jpaProperties.put("hibernate.connection.autocommit", "true");
         //jpaProperties.put("hibernate.hbm2ddl.auto", "update");
         factory.setJpaPropertyMap(jpaProperties);
         factory.afterPropertiesSet();
         return factory.getObject();
+    }
+
+    @Bean
+    @Primary
+    public JpaTransactionManager jpaTransactionManager(EntityManagerFactory emf) {
+        return new JpaTransactionManager(emf) {
+            @Override
+            protected void doBegin(Object transaction, TransactionDefinition definition) {
+                if (DynamicDataSourceHolder.MASTER_DB.equals(DynamicDataSourceHolder.getDataSource())
+                        && jdbcProperties.getSlave().isEnabled() && definition.isReadOnly()) {
+                    DynamicDataSourceHolder.setDataSource(DynamicDataSourceHolder.SLAVE_DB);
+                }
+                super.doBegin(transaction, definition);
+            }
+        };
     }
 }

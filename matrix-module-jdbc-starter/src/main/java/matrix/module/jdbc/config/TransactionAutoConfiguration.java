@@ -9,8 +9,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.annotation.Resource;
@@ -23,7 +23,6 @@ import javax.sql.DataSource;
 @Configuration
 @AutoConfigureAfter({DatabaseAutoConfiguration.class})
 @EnableConfigurationProperties(JdbcProperties.class)
-@EnableTransactionManagement
 @ConditionalOnProperty(value = {"jdbc.enabled"})
 public class TransactionAutoConfiguration {
 
@@ -34,7 +33,7 @@ public class TransactionAutoConfiguration {
     private JdbcProperties jdbcProperties;
 
     @Bean
-    public DataSourceTransactionManager transactionManager() {
+    public PlatformTransactionManager transactionManager() {
         return new DataSourceTransactionManager(dataSource) {
             @Override
             protected void doBegin(Object transaction, TransactionDefinition definition) {
@@ -48,7 +47,7 @@ public class TransactionAutoConfiguration {
     }
 
     @Bean
-    public TransactionTemplate transactionTemplate(DataSourceTransactionManager transactionManager) {
+    public TransactionTemplate transactionTemplate(PlatformTransactionManager transactionManager) {
         return new TransactionTemplate(transactionManager);
     }
 }
