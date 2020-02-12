@@ -55,7 +55,8 @@ public class DynamicDataSourceHolder {
         if (targetDataSource != null && !StringUtil.isEmpty(targetDataSource.value())) {
             DynamicDataSourceHolder.setDataSource(targetDataSource.value() + "DB");
         }
-        boolean isSuccess = true;
+        //是否设置成功
+        boolean isSetSuccess = true;
         //设置数据源优先(设置失败代表事务优先需自行执行事务)
         if (!TransactionalHolder.setPriority(TransactionalHolder.DATASOURCE_FLAG) && TransactionalHolder.getTransactionTemplate() != null) {
             TransactionTemplate transactionTemplate = TransactionalHolder.getTransactionTemplate();
@@ -66,14 +67,14 @@ public class DynamicDataSourceHolder {
             } else {
                 logger.error("no transaction manager");
             }
-            isSuccess = false;
+            isSetSuccess = false;
         }
         try {
             return joinPoint.proceed(joinPoint.getArgs());
         } catch (Exception e) {
             throw new ServiceException(e);
         } finally {
-            if (isSuccess) {
+            if (isSetSuccess) {
                 DynamicDataSourceHolder.clearDataSource();
                 TransactionalHolder.clearTransactionParams();
             }
