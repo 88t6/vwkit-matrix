@@ -4,8 +4,13 @@ import com.alibaba.druid.util.StringUtils;
 import matrix.module.common.exception.ServiceException;
 import matrix.module.common.utils.StringUtil;
 import matrix.module.jdbc.annotation.TargetDataSource;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.transaction.TransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.lang.reflect.Method;
 
@@ -13,6 +18,8 @@ import java.lang.reflect.Method;
  * @author wangcheng
  */
 public class DynamicDataSourceHolder {
+
+    private static Logger logger = LogManager.getLogger(DynamicDataSourceHolder.class);
 
     public static final String MASTER_DB = "masterDB";
 
@@ -48,20 +55,28 @@ public class DynamicDataSourceHolder {
         if (targetDataSource != null && !StringUtil.isEmpty(targetDataSource.value())) {
             DynamicDataSourceHolder.setDataSource(targetDataSource.value() + "DB");
         }
-        Object result = null;
+        boolean isSuccess = true;
         //设置数据源优先(设置失败代表事务优先需自行执行事务)
         if (!TransactionalHolder.setPriority(TransactionalHolder.DATASOURCE_FLAG) && TransactionalHolder.getTransactionTemplate() != null) {
-            result = TransactionalHolder.getTransactionTemplate().execute(status -> {
-                try {
-                    return joinPoint.proceed(joinPoint.getArgs());
-                } catch (Throwable e) {
-                    throw new ServiceException(e);
-                }
-            });
-        } else {
-            result = joinPoint.proceed(joinPoint.getArgs());
+            TransactionTemplate transactionTemplate = TransactionalHolder.getTransactionTemplate();
+            TransactionManager transactionManager = transactionTemplate.getTransactionManager();
+            if (transactionManager != null) {
+                TransactionStatus transactionStatus = transactionTemplate.getTransactionManager().getTransaction(transactionTemplate);
+                TransactionalHolder.setTransactionStatus(transactionStatus);
+            } else {
+                logger.error("no transaction manager");
+            }
+            isSuccess = false;
         }
-        DynamicDataSourceHolder.clearDataSource();
-        return result;
+        try {
+            return joinPoint.proceed(joinPoint.getArgs());
+        } catch (Exception e) {
+            throw new ServiceException(e);
+        } finally {
+            if (isSuccess) {
+                DynamicDataSourceHolder.clearDataSource();
+                TransactionalHolder.clearTransactionParams();
+            }
+        }
     }
 }

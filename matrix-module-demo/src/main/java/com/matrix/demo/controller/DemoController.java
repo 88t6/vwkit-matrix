@@ -1,8 +1,10 @@
 package com.matrix.demo.controller;
 
+import com.matrix.demo.dao.jpa.test1.entity.Test1Entity;
 import com.matrix.demo.dao.jpa.test1.repository.Test1Repository;
 import com.matrix.demo.dao.jpa.test2.entity.Test2Entity;
 import com.matrix.demo.dao.jpa.test2.repository.Test2Repository;
+import com.matrix.demo.dao.mybatis.test1.model.Test1;
 import com.matrix.demo.dao.mybatis.test1.service.TestService1;
 import com.matrix.demo.dao.mybatis.test2.model.Test2;
 import com.matrix.demo.dao.mybatis.test2.service.TestService2;
@@ -44,32 +46,30 @@ public class DemoController {
     @TargetDataSource("db1")
     public Result jdbc() {
         jdbcTemplate.execute("insert into test (bbb) values (1234)");
-        //throw new RuntimeException("123123");
         //throw new RuntimeException("123");
         return Result.success(true);
     }
 
     @GetMapping("/mybatis")
-    @Transactional(rollbackFor = Exception.class)
+    //@Transactional(rollbackFor = Exception.class)
     public Result mybatis() {
-//        testService1.find();
-//        testService2.find();
-        //testService1.save(new Test1().setAaa("123"));
+        testService1.find();
+        testService2.find();
+        testService1.save(new Test1().setAaa("123"));
         testService2.save(new Test2().setBbb("456"));
-        throw new RuntimeException("123");
-        //return Result.success(true);
+        //throw new RuntimeException("123");
+        return Result.success(true);
     }
 
     @GetMapping("/jpa")
-    @Transactional(rollbackFor = Exception.class)
-    @TargetDataSource("db1")
+    //@Transactional(rollbackFor = Exception.class)
     public Result jpa() {
-        //test1Repository.findAllByAaaEquals("123");
-        //test2Repository.findAllByBbbEquals("456");
-        //test1Repository.save(new Test1Entity().setAaa("abc"));
+        test1Repository.findAllByAaaEquals("123");
+        test2Repository.findAllByBbbEquals("456");
+        test1Repository.save(new Test1Entity().setAaa("abc"));
         test2Repository.save(new Test2Entity().setBbb("def"));
-        //throw new RuntimeException("123");
-        return Result.success(true);
+        throw new RuntimeException("123");
+        //return Result.success(true);
     }
 
     @GetMapping("/demo")

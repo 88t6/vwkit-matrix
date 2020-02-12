@@ -1,6 +1,7 @@
 package matrix.module.jdbc.utils;
 
 import com.alibaba.druid.util.StringUtils;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionTemplate;
 
 /**
@@ -13,7 +14,9 @@ public class TransactionalHolder {
 
     public static final String DATASOURCE_FLAG = "datasource";
 
-    public static final ThreadLocal<TransactionTemplate> transactionTemplateHolder = new ThreadLocal<>();
+    private static final ThreadLocal<TransactionTemplate> transactionTemplateHolder = new ThreadLocal<>();
+
+    private static final ThreadLocal<TransactionStatus> transactionStatusHolder = new ThreadLocal<>();
 
     /**
      * transactional 事务优先(则将开始事务传递给数据源开启)
@@ -36,5 +39,19 @@ public class TransactionalHolder {
 
     public static void setTransactionTemplate(TransactionTemplate transactionTemplate) {
         transactionTemplateHolder.set(transactionTemplate);
+    }
+
+    public static TransactionStatus getTransactionStatus() {
+        return transactionStatusHolder.get();
+    }
+
+    public static void setTransactionStatus(TransactionStatus transactionStatus) {
+        transactionStatusHolder.set(transactionStatus);
+    }
+
+    public static void clearTransactionParams() {
+        priorityHolder.remove();
+        transactionTemplateHolder.remove();
+        transactionStatusHolder.remove();
     }
 }

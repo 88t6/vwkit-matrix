@@ -2,6 +2,7 @@ package matrix.module.jdbc.config;
 
 import matrix.module.common.exception.GlobalControllerException;
 import matrix.module.common.exception.ServiceException;
+import matrix.module.jdbc.utils.DynamicDataSourceHolder;
 import matrix.module.jdbc.utils.TransactionalHolder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -55,9 +57,10 @@ public class TransactionAspectAutoConfiguration implements Serializable {
                 logger.error("platformTransactionManager not found!");
                 return joinPoint.proceed(joinPoint.getArgs());
             }
+            Object result = null;
             //设置事务优先(设置失败则代表数据源已优先切换)
             if (!TransactionalHolder.setPriority(TransactionalHolder.TRANSACTIONAL_FLAG)) {
-                return transactionTemplate.execute(transactionStatus -> {
+                result = transactionTemplate.execute(transactionStatus -> {
                     try {
                         return joinPoint.proceed(joinPoint.getArgs());
                     } catch (Throwable e) {
@@ -66,11 +69,26 @@ public class TransactionAspectAutoConfiguration implements Serializable {
                 });
             } else {
                 TransactionalHolder.setTransactionTemplate(transactionTemplate);
-                return joinPoint.proceed(joinPoint.getArgs());
+                try {
+                    result = joinPoint.proceed(joinPoint.getArgs());
+                    TransactionStatus transactionStatus = TransactionalHolder.getTransactionStatus();
+                    if (transactionStatus != null) {
+                        transactionTemplate.getTransactionManager().commit(transactionStatus);
+                    }
+                } catch (Exception e) {
+                    TransactionStatus transactionStatus = TransactionalHolder.getTransactionStatus();
+                    if (transactionStatus != null) {
+                        transactionTemplate.getTransactionManager().rollback(transactionStatus);
+                    }
+                    throw new ServiceException(e);
+                }
             }
-
+            return result;
         } catch (Throwable e) {
             throw new GlobalControllerException(e);
+        } finally {
+            DynamicDataSourceHolder.clearDataSource();
+            TransactionalHolder.clearTransactionParams();
         }
     }
 }
