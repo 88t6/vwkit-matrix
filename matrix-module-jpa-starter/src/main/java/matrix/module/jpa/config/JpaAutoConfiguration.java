@@ -63,9 +63,6 @@ public class JpaAutoConfiguration {
         jpaProperties.put("hibernate.dialect", dialect);
         jpaProperties.put("hibernate.ejb.naming_strategy", "org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy");
         jpaProperties.put("hibernate.jdbc.batch_size", 50);
-        //jpaProperties.put("hibernate.transaction.auto_close_session", "true");
-        //jpaProperties.put("hibernate.connection.autocommit", "true");
-        //jpaProperties.put("hibernate.hbm2ddl.auto", "update");
         factory.setJpaPropertyMap(jpaProperties);
         factory.afterPropertiesSet();
         return factory.getObject();
