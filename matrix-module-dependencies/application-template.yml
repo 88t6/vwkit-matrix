@@ -10,18 +10,13 @@ spring:
       max-file-size: 10000MB
       max-request-size: 10000MB
 
-  autoconfigure:
-    exclude:
-      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
-
-
 mvc:
-  enabled: true
+  enabled: false
   static-path: classpath:/static/
   index: index.html
 
 freemarker:
-  enabled: true
+  enabled: false
   cache: true
   update-delay: 0
   template-path: classpath:/templates/
@@ -29,33 +24,32 @@ freemarker:
   suffix: .ftl
 
 jdbc:
-  enabled: true
+  enabled: false
   driver-class: com.mysql.cj.jdbc.Driver
   druid:
-    enabled: true
+    enabled: false
     context-path: /druid/*
     username: admin
     password: admin
   master:
-    enabled: true
-    url: jdbc:mysql://128.0.1.3:3306/test1?useUnicode=true&characterEncoding=utf-8
-    username: root
-    password: 123456
+    enabled: false
+    url: jdbc:mysql://127.0.0.1:3306/test1?useUnicode=true&characterEncoding=utf-8
+    username:
+    password:
   db-list:
     db1:
-      enabled: true
-      url: jdbc:mysql://128.0.1.3:3306/test2?useUnicode=true&characterEncoding=utf-8
-      username: root
-      password: 123456
+      enabled: false
+      url: jdbc:mysql://127.0.0.1:3306/test2?useUnicode=true&characterEncoding=utf-8
+      username:
+      password:
 
 mybatis:
-  enabled: true
-  type-aliases-package: com.matrix.demo.dao.mybatis.*.model
+  enabled: false
+  type-aliases-package: com.project.demo.mybatis.*.model
   mapper-locations: classpath*:mapper/**/*Mapper.xml
 
 jpa:
-  enabled: true
+  enabled: false
   dialect: org.hibernate.dialect.MySQL5InnoDBDialect
   show-sql: true
-  base-package: com.matrix.demo.dao.jpa
-
+  base-package: com.project.demo.jpa

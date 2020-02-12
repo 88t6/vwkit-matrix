@@ -1,7 +1,0 @@
-freemarker:
-  enabled: false
-  cache: true
-  update-delay: 0
-  template-path: classpath:/templates/
-  prefix:
-  suffix: .ftl
