@@ -1,6 +1,7 @@
 package matrix.module.jdbc.utils;
 
 import com.alibaba.druid.util.StringUtils;
+import matrix.module.common.exception.ServiceException;
 import matrix.module.common.utils.StringUtil;
 import matrix.module.jdbc.annotation.TargetDataSource;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -47,7 +48,19 @@ public class DynamicDataSourceHolder {
         if (targetDataSource != null && !StringUtil.isEmpty(targetDataSource.value())) {
             DynamicDataSourceHolder.setDataSource(targetDataSource.value() + "DB");
         }
-        Object result = joinPoint.proceed(joinPoint.getArgs());
+        Object result = null;
+        //设置数据源优先(设置失败代表事务优先需自行执行事务)
+        if (!TransactionalHolder.setPriority(TransactionalHolder.DATASOURCE_FLAG) && TransactionalHolder.getTransactionTemplate() != null) {
+            result = TransactionalHolder.getTransactionTemplate().execute(status -> {
+                try {
+                    return joinPoint.proceed(joinPoint.getArgs());
+                } catch (Throwable e) {
+                    throw new ServiceException(e);
+                }
+            });
+        } else {
+            result = joinPoint.proceed(joinPoint.getArgs());
+        }
         DynamicDataSourceHolder.clearDataSource();
         return result;
     }

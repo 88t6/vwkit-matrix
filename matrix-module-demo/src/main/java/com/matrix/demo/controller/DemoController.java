@@ -51,7 +51,6 @@ public class DemoController {
 
     @GetMapping("/mybatis")
     @Transactional(rollbackFor = Exception.class)
-    @TargetDataSource("db1")
     public Result mybatis() {
 //        testService1.find();
 //        testService2.find();

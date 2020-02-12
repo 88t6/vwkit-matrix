@@ -2,6 +2,7 @@ package matrix.module.jdbc.config;
 
 import matrix.module.common.exception.GlobalControllerException;
 import matrix.module.common.exception.ServiceException;
+import matrix.module.jdbc.utils.TransactionalHolder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -26,7 +27,7 @@ import java.lang.reflect.Method;
 @Configuration
 @ConditionalOnProperty(value = {"jdbc.enabled"})
 @Aspect
-@Order(100)
+@Order(2)
 public class TransactionAspectAutoConfiguration implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -54,13 +55,20 @@ public class TransactionAspectAutoConfiguration implements Serializable {
                 logger.error("platformTransactionManager not found!");
                 return joinPoint.proceed(joinPoint.getArgs());
             }
-            return transactionTemplate.execute(transactionStatus -> {
-                try {
-                    return joinPoint.proceed(joinPoint.getArgs());
-                } catch (Throwable e) {
-                    throw new ServiceException(e);
-                }
-            });
+            //设置事务优先(设置失败则代表数据源已优先切换)
+            if (!TransactionalHolder.setPriority(TransactionalHolder.TRANSACTIONAL_FLAG)) {
+                return transactionTemplate.execute(transactionStatus -> {
+                    try {
+                        return joinPoint.proceed(joinPoint.getArgs());
+                    } catch (Throwable e) {
+                        throw new ServiceException(e);
+                    }
+                });
+            } else {
+                TransactionalHolder.setTransactionTemplate(transactionTemplate);
+                return joinPoint.proceed(joinPoint.getArgs());
+            }
+
         } catch (Throwable e) {
             throw new GlobalControllerException(e);
         }
