@@ -4,7 +4,6 @@ import com.matrix.demo.dao.jpa.test1.entity.Test1Entity;
 import com.matrix.demo.dao.jpa.test1.repository.Test1Repository;
 import com.matrix.demo.dao.jpa.test2.entity.Test2Entity;
 import com.matrix.demo.dao.jpa.test2.repository.Test2Repository;
-import com.matrix.demo.dao.mybatis.test1.model.Test1;
 import com.matrix.demo.dao.mybatis.test1.service.TestService1;
 import com.matrix.demo.dao.mybatis.test2.model.Test2;
 import com.matrix.demo.dao.mybatis.test2.service.TestService2;
@@ -51,14 +50,14 @@ public class DemoController {
     }
 
     @GetMapping("/mybatis")
-    //@Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public Result mybatis() {
-        testService1.find();
-        testService2.find();
-        testService1.save(new Test1().setAaa("123"));
+        //testService1.find();
+        //testService2.find();
+        //testService1.save(new Test1().setAaa("123"));
         testService2.save(new Test2().setBbb("456"));
-        //throw new RuntimeException("123");
-        return Result.success(true);
+        throw new RuntimeException("123");
+        //return Result.success(true);
     }
 
     @GetMapping("/jpa")

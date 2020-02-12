@@ -57,7 +57,6 @@ mybatis:
   type-aliases-package: com.matrix.demo.dao.mybatis.*.model
   mapper-locations: classpath*:mapper/**/*Mapper.xml
 
-
 jpa:
   enabled: true
   dialect: org.hibernate.dialect.MySQL5InnoDBDialect
