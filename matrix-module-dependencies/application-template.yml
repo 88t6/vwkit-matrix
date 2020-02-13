@@ -53,3 +53,24 @@ jpa:
   dialect: org.hibernate.dialect.MySQL5InnoDBDialect
   show-sql: true
   base-package: com.project.demo.jpa
+
+redis:
+  enabled: false
+  default-expire: 7200
+  standalone:
+    enabled: false
+    host: 0.0.0.0
+    port: 6379
+    password:
+    database:
+  sentinel:
+    enabled: false
+    master:
+    nodes: 0.0.0.0:6379,0.0.0.1:6379
+    password:
+    database:
+  cluster:
+    enabled: false
+    nodes: 0.0.0.0:6379,0.0.0.1:6379
+    password:
+    max-redirects: 0

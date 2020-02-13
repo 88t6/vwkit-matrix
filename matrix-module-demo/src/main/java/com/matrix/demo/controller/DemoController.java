@@ -11,6 +11,7 @@ import matrix.module.common.bean.Result;
 import matrix.module.common.exception.ServiceException;
 import matrix.module.jdbc.annotation.TargetDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +40,9 @@ public class DemoController {
 
     @Autowired
     private Test2Repository test2Repository;
+
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
 
     @GetMapping("/jdbc")
     @Transactional
@@ -69,6 +73,12 @@ public class DemoController {
         test2Repository.save(new Test2Entity().setBbb("def"));
         throw new RuntimeException("123");
         //return Result.success(true);
+    }
+
+    @GetMapping("/redis")
+    public Result redis() {
+        redisTemplate.opsForValue().append("abc", "def");
+        return Result.success(null);
     }
 
     @GetMapping("/demo")

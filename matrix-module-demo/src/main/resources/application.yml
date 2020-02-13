@@ -10,11 +10,6 @@ spring:
       max-file-size: 10000MB
       max-request-size: 10000MB
 
-  autoconfigure:
-    exclude:
-      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
-
-
 mvc:
   enabled: true
   static-path: classpath:/static/
@@ -58,4 +53,14 @@ jpa:
   dialect: org.hibernate.dialect.MySQL5InnoDBDialect
   show-sql: true
   base-package: com.matrix.demo.dao.jpa
+
+redis:
+  enabled: true
+  default-expire: 7200
+  standalone:
+    enabled: true
+    host: 128.0.1.3
+    port: 6379
+    password: 123456
+    database: 0
 
