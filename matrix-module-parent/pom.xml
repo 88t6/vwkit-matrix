@@ -32,6 +32,10 @@
             <groupId>com.vwkit</groupId>
             <artifactId>matrix-module-jpa-starter</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.vwkit</groupId>
+            <artifactId>matrix-module-redis-starter</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

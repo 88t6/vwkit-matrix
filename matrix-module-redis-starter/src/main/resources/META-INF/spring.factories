@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  matrix.module.redis.config.ExcludeAutoConfigurationFilter,\
+  matrix.module.redis.config.RedisAutoConfiguration
