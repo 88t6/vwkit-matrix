@@ -4,6 +4,7 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   matrix.module.jdbc.config.TransactionAspectAutoConfiguration,\
   matrix.module.jdbc.config.TransactionAutoConfiguration,\
   matrix.module.jdbc.config.DruidAutoConfiguration,\
-  matrix.module.jdbc.config.SwitchDbAspectAutoConfiguration
+  matrix.module.jdbc.config.SwitchDbAspectAutoConfiguration,\
+  matrix.module.jdbc.config.FlywayDbAutoConfiguration
 org.springframework.boot.autoconfigure.AutoConfigurationImportFilter=\
   matrix.module.jdbc.config.ExcludeAutoConfigurationFilter

@@ -74,3 +74,12 @@ redis:
     nodes: 0.0.0.0:6379,0.0.0.1:6379
     password:
     max-redirects: 0
+
+flyway-db:
+  enabled: false
+  sql-migration-prefix: V
+  sql-migration-separator: __
+  sql-migration-suffix: .sql
+  table: flyway_version
+  validate-on-migrate: true
+  out-of-order: false

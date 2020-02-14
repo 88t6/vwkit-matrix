@@ -64,3 +64,12 @@ redis:
     password: 123456
     database: 0
 
+flyway-db:
+  enabled: true
+  sql-migration-prefix: V
+  sql-migration-separator: __
+  sql-migration-suffix: .sql
+  table: flyway_version
+  validate-on-migrate: true
+  out-of-order: false
+
