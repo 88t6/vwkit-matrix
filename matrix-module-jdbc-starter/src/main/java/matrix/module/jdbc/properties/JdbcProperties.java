@@ -21,6 +21,8 @@ public class JdbcProperties implements Serializable {
 
     private String driverClass;
 
+    private InitSql initSql;
+
     private DruidParam druid;
 
     private JdbcParam master = new JdbcParam();
@@ -54,6 +56,21 @@ public class JdbcProperties implements Serializable {
 
         private String password;
 
-        private String flywayLocations;
+        private String initSqlLocations;
+    }
+
+    @Data
+    @Accessors(chain = true)
+    public static class InitSql implements Serializable {
+
+        private boolean enabled = false;
+
+        private String fileNamePrefix = "V";
+
+        private String fileNameSeparator = "__";
+
+        private String fileNameSuffix = ".sql";
+
+        private String tableName = "init_sql_version";
     }
 }

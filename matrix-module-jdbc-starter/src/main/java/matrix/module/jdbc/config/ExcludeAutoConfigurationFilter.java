@@ -16,7 +16,8 @@ public class ExcludeAutoConfigurationFilter implements AutoConfigurationImportFi
     private static final Set<String> SHOULD_SKIP = new HashSet<>(Arrays.asList(
             "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration",
             "org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration",
-            "org.springframework.boot.autoconfigure.transaction.TransactionAutoConfiguration"));
+            "org.springframework.boot.autoconfigure.transaction.TransactionAutoConfiguration",
+            "org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration"));
 
     @Override
     public boolean[] match(String[] classNames, AutoConfigurationMetadata metadata) {

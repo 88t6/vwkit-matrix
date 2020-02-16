@@ -31,17 +31,25 @@ jdbc:
     context-path: /druid/*
     username: admin
     password: admin
+  init-sql:
+    enabled: false
+    file-name-prefix: V
+    file-name-separator: __
+    file-name-suffix: .sql
+    table-name: init_sql_version
   master:
     enabled: false
     url: jdbc:mysql://127.0.0.1:3306/test1?useUnicode=true&characterEncoding=utf-8
     username:
     password:
+    flyway-locations:
   db-list:
     db1:
       enabled: false
       url: jdbc:mysql://127.0.0.1:3306/test2?useUnicode=true&characterEncoding=utf-8
       username:
       password:
+      flyway-locations:
 
 mybatis:
   enabled: false
@@ -74,12 +82,3 @@ redis:
     nodes: 0.0.0.0:6379,0.0.0.1:6379
     password:
     max-redirects: 0
-
-flyway-db:
-  enabled: false
-  sql-migration-prefix: V
-  sql-migration-separator: __
-  sql-migration-suffix: .sql
-  table: flyway_version
-  validate-on-migrate: true
-  out-of-order: false
