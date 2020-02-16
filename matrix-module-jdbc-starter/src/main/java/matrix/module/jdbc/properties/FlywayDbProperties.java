@@ -13,7 +13,7 @@ import java.io.Serializable;
 @ConfigurationProperties(prefix = "flyway-db")
 @Data
 @Accessors(chain = true)
-public class FlywayProperties implements Serializable {
+public class FlywayDbProperties implements Serializable {
 
     //是否启用
     private boolean enabled = false;

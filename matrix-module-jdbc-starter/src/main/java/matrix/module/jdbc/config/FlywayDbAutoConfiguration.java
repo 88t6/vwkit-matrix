@@ -1,6 +1,6 @@
 package matrix.module.jdbc.config;
 
-import matrix.module.jdbc.properties.FlywayProperties;
+import matrix.module.jdbc.properties.FlywayDbProperties;
 import matrix.module.jdbc.properties.JdbcProperties;
 import matrix.module.jdbc.utils.DynamicDataSourceHolder;
 import org.flywaydb.core.Flyway;
@@ -21,23 +21,23 @@ import java.util.Map;
  * @date 2020/2/14
  */
 @Configuration
-@EnableConfigurationProperties({FlywayProperties.class, JdbcProperties.class})
+@EnableConfigurationProperties({FlywayDbProperties.class, JdbcProperties.class})
 @AutoConfigureAfter({DatabaseAutoConfiguration.class})
 @ConditionalOnProperty(value = {"jdbc.enabled"})
 public class FlywayDbAutoConfiguration {
 
     @PostConstruct
-    public void init(FlywayProperties flywayProperties,
+    public void init(FlywayDbProperties flywayDbProperties,
                      JdbcProperties jdbcProperties,
                      DataSource dataSource) {
         Map<String, String> config = new HashMap<>();
-        config.put("flyway.enabled", String.valueOf(flywayProperties.isEnabled()));
-        config.put("flyway.sql-migration-prefix", flywayProperties.getSqlMigrationPrefix());
-        config.put("flyway.sql-migration-separator", flywayProperties.getSqlMigrationSeparator());
-        config.put("flyway.sql-migration-suffix", flywayProperties.getSqlMigrationSuffix());
-        config.put("flyway.table", flywayProperties.getTable());
-        config.put("flyway.validate-on-migrate", String.valueOf(flywayProperties.isValidateOnMigrate()));
-        config.put("flyway.out-of-order", String.valueOf(flywayProperties.isOutOfOrder()));
+        config.put("flyway.enabled", String.valueOf(flywayDbProperties.isEnabled()));
+        config.put("flyway.sql-migration-prefix", flywayDbProperties.getSqlMigrationPrefix());
+        config.put("flyway.sql-migration-separator", flywayDbProperties.getSqlMigrationSeparator());
+        config.put("flyway.sql-migration-suffix", flywayDbProperties.getSqlMigrationSuffix());
+        config.put("flyway.table", flywayDbProperties.getTable());
+        config.put("flyway.validate-on-migrate", String.valueOf(flywayDbProperties.isValidateOnMigrate()));
+        config.put("flyway.out-of-order", String.valueOf(flywayDbProperties.isOutOfOrder()));
         if (jdbcProperties.getMaster().isEnabled() && !StringUtils.isEmpty(jdbcProperties.getMaster().getFlywayLocations())) {
             // 脚本位置
             config.put("flyway.locations", jdbcProperties.getMaster().getFlywayLocations());
