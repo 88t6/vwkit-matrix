@@ -1,9 +1,4 @@
-create table demo
+CREATE TABLE test
 (
-    id int(32) not null primary key
-);
-
-create table demo1
-(
-    id int(32) not null primary key
-);
+    aaa varchar(255) COLLATE utf8_bin NOT NULL
+)
