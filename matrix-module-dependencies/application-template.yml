@@ -82,3 +82,22 @@ redis:
     nodes: 0.0.0.0:6379,0.0.0.1:6379
     password:
     max-redirects: 0
+
+pay:
+  notify-domain: http://vwkit.com
+  db: master
+  alipay:
+    enabled: false
+    test: false
+    app-id:
+    sign-type:
+    return-url: http://vwkit.com/returnUrl
+    private-key:
+    public-key:
+  wepay:
+    enabled: false
+    app-id:
+    mch-id:
+    key:
+    cert-password:
+    cert-path:
