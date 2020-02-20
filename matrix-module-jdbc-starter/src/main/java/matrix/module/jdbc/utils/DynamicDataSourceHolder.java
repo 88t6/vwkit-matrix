@@ -1,6 +1,7 @@
 package matrix.module.jdbc.utils;
 
 import com.alibaba.druid.util.StringUtils;
+import matrix.module.based.utils.WebUtil;
 import matrix.module.common.exception.ServiceException;
 import matrix.module.common.utils.StringUtil;
 import matrix.module.jdbc.annotation.TargetDataSource;
@@ -8,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.core.env.Environment;
 import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -53,7 +55,14 @@ public class DynamicDataSourceHolder {
             targetDataSource = joinPoint.getTarget().getClass().getInterfaces()[0].getAnnotation(TargetDataSource.class);
         }
         if (targetDataSource != null && !StringUtil.isEmpty(targetDataSource.value())) {
-            DynamicDataSourceHolder.setDataSource(targetDataSource.value() + "DB");
+            String dbName = "";
+            if (targetDataSource.value().startsWith("$")) {
+                Environment environment = WebUtil.getBean(Environment.class);
+                dbName = environment.getProperty(targetDataSource.value().replace("${", "").replace("}", ""));
+            } else {
+                dbName = targetDataSource.value();
+            }
+            DynamicDataSourceHolder.setDataSource(dbName + "DB");
         }
         //是否设置成功
         boolean isSetSuccess = true;
