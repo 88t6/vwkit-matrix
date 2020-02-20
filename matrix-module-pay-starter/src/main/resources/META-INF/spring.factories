@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  matrix.module.pay.config.AlipayConfiguration,\
+  matrix.module.pay.config.WepayConfiguration

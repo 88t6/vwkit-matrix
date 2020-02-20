@@ -48,6 +48,11 @@
                 <artifactId>matrix-module-redis-starter</artifactId>
                 <version>1.0.0</version>
             </dependency>
+            <dependency>
+                <groupId>com.vwkit</groupId>
+                <artifactId>matrix-module-pay-starter</artifactId>
+                <version>1.0.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>

@@ -19,6 +19,7 @@
         <module>matrix-module-mybatis-starter</module>
         <module>matrix-module-jpa-starter</module>
         <module>matrix-module-redis-starter</module>
+        <module>matrix-module-pay-starter</module>
     </modules>
 
     <properties>
