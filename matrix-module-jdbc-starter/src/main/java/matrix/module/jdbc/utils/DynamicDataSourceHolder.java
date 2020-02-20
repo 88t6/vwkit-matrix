@@ -59,6 +59,9 @@ public class DynamicDataSourceHolder {
             if (targetDataSource.value().startsWith("$")) {
                 Environment environment = WebUtil.getBean(Environment.class);
                 dbName = environment.getProperty(targetDataSource.value().replace("${", "").replace("}", ""));
+                if (StringUtils.isEmpty(dbName)) {
+                    dbName = "master";
+                }
             } else {
                 dbName = targetDataSource.value();
             }

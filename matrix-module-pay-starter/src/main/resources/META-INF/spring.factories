@@ -1,8 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   matrix.module.pay.config.AlipayConfiguration,\
   matrix.module.pay.config.WepayConfiguration
-org.springframework.boot.autoconfigure.ImportAutoConfiguration=\
-  matrix.module.pay.controller.ForwardPayController,\
-  matrix.module.pay.controller.PayNotifyController,\
-  matrix.module.pay.service.MatrixPayService,\
-  matrix.module.pay.service.MatrixRefundService

@@ -15,6 +15,8 @@ public class PayProperties {
 
     private String notifyDomain;
 
+    private String db;
+
     private AlipayProperties alipay;
 
     private WepayProperties wepay;

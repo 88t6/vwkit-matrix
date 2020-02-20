@@ -1,5 +1,6 @@
 package matrix.module.pay.service.impl;
 
+import matrix.module.jdbc.annotation.TargetDataSource;
 import matrix.module.pay.entity.MatrixRefundEntity;
 import matrix.module.pay.service.MatrixRefundService;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import java.util.List;
  * @date 2020/2/20
  */
 @Service
+@TargetDataSource("${pay.db}")
 public class MatrixRefundServiceImpl implements MatrixRefundService {
 
     @Override

@@ -1,5 +1,6 @@
 package matrix.module.pay.service.impl;
 
+import matrix.module.jdbc.annotation.TargetDataSource;
 import matrix.module.pay.builder.response.QueryPayResponse;
 import matrix.module.pay.entity.MatrixPayEntity;
 import matrix.module.pay.service.MatrixPayService;
@@ -12,6 +13,7 @@ import java.util.List;
  * @date 2020/2/20
  */
 @Service
+@TargetDataSource("${pay.db}")
 public class MatrixPayServiceImpl implements MatrixPayService {
 
     @Override

@@ -4,13 +4,18 @@ import matrix.module.common.helper.Assert;
 import matrix.module.jdbc.config.DatabaseAutoConfiguration;
 import matrix.module.pay.constants.PayConstant;
 import matrix.module.pay.constants.WepayConstant;
+import matrix.module.pay.controller.ForwardPayController;
+import matrix.module.pay.controller.PayNotifyController;
 import matrix.module.pay.properties.PayProperties;
 import matrix.module.pay.sdk.WepayClient;
+import matrix.module.pay.service.impl.MatrixPayServiceImpl;
+import matrix.module.pay.service.impl.MatrixRefundServiceImpl;
 import matrix.module.pay.templates.WepayTemplate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +28,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableConfigurationProperties(PayProperties.class)
 @AutoConfigureAfter(DatabaseAutoConfiguration.class)
+@ImportAutoConfiguration({MatrixPayServiceImpl.class,
+        MatrixRefundServiceImpl.class,
+        ForwardPayController.class,
+        PayNotifyController.class})
 @ConditionalOnProperty(value = "{pay.wepay.enabled}")
 public class WepayConfiguration {
 
