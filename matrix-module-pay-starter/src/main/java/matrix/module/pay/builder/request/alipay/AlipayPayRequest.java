@@ -1,8 +1,8 @@
 package matrix.module.pay.builder.request.alipay;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.vwkit.springboot.utils.JacksonUtil;
-import matrix.modules.pay.builder.BasePayRequest;
+import matrix.module.based.utils.JacksonUtil;
+import matrix.module.pay.builder.BasePayRequest;
 
 /**
  * @author wangcheng

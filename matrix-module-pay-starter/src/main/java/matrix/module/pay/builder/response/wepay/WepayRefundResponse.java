@@ -2,7 +2,7 @@ package matrix.module.pay.builder.response.wepay;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.vwkit.springboot.utils.JacksonUtil;
+import matrix.module.based.utils.JacksonUtil;
 
 import java.util.ArrayList;
 import java.util.List;

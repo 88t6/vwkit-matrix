@@ -1,7 +1,7 @@
 package matrix.module.pay.builder.request.alipay;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import matrix.modules.pay.builder.BasePayRequest;
+import matrix.module.pay.builder.BasePayRequest;
 
 /**
  * @author wangcheng
