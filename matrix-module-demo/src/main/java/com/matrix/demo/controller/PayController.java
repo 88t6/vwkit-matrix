@@ -54,10 +54,13 @@ public class PayController {
 //                .setTitle("测试商品")
 //                .setPrice(new BigDecimal(0.01));
 //        return Result.success(wepayTemplate.doPay(PayMode.PC, payVo));
-        RefundVo refundVo = new RefundVo()
-                .setOutTradeNo("4200000516202002279536022350")
-                .setRefundAmount(new BigDecimal(0.01));
-        wepayTemplate.doRefund(refundVo);
+//        return Result.success(wepayTemplate.doQueryPayByPayId("6742045E0C12823575037C67FFBC8E17"));
+//        RefundVo refundVo = new RefundVo()
+//                .setPayId("6742045E0C12823575037C67FFBC8E17")
+//                .setRefundAmount(new BigDecimal(0.01));
+//        wepayTemplate.doRefund(refundVo);
+//        return Result.success(null);
+        wepayTemplate.doQueryRefundByPayId("6742045E0C12823575037C67FFBC8E17");
         return Result.success(null);
     }
 
