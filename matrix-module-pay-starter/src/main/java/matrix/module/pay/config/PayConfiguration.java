@@ -15,6 +15,7 @@ import matrix.module.pay.constants.PayConstant;
 import matrix.module.pay.constants.WepayConstant;
 import matrix.module.pay.controller.ForwardPayController;
 import matrix.module.pay.controller.PayNotifyController;
+import matrix.module.pay.controller.WepayController;
 import matrix.module.pay.properties.PayProperties;
 import matrix.module.pay.service.impl.MatrixPayServiceImpl;
 import matrix.module.pay.service.impl.MatrixRefundServiceImpl;
@@ -140,6 +141,7 @@ public class PayConfiguration {
 
     @Configuration
     @ConditionalOnClass(WxPayService.class)
+    @ImportAutoConfiguration(WepayController.class)
     @EnableConfigurationProperties(PayProperties.class)
     @AutoConfigureAfter(DatabaseAutoConfiguration.class)
     @ConditionalOnProperty(value = {"pay.wepay.enabled"})
@@ -191,6 +193,7 @@ public class PayConfiguration {
         }
 
         @Bean
+        @Order(4)
         public WepayTemplate wepayTemplate() {
             Assert.isNotNull(payProperties.getNotifyDomain(), "pay.notify-domain");
             logger.info("Wepay Notify Pay Url:" + payProperties.getNotifyDomain() + PayConstant.NOTIFY_PAY_URL_PREFIX + WepayConstant.NOTIFY_URI);
