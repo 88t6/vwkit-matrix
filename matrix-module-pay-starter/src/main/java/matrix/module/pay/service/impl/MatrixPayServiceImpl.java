@@ -59,7 +59,7 @@ public class MatrixPayServiceImpl implements MatrixPayService {
             payIdsPlaceholder.add("?");
             QueryPayResponse queryPayResponse = queryPayResponses.get(i);
             payIds[i] = queryPayResponse.getPayId();
-            Object[] param = new Object[]{queryPayResponse.getPayId(),
+            Object[] param = new Object[]{queryPayResponse.getOutTradeNo(),
                     BigDecimal.valueOf(Double.valueOf(queryPayResponse.getActualPrice())).setScale(2, BigDecimal.ROUND_HALF_UP),
                     PayConstant.PAYED, queryPayResponse.getPayId(), PayConstant.NOPAY};
             params.add(param);
@@ -80,6 +80,12 @@ public class MatrixPayServiceImpl implements MatrixPayService {
     public List<MatrixPayEntity> getPayEntityByPayed(String orderId, String payChannel) {
         return jdbcTemplate.query(MATRIX_PAY_SELECT + "WHERE ORDER_ID = ? AND PAY_CHANNEL = ? AND STATUS = ?",
                 new Object[]{orderId, payChannel, PayConstant.PAYED}, new BeanPropertyRowMapper<>(MatrixPayEntity.class));
+    }
+
+    @Override
+    public List<MatrixPayEntity> getPayEntityByPayedForOutTradeNo(String outTradeNo, String payChannel) {
+        return jdbcTemplate.query(MATRIX_PAY_SELECT + "WHERE OUT_TRADE_NO = ? AND PAY_CHANNEL = ? AND STATUS = ?",
+                new Object[]{outTradeNo, payChannel, PayConstant.PAYED}, new BeanPropertyRowMapper<>(MatrixPayEntity.class));
     }
 
     @Override

@@ -20,6 +20,7 @@ public class PayVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    //默认随机
     private String payId = MD5.get32(RandomUtil.getUUID());
 
     private String orderId;
@@ -30,8 +31,10 @@ public class PayVo implements Serializable {
 
     private String desc;
 
+    //可选
     private Long qrCodeWidth;
 
+    //可选
     private String openId;
 
     public void validate(PayMode payMode) {

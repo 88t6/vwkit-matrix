@@ -45,6 +45,15 @@ public interface MatrixPayService {
     List<MatrixPayEntity> getPayEntityByPayed(String orderId, String payChannel);
 
     /**
+     * 查询已支付的实体
+     *
+     * @param outTradeNo
+     * @param payChannel
+     * @return
+     */
+    List<MatrixPayEntity> getPayEntityByPayedForOutTradeNo(String outTradeNo, String payChannel);
+
+    /**
      * 查询未支付的实体
      *
      * @param orderId

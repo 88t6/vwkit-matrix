@@ -58,20 +58,20 @@ public class MatrixRefundServiceImpl implements MatrixRefundService {
         params.add(PayConstant.REFUNDED);
         params.addAll(refundIds);
         params.add(PayConstant.REFUNDING);
-        jdbcTemplate.update("UPDATE matrix_refund SET STATUS = ?, UPDATE_TIME = NOW() WHERE REFUND_ID IN (" + String.join(",", refundIdsPlaceholder) + ") AND STATUS = ?", params);
+        jdbcTemplate.update("UPDATE matrix_refund SET STATUS = ?, UPDATE_TIME = NOW() WHERE REFUND_ID IN (" + String.join(",", refundIdsPlaceholder) + ") AND STATUS = ?", params.toArray());
         String querySql = MATRIX_REFUND_SELECT + " WHERE REFUND_ID IN (" + String.join(",", refundIdsPlaceholder) + ")";
         return jdbcTemplate.query(querySql, refundIds.toArray(), new BeanPropertyRowMapper<>(MatrixRefundEntity.class));
     }
 
     @Override
     public List<MatrixRefundEntity> getRefundEntityByNoRefund(String payId) {
-        String querySql = MATRIX_REFUND_SELECT + " WHERE REFUND_ID = ? AND STATUS != ?";
+        String querySql = MATRIX_REFUND_SELECT + " WHERE PAY_ID = ? AND STATUS != ?";
         return jdbcTemplate.query(querySql, new Object[]{payId, PayConstant.REFUNDED}, new BeanPropertyRowMapper<>(MatrixRefundEntity.class));
     }
 
     @Override
     public List<MatrixRefundEntity> getRefundEntityByRefunded(String payId) {
-        String querySql = MATRIX_REFUND_SELECT + " WHERE REFUND_ID = ? AND STATUS = ?";
+        String querySql = MATRIX_REFUND_SELECT + " WHERE PAY_ID = ? AND STATUS = ?";
         return jdbcTemplate.query(querySql, new Object[]{payId, PayConstant.REFUNDED}, new BeanPropertyRowMapper<>(MatrixRefundEntity.class));
     }
 }

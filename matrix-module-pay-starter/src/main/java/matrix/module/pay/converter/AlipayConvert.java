@@ -60,7 +60,7 @@ public class AlipayConvert {
                 .setOutRequestNo(refundVo.getRefundId())
                 .setOutTradeNo(refundVo.getPayId())
                 .setTradeNo(refundVo.getOutTradeNo())
-                .setRefundAmount(refundVo.getRefundAmount().toPlainString());
+                .setRefundAmount(refundVo.getRefundAmount().setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString());
         AlipayTradeRefundRequest alipayRequest = new AlipayTradeRefundRequest();
         alipayRequest.setBizContent(JacksonUtil.toJsonString(refundRequest));
         return alipayRequest;

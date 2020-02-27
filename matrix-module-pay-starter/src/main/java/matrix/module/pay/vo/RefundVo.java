@@ -20,10 +20,13 @@ public class RefundVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    //默认为随机值
     private String refundId = MD5.get32(RandomUtil.getUUID());
 
+    //二选一
     private String payId;
 
+    //二选一
     private String outTradeNo;
 
     private BigDecimal refundAmount;

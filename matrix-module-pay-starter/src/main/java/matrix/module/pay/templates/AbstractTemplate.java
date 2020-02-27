@@ -1,5 +1,6 @@
 package matrix.module.pay.templates;
 
+import matrix.module.common.exception.ServiceException;
 import matrix.module.common.helper.Assert;
 import matrix.module.pay.builder.request.QueryRefundRequest;
 import matrix.module.pay.builder.response.QueryPayResponse;
@@ -120,7 +121,17 @@ public abstract class AbstractTemplate {
      */
     public void doRefund(RefundVo refundVo) {
         refundVo.validate();
-        MatrixPayEntity payEntity = payService.getPayEntityByPayId(refundVo.getPayId());
+        MatrixPayEntity payEntity = null;
+        if (refundVo.getPayId() != null) {
+            payEntity = payService.getPayEntityByPayId(refundVo.getPayId());
+        } else {
+            List<MatrixPayEntity> matrixPayEntities = payService.getPayEntityByPayedForOutTradeNo(refundVo.getOutTradeNo(), this.getClass().getSimpleName());
+            if (CollectionUtils.isEmpty(matrixPayEntities) || matrixPayEntities.size() > 1) {
+                throw new ServiceException("支付存在多条，或不存在支付订单");
+            }
+            payEntity = matrixPayEntities.get(0);
+            refundVo.setPayId(payEntity.getPayId());
+        }
         Assert.isNotNull(payEntity, "payEntity");
         Integer refundStatus = this.invokeRefund(refundVo);
         MatrixRefundEntity refundEntity = RefundEntityConvert.convert(refundVo, payEntity.getOrderId(), refundStatus);
