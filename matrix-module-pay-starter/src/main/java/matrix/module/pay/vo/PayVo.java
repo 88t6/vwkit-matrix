@@ -31,8 +31,8 @@ public class PayVo implements Serializable {
 
     private String desc;
 
-    //可选
-    private Long qrCodeWidth;
+    //可选(默认300)
+    private Long qrCodeWidth = 300L;
 
     //可选
     private String openId;

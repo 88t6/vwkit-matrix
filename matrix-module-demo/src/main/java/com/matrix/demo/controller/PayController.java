@@ -26,20 +26,20 @@ public class PayController {
 
     @GetMapping("/alipay")
     public Result alipay() {
-//        PayVo payVo = new PayVo()
-//                .setOrderId(RandomUtil.getUUID())
-//                .setDesc("测试商品")
-//                .setTitle("测试商品")
-//                .setPrice(new BigDecimal(0.01));
-//        return Result.success(alipayTemplate.doPay(PayMode.PC, payVo));
+        PayVo payVo = new PayVo()
+                .setOrderId(RandomUtil.getUUID())
+                .setDesc("测试商品")
+                .setTitle("测试商品")
+                .setPrice(new BigDecimal(0.01));
+        return Result.success(alipayTemplate.doPay(PayMode.QrCode, payVo));
 //        return Result.success(alipayTemplate.doQueryPayByOrderId("6ea2c6ad-93fe-46fc-bc3f-816f3efd8635"));
 //        RefundVo refundVo = new RefundVo()
-//                .setOutTradeNo("2020022722001428281000068061")
+//                .setOutTradeNo("2020022722001470471002638070")
 //                .setRefundAmount(new BigDecimal(0.01));
 //        alipayTemplate.doRefund(refundVo);
 //        return Result.success(null);
-        alipayTemplate.doQueryRefundByPayId("6D016E32E59E15702E250E79A4781564");
-        return Result.success(null);
+//        alipayTemplate.doQueryRefundByPayId("6D016E32E59E15702E250E79A4781564");
+//        return Result.success(null);
     }
 
 }

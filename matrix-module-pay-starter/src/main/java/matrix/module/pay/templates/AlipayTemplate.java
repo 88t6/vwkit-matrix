@@ -55,7 +55,12 @@ public class AlipayTemplate extends AbstractTemplate {
         try {
             AlipayRequest<? extends AlipayResponse> alipayRequest = AlipayConvert.convertPayRequest(payMode, payVo,
                     payProperties.getNotifyDomain() + PayConstant.NOTIFY_PAY_URL_PREFIX + AlipayConstant.NOTIFY_URI, payProperties.getAlipay().getReturnUrl());
-            AlipayResponse resp = alipayClient.pageExecute(alipayRequest);
+            AlipayResponse resp;
+            if (PayMode.APP.getCode().equals(payMode.getCode())) {
+                resp = alipayClient.sdkExecute(alipayRequest);
+            } else {
+                resp = alipayClient.pageExecute(alipayRequest);
+            }
             if (resp.isSuccess()) {
                 return resp.getBody();
             }
