@@ -36,7 +36,8 @@ public class ForwardPayController {
             return HtmlConvert.bodyConvert(payEntity.getBody());
         } else if (WepayTemplate.class.getSimpleName().equals(payChannel)) {
             WepayPayBody body = JacksonUtil.parseJson(payEntity.getBody(), WepayPayBody.class);
-            if (PayMode.QrCode.getCode().equals(body.getPayModeCode())) {
+            if (PayMode.PC.getCode().equals(body.getPayModeCode())
+                    || PayMode.QrCode.getCode().equals(body.getPayModeCode())) {
                 String image = QrCodeHelper.getInstance(body.getQrCodeWidth().intValue(), body.getQrCodeWidth().intValue(), null)
                         .getImageBase64(body.getUrl());
                 return HtmlConvert.imageConvert(image);

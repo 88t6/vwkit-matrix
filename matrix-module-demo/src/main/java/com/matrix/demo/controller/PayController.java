@@ -4,6 +4,7 @@ import matrix.module.common.bean.Result;
 import matrix.module.common.utils.RandomUtil;
 import matrix.module.pay.enums.PayMode;
 import matrix.module.pay.templates.AlipayTemplate;
+import matrix.module.pay.templates.WepayTemplate;
 import matrix.module.pay.vo.PayVo;
 import matrix.module.pay.vo.RefundVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class PayController {
     @Autowired
     private AlipayTemplate alipayTemplate;
 
+    @Autowired
+    private WepayTemplate wepayTemplate;
+
     @GetMapping("/alipay")
     public Result alipay() {
         PayVo payVo = new PayVo()
@@ -40,6 +44,21 @@ public class PayController {
 //        return Result.success(null);
 //        alipayTemplate.doQueryRefundByPayId("6D016E32E59E15702E250E79A4781564");
 //        return Result.success(null);
+    }
+
+    @GetMapping("/wepay")
+    public Result wepay() {
+//        PayVo payVo = new PayVo()
+//                .setOrderId(RandomUtil.getUUID())
+//                .setDesc("测试商品")
+//                .setTitle("测试商品")
+//                .setPrice(new BigDecimal(0.01));
+//        return Result.success(wepayTemplate.doPay(PayMode.PC, payVo));
+        RefundVo refundVo = new RefundVo()
+                .setOutTradeNo("4200000505202002275775555461")
+                .setRefundAmount(new BigDecimal(0.01));
+        wepayTemplate.doRefund(refundVo);
+        return Result.success(null);
     }
 
 }

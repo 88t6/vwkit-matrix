@@ -24,10 +24,10 @@ public class PayEntityConvert {
                 .setPrice(payVo.getPrice())
                 .setBody(body);
         if (WepayTemplate.class.getSimpleName().equals(payChannel)) {
-            //app和wejsapi支付方式直接返回PrepayId
+            //app和wejsapi支付方式直接返回请求参数
             if (PayMode.APP.getCode().equals(payModeCode) || PayMode.WEJSAPI.getCode().equals(payModeCode)) {
                 WepayPayBody payBody = JacksonUtil.parseJson(body, WepayPayBody.class);
-                payEntity.setUrl(payBody.getPrepayId());
+                payEntity.setUrl(payBody.getJsApiParams());
             }
         }
         //如果url为空，则为跳转路径

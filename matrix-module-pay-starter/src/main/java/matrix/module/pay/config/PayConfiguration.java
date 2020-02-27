@@ -2,6 +2,9 @@ package matrix.module.pay.config;
 
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
+import com.github.binarywang.wxpay.config.WxPayConfig;
+import com.github.binarywang.wxpay.service.WxPayService;
+import com.github.binarywang.wxpay.service.impl.WxPayServiceImpl;
 import matrix.module.common.constant.BaseCodeConstant;
 import matrix.module.common.exception.ServiceException;
 import matrix.module.common.helper.Assert;
@@ -13,20 +16,25 @@ import matrix.module.pay.constants.WepayConstant;
 import matrix.module.pay.controller.ForwardPayController;
 import matrix.module.pay.controller.PayNotifyController;
 import matrix.module.pay.properties.PayProperties;
-import matrix.module.pay.sdk.WepayClient;
 import matrix.module.pay.service.impl.MatrixPayServiceImpl;
 import matrix.module.pay.service.impl.MatrixRefundServiceImpl;
 import matrix.module.pay.templates.AlipayTemplate;
 import matrix.module.pay.templates.WepayTemplate;
+import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.api.impl.WxMpServiceImpl;
+import me.chanjar.weixin.mp.config.impl.WxMpDefaultConfigImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -131,6 +139,7 @@ public class PayConfiguration {
     }
 
     @Configuration
+    @ConditionalOnClass(WxPayService.class)
     @EnableConfigurationProperties(PayProperties.class)
     @AutoConfigureAfter(DatabaseAutoConfiguration.class)
     @ConditionalOnProperty(value = {"pay.wepay.enabled"})
@@ -142,18 +151,51 @@ public class PayConfiguration {
         private PayProperties payProperties;
 
         @Bean
-        public WepayTemplate wepayTemplate() {
-            Assert.isNotNull(payProperties.getNotifyDomain(), "pay.notify-domain");
+        @Order(1)
+        public WxPayConfig wxPayConfig() {
+            WxPayConfig payConfig = new WxPayConfig();
             PayProperties.WepayProperties wepay = payProperties.getWepay();
             Assert.isNotNull(wepay.getAppId(), "pay.wepay.app-id");
             Assert.isNotNull(wepay.getMchId(), "pay.wepay.mch-id");
-            Assert.isNotNull(wepay.getKey(), "pay.wepay.key");
-            Assert.isNotNull(wepay.getCertPassword(), "pay.wepay.cert-password");
-            Assert.isNotNull(wepay.getCertPath(), "pay.wepay.cert-path");
+            Assert.isNotNull(wepay.getMchKey(), "pay.wepay.mch-key");
+            Assert.isNotNull(wepay.getKeyPath(), "pay.wepay.key-path");
+            Assert.isNotNull(wepay.getSecret(), "pay.wepay.secret");
+            payConfig.setAppId(StringUtils.trimToNull(wepay.getAppId()));
+            payConfig.setMchId(StringUtils.trimToNull(wepay.getMchId()));
+            payConfig.setMchKey(StringUtils.trimToNull(wepay.getMchKey()));
+            payConfig.setSubAppId(StringUtils.trimToNull(wepay.getSubAppId()));
+            payConfig.setSubMchId(StringUtils.trimToNull(wepay.getSubMchId()));
+            payConfig.setKeyPath(StringUtils.trimToNull(wepay.getKeyPath()));
+            // 可以指定是否使用沙箱环境
+            payConfig.setUseSandboxEnv(false);
+            return payConfig;
+        }
+
+        @Bean
+        @Order(2)
+        public WxPayService wxPayService(WxPayConfig wxPayConfig) {
+            WxPayService wxPayService = new WxPayServiceImpl();
+            wxPayService.setConfig(wxPayConfig);
+            return wxPayService;
+        }
+
+        @Bean
+        @Order(3)
+        public WxMpService wxMpService() {
+            WxMpDefaultConfigImpl wpConfig = new WxMpDefaultConfigImpl();
+            wpConfig.setAppId(StringUtils.trimToNull(payProperties.getWepay().getAppId()));
+            wpConfig.setSecret(StringUtils.trimToNull(payProperties.getWepay().getSecret()));
+            WxMpService wxMpService = new WxMpServiceImpl();
+            wxMpService.setWxMpConfigStorage(wpConfig);
+            return wxMpService;
+        }
+
+        @Bean
+        public WepayTemplate wepayTemplate() {
+            Assert.isNotNull(payProperties.getNotifyDomain(), "pay.notify-domain");
             logger.info("Wepay Notify Pay Url:" + payProperties.getNotifyDomain() + PayConstant.NOTIFY_PAY_URL_PREFIX + WepayConstant.NOTIFY_URI);
             logger.info("Wepay Notify Refund Url:" + payProperties.getNotifyDomain() + PayConstant.NOTIFY_RETURN_URL_PREFIX + WepayConstant.NOTIFY_URI);
-            WepayClient wepayClient = new WepayClient(wepay.getAppId(), wepay.getMchId(), wepay.getKey(), wepay.getCertPassword(), wepay.getCertPath());
-            return new WepayTemplate(wepayClient);
+            return new WepayTemplate();
         }
 
     }

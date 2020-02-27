@@ -8,7 +8,7 @@ import java.math.BigDecimal;
  */
 public class BigDecimalUtil {
 
-    public static long yuanToCents(BigDecimal price) {
+    public static Long yuanToCents(BigDecimal price) {
         return price.multiply(BigDecimal.valueOf(100L)).longValue();
     }
 
