@@ -55,7 +55,7 @@ public class PayController {
 //                .setPrice(new BigDecimal(0.01));
 //        return Result.success(wepayTemplate.doPay(PayMode.PC, payVo));
         RefundVo refundVo = new RefundVo()
-                .setOutTradeNo("4200000505202002275775555461")
+                .setOutTradeNo("4200000516202002279536022350")
                 .setRefundAmount(new BigDecimal(0.01));
         wepayTemplate.doRefund(refundVo);
         return Result.success(null);

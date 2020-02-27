@@ -99,6 +99,8 @@ pay:
     enabled: false
     app-id:
     mch-id:
-    key:
-    cert-password:
-    cert-path:
+    mch-key:
+    key-path:
+    secret:
+    sub-app-id:
+    sub-mch-id:

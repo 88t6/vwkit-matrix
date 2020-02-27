@@ -13,6 +13,6 @@ public class BigDecimalUtil {
     }
 
     public static BigDecimal centsToYuan(long price) {
-        return BigDecimal.valueOf(price).divide(BigDecimal.valueOf(100), BigDecimal.ROUND_HALF_UP);
+        return BigDecimal.valueOf(price).setScale(2, BigDecimal.ROUND_HALF_UP).divide(BigDecimal.valueOf(100), BigDecimal.ROUND_HALF_UP);
     }
 }

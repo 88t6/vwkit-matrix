@@ -168,7 +168,7 @@ public class WepayTemplate extends AbstractTemplate {
         try {
             String xml = StreamUtil.streamToString(request.getInputStream());
             WxPayRefundNotifyResult result = wxPayService.parseRefundNotifyResult(xml);
-            if (WepayConstant.RETURN_CODE.equals(result.getResultCode())) {
+            if (WepayConstant.RETURN_CODE.equals(result.getReturnCode())) {
                 WxPayRefundNotifyResult.ReqInfo reqInfo = result.getReqInfo();
                 if (WepayConstant.RETURN_CODE.equals(reqInfo.getRefundStatus())
                         && !callbackRefundSuccess(new QueryRefundResponse(reqInfo.getOutTradeNo(), reqInfo.getOutRefundNo(),
