@@ -9,6 +9,8 @@ import matrix.module.pay.templates.WepayTemplate;
 import matrix.module.pay.vo.PayVo;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
+
 /**
  * @author: wangcheng
  * @date 2019/4/26

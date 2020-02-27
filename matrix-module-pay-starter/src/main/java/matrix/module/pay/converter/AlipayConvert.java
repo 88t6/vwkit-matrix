@@ -15,6 +15,8 @@ import matrix.module.pay.enums.PayMode;
 import matrix.module.pay.vo.PayVo;
 import matrix.module.pay.vo.RefundVo;
 
+import java.math.BigDecimal;
+
 /**
  * @author wangcheng
  * @date 2019/4/26
@@ -24,7 +26,7 @@ public class AlipayConvert {
     public static final AlipayRequest<? extends AlipayResponse> convertPayRequest(PayMode payMode, PayVo payVo, String notifyUrl, String returnUrl) {
         AlipayPayRequest payRequest = new AlipayPayRequest()
                 .setOutTradeNo(payVo.getPayId())
-                .setTotalAmount(payVo.getPrice().toPlainString())
+                .setTotalAmount(payVo.getPrice().setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString())
                 .setSubject(payVo.getTitle())
                 .setBody(payVo.getDesc());
         AlipayRequest<? extends AlipayResponse> alipayRequest = null;

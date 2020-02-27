@@ -84,6 +84,7 @@ redis:
     max-redirects: 0
 
 pay:
+  enabled: false
   notify-domain: http://vwkit.com
   db: master
   alipay:

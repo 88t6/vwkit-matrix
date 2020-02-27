@@ -16,7 +16,7 @@ public class Assert {
     public static void isNotNull(Object content, String varName) {
         boolean isTrue = content == null || (content.getClass() == String.class && "".equals(content));
         if (isTrue) {
-            throw new IllegalArgumentException(varName + "不允许为空!");
+            throw new IllegalArgumentException(varName + "  not be null!");
         }
     }
 

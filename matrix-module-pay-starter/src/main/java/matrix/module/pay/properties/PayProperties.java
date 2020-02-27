@@ -13,6 +13,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Accessors(chain = true)
 public class PayProperties {
 
+    private boolean enabled = false;
+
     private String notifyDomain;
 
     private String db;
