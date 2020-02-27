@@ -6,7 +6,6 @@ import matrix.module.pay.enums.PayMode;
 import matrix.module.pay.templates.AlipayTemplate;
 import matrix.module.pay.templates.WepayTemplate;
 import matrix.module.pay.vo.PayVo;
-import matrix.module.pay.vo.RefundVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,20 +47,20 @@ public class PayController {
 
     @GetMapping("/wepay")
     public Result wepay() {
-//        PayVo payVo = new PayVo()
-//                .setOrderId(RandomUtil.getUUID())
-//                .setDesc("测试商品")
-//                .setTitle("测试商品")
-//                .setPrice(new BigDecimal(0.01));
-//        return Result.success(wepayTemplate.doPay(PayMode.PC, payVo));
+        PayVo payVo = new PayVo()
+                .setOrderId(RandomUtil.getUUID())
+                .setDesc("测试商品")
+                .setTitle("测试商品")
+                .setPrice(new BigDecimal(0.01));
+        return Result.success(wepayTemplate.doPay(PayMode.WEJSAPI, payVo));
 //        return Result.success(wepayTemplate.doQueryPayByPayId("6742045E0C12823575037C67FFBC8E17"));
 //        RefundVo refundVo = new RefundVo()
 //                .setPayId("6742045E0C12823575037C67FFBC8E17")
 //                .setRefundAmount(new BigDecimal(0.01));
 //        wepayTemplate.doRefund(refundVo);
 //        return Result.success(null);
-        wepayTemplate.doQueryRefundByPayId("6742045E0C12823575037C67FFBC8E17");
-        return Result.success(null);
+//        wepayTemplate.doQueryRefundByPayId("6742045E0C12823575037C67FFBC8E17");
+//        return Result.success(null);
     }
 
 }
