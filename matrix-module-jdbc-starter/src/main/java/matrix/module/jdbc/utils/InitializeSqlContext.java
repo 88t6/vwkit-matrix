@@ -97,9 +97,13 @@ public class InitializeSqlContext {
                 });
                 if (!CollectionUtils.isEmpty(fileList)) {
                     fileList.sort((o1, o2) -> {
-                        String fileName1 = o1.getName().split(initSql.getFileNameSeparator())[0];
-                        String fileName2 = o2.getName().split(initSql.getFileNameSeparator())[0];
-                        return fileName1.compareTo(fileName2);
+                        String fileName1 = o1.getName().split(initSql.getFileNameSeparator())[0].split(initSql.getFileNamePrefix())[1];
+                        String fileName2 = o2.getName().split(initSql.getFileNameSeparator())[0].split(initSql.getFileNamePrefix())[1];
+                        try {
+                            return Long.valueOf(fileName1).compareTo(Long.valueOf(fileName2));
+                        } catch (Exception e) {
+                            throw new ServiceException("format error:" + initSql.getFileNamePrefix() + "%Number%" + initSql.getFileNameSeparator() + "...");
+                        }
                     });
                 }
             }
