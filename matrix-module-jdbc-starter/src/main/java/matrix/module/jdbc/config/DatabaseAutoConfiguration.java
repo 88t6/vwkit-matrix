@@ -108,7 +108,12 @@ public class DatabaseAutoConfiguration {
         }
         Map<String, JdbcProperties.JdbcParam> dbList = jdbcProperties.getDbList();
         if (!CollectionUtils.isEmpty(dbList)) {
-            dbList.keySet().forEach(key -> targetDataSources.put(key + "DB", beanFactory.getBean(key + "DB", DataSource.class)));
+            dbList.keySet().forEach(key -> {
+                JdbcProperties.JdbcParam jdbcParam = dbList.get(key);
+                if (jdbcParam.isEnabled()) {
+                    targetDataSources.put(key + "DB", beanFactory.getBean(key + "DB", DataSource.class));
+                }
+            });
         }
         dynamicDataSource.setTargetDataSources(targetDataSources);
         return dynamicDataSource;
