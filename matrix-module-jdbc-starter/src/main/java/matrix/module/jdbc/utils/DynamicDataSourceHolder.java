@@ -10,9 +10,6 @@ import org.apache.logging.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.env.Environment;
-import org.springframework.transaction.TransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import java.lang.reflect.Method;
 
@@ -67,29 +64,12 @@ public class DynamicDataSourceHolder {
             }
             DynamicDataSourceHolder.setDataSource(dbName + "DB");
         }
-        //是否设置成功
-        boolean isSetSuccess = true;
-        //设置数据源优先(设置失败代表事务优先需自行执行事务)
-        if (!TransactionalHolder.setPriority(TransactionalHolder.DATASOURCE_FLAG) && TransactionalHolder.getTransactionTemplate() != null) {
-            TransactionTemplate transactionTemplate = TransactionalHolder.getTransactionTemplate();
-            TransactionManager transactionManager = transactionTemplate.getTransactionManager();
-            if (transactionManager != null) {
-                TransactionStatus transactionStatus = transactionTemplate.getTransactionManager().getTransaction(transactionTemplate);
-                TransactionalHolder.setTransactionStatus(transactionStatus);
-            } else {
-                logger.error("no transaction manager");
-            }
-            isSetSuccess = false;
-        }
         try {
             return joinPoint.proceed(joinPoint.getArgs());
         } catch (Exception e) {
             throw new ServiceException(e);
         } finally {
-            if (isSetSuccess) {
-                DynamicDataSourceHolder.clearDataSource();
-                TransactionalHolder.clearTransactionParams();
-            }
+            DynamicDataSourceHolder.clearDataSource();
         }
     }
 }
