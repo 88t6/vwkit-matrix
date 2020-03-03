@@ -27,9 +27,9 @@
         <compiler.version>3.3</compiler.version>
         <compiler.jdk>1.8</compiler.jdk>
         <junit.version>4.12</junit.version>
-        <public.url>http://nexus.88t6.com/repository/maven-public/</public.url>
-        <releases.url>http://nexus.88t6.com/repository/maven-releases/</releases.url>
-        <snapshots.url>http://nexus.88t6.com/repository/maven-snapshots/</snapshots.url>
+        <public.url>http://repo.88t6.com/repository/maven-public/</public.url>
+        <releases.url>http://repo.88t6.com/repository/vwkit-releases/</releases.url>
+        <snapshots.url>http://repo.88t6.com/repository/vwkit-snapshots/</snapshots.url>
     </properties>
 
     <dependencies>
