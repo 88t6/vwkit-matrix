@@ -23,7 +23,12 @@ public class WebUtil implements ApplicationContextAware {
     /**
      * 用户唯一标识Key
      */
-    public static final String LOGINKEY = "UserTokenID";
+    private static final String LOGIN_KEY = "UserTokenID";
+
+    private static final ThreadLocal<HttpServletRequest> REQUEST_THREAD_LOCAL = new ThreadLocal<>();
+
+    private static final ThreadLocal<HttpServletResponse> RESPONSE_THREAD_LOCAL = new ThreadLocal<>();
+
     private static ApplicationContext applicationContext;
 
     /**
@@ -129,14 +134,50 @@ public class WebUtil implements ApplicationContextAware {
      * @return
      */
     public static String getUserTokenId(HttpServletRequest request, HttpServletResponse response) {
-        String tokenId = CookieUtil.getCookieValue(request, WebUtil.LOGINKEY);
+        String tokenId = CookieUtil.getCookieValue(request, WebUtil.LOGIN_KEY);
         if (tokenId != null && !"".equals(tokenId)) {
             return tokenId;
         } else {
             tokenId = RandomUtil.getUUID();
-            if (CookieUtil.addSimpleHttpOnlyCookie(response, WebUtil.LOGINKEY, tokenId))
+            if (CookieUtil.addSimpleHttpOnlyCookie(response, WebUtil.LOGIN_KEY, tokenId))
                 return tokenId;
         }
         return null;
+    }
+
+    /**
+     * 获取request
+     *
+     * @return
+     */
+    public static HttpServletRequest getRequest() {
+        return REQUEST_THREAD_LOCAL.get();
+    }
+
+    /**
+     * 放入request
+     *
+     * @param request
+     */
+    public static void setRequest(HttpServletRequest request) {
+        REQUEST_THREAD_LOCAL.set(request);
+    }
+
+    /**
+     * 获取response
+     *
+     * @return
+     */
+    public static HttpServletResponse getResponse() {
+        return RESPONSE_THREAD_LOCAL.get();
+    }
+
+    /**
+     * 放入response
+     *
+     * @param response
+     */
+    public static void setResponse(HttpServletResponse response) {
+        RESPONSE_THREAD_LOCAL.set(response);
     }
 }

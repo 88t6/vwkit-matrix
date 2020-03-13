@@ -2,4 +2,5 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   matrix.module.based.config.ExceptionAspectAutoConfiguration,\
   matrix.module.based.config.WebMvcAutoConfiguration,\
   matrix.module.based.config.GlobalExceptionAutoConfiguration,\
+  matrix.module.based.config.FilterAutoConfiguration,\
   matrix.module.based.utils.WebUtil

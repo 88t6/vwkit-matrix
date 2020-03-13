@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.vwkit</groupId>
         <artifactId>vwkit-matrix</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>matrix-module-common</artifactId>
     <name>matrix-module-common</name>
