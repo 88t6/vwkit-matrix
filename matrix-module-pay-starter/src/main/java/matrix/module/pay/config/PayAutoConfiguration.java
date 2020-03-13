@@ -53,7 +53,7 @@ import javax.annotation.PostConstruct;
         ForwardPayController.class,
         PayNotifyController.class})
 @ConditionalOnProperty(value = {"pay.enabled"})
-public class PayConfiguration {
+public class PayAutoConfiguration {
 
     @Autowired
     private PayProperties payProperties;

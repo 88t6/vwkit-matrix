@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  matrix.module.pay.config.PayConfiguration
+  matrix.module.pay.config.PayAutoConfiguration
