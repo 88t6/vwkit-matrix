@@ -82,7 +82,7 @@ public class RedisAutoConfiguration {
         if (redisProperties.getStandalone().isEnabled()) {
             RedisProperties.Standalone standaloneConfig = redisProperties.getStandalone();
             String hostName = standaloneConfig.getHost();
-            Assert.isNotNull(hostName, "redis.hostname");
+            Assert.isNotNull(hostName, "redis.host");
             Integer database = standaloneConfig.getDatabase();
             Assert.isNotNull(database, "redis.database");
             String password = standaloneConfig.getPassword();
