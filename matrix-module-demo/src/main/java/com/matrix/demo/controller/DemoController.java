@@ -9,7 +9,6 @@ import com.matrix.demo.dao.mybatis.test2.service.TestService2;
 import matrix.module.common.bean.Result;
 import matrix.module.common.exception.ServiceException;
 import matrix.module.jdbc.annotation.TargetDataSource;
-import matrix.module.oplog.annotation.OpLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -88,7 +87,7 @@ public class DemoController {
     }
 
     @GetMapping("/oplog")
-    @OpLog
+    //@OpLog
     public Result oplog(@RequestParam("aaa") String aaa) {
         return Result.success(aaa);
     }

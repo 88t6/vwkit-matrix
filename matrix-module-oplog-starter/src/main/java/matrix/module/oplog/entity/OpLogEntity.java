@@ -26,6 +26,8 @@ public class OpLogEntity implements Serializable {
 
     private String response;
 
+    private String userId;
+
     @JsonSerialize(using = DateTimeSerializer.class)
     private Date createTime;
 

@@ -12,6 +12,9 @@ import matrix.module.oplog.entity.OpLogEntity;
 import matrix.module.oplog.properties.OpLogProperties;
 import matrix.module.oplog.service.MatrixOpLogService;
 import matrix.module.oplog.service.impl.MatrixOpLogServiceImpl;
+import matrix.module.oplog.utils.MatrixUserUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -25,6 +28,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import java.io.Serializable;
@@ -65,7 +69,8 @@ public class OpLogAutoConfiguration {
                     "  `NAME` VARCHAR(255) COMMENT '动作名称', " +
                     "  `URI` TEXT NOT NULL COMMENT 'URI', " +
                     "  `REQUEST` TEXT COMMENT '请求参数', " +
-                    "  `RESPONSE` TEXT NOT NULL COMMENT '返回参数', " +
+                    "  `RESPONSE` TEXT COMMENT '返回参数', " +
+                    "  `USER_ID` VARCHAR(255) COMMENT '用户ID', " +
                     "  `CREATE_TIME` DATETIME NOT NULL COMMENT '创建时间', " +
                     "  PRIMARY KEY (`ID`)" +
                     ")";
@@ -76,8 +81,10 @@ public class OpLogAutoConfiguration {
     @Configuration
     @ImportAutoConfiguration({MatrixOpLogServiceImpl.class})
     @Aspect
-    @Order(1)
+    @Order
     public static class OpLogAspectAutoConfiguration {
+
+        private static final Logger logger = LogManager.getLogger(OpLogAspectAutoConfiguration.class);
 
         @Autowired(required = false)
         private MatrixOpLogService matrixOpLogService;
@@ -94,10 +101,16 @@ public class OpLogAutoConfiguration {
                 if (opLog == null) {
                     opLog = joinPoint.getTarget().getClass().getInterfaces()[0].getAnnotation(OpLog.class);
                 }
+                // 获取userId
+                String userId = MatrixUserUtil.getUserId();
+                if (StringUtils.isEmpty(userId)) {
+                    logger.warn("userId not found please use matrix.module.oplog.utils.MatrixUserUtil.setUserId(String userId) to ThreadLocal");
+                }
                 OpLogEntity opLogEntity = new OpLogEntity()
                         .setId(RandomUtil.getUUID())
                         .setName(opLog.value())
                         .setUri(WebUtil.getRequest().getRequestURI())
+                        .setUserId(userId)
                         .setCreateTime(new Date());
                 //获取请求参数
                 Object[] args = joinPoint.getArgs();
@@ -108,7 +121,7 @@ public class OpLogAutoConfiguration {
                             request.add(arg instanceof String ? arg.toString() : JacksonUtil.toJsonString(arg));
                         }
                     }
-                    opLogEntity.setRequest(request.size() == 1 ? JacksonUtil.toJsonString(request.get(0)) : JacksonUtil.toJsonString(request));
+                    opLogEntity.setRequest(request.size() == 1 ? request.get(0) : JacksonUtil.toJsonString(request));
                 }
                 Object result = joinPoint.proceed(joinPoint.getArgs());
                 if (result instanceof Serializable) {

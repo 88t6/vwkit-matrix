@@ -13,5 +13,4 @@ import java.lang.annotation.*;
 public @interface OpLog {
 
     String value() default "NO ACTION NAME";
-
 }

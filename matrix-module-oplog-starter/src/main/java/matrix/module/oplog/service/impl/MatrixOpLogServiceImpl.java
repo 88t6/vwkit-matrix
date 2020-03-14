@@ -25,10 +25,10 @@ public class MatrixOpLogServiceImpl implements MatrixOpLogService {
     @Override
     @Async
     public void saveOpLog(OpLogEntity opLogEntity) {
-        String sql = "INSERT INTO matrix_oplog (ID, NAME, URI, REQUEST, RESPONSE, CREATE_TIME)" +
-                "VALUES (?, ?, ?, ?, ? ,?)";
+        String sql = "INSERT INTO matrix_oplog (ID, NAME, URI, REQUEST, RESPONSE, USER_ID, CREATE_TIME)" +
+                "VALUES (?, ?, ?, ?, ?, ? ,?)";
         String createTime = DateUtil.formatDateStrByPattern(opLogEntity.getCreateTime() == null ? new Date() : opLogEntity.getCreateTime(), DateUtil.TimeFormat.LongTimeStandard);
         jdbcTemplate.update(sql, opLogEntity.getId(), opLogEntity.getName(), opLogEntity.getUri(),
-                opLogEntity.getRequest(), opLogEntity.getResponse(), createTime);
+                opLogEntity.getRequest(), opLogEntity.getResponse(), opLogEntity.getUserId(), createTime);
     }
 }
