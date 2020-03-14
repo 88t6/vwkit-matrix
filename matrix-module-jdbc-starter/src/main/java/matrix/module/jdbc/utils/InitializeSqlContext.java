@@ -6,11 +6,11 @@ import matrix.module.common.exception.ServiceException;
 import matrix.module.common.helper.Assert;
 import matrix.module.common.helper.encrypt.MD5;
 import matrix.module.common.utils.StreamUtil;
+import matrix.module.jdbc.entity.FileEntity;
 import matrix.module.jdbc.properties.JdbcProperties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,8 +21,9 @@ import org.springframework.util.StringUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.Serializable;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -50,29 +51,27 @@ public class InitializeSqlContext {
 
     // 初始化
     private void initialize() {
-        List<File> files = this.getSortFiles();
-        if (CollectionUtils.isEmpty(files)) {
+        List<FileEntity> fileEntities = this.getSortFileEntity();
+        if (CollectionUtils.isEmpty(fileEntities)) {
             logger.warn(locations + "  no init script");
             return;
         }
         existInitTable();
         List<InitSqlTableRow> initSqlTableRows = getInitSqlTableRow();
         Map<String, InitSqlTableRow> initSqlTableRowMap = initSqlTableRows.stream().collect(Collectors.toMap(InitSqlTableRow::getSqlFileName, item -> item, (o1, o2) -> o2));
-        for (File file : files) {
-            InitSqlTableRow initSqlTableRow = initSqlTableRowMap.get(file.getName());
-            FileInputStream fis = null;
+        for (FileEntity fileEntity : fileEntities) {
+            InitSqlTableRow initSqlTableRow = initSqlTableRowMap.get(fileEntity.getFileName());
             if (initSqlTableRow == null) {
                 try {
-                    fis = new FileInputStream(file);
-                    String sqlContent = StreamUtil.streamToString(fis).trim();
+                    String sqlContent = StreamUtil.streamToString(fileEntity.getInputStream()).trim();
                     initSqlTableRow = new InitSqlTableRow()
-                            .setSqlFileName(file.getName())
+                            .setSqlFileName(fileEntity.getFileName())
                             .setFileSignature(MD5.get32(sqlContent));
                     executeSql(sqlContent, initSqlTableRow);
                 } catch (Exception e) {
                     throw new ServiceException(e);
                 } finally {
-                    StreamUtil.closeStream(fis);
+                    StreamUtil.closeStream(fileEntity.getInputStream());
                 }
             }
         }
@@ -83,29 +82,55 @@ public class InitializeSqlContext {
      *
      * @return
      */
-    private List<File> getSortFiles() {
+    private List<FileEntity> getSortFileEntity() {
         Assert.isNotNull(locations, "locations");
+        List<FileEntity> fileEntities = new ArrayList<>();
         try {
-            File[] files = null;
             if (locations.startsWith("classpath:")) {
-                ClassPathResource resource = new ClassPathResource(locations.replaceFirst("classpath:", ""));
-                files = resource.getFile().listFiles();
+                String filePath = locations.replaceFirst("classpath:", "");
+                InputStream is = null;
+                try {
+                    is = InitializeSqlContext.class.getClassLoader().getResourceAsStream(filePath);
+                    String[] fileNames = StreamUtil.streamToString(is).split("\n\r");
+                    if (fileNames.length > 0) {
+                        for (String fileName : fileNames) {
+                            FileEntity fileEntity = new FileEntity()
+                                    .setFileName(fileName)
+                                    .setInputStream(this.getClass().getClassLoader().getResourceAsStream(filePath + "/" + fileName));
+                            fileEntities.add(fileEntity);
+                        }
+                    }
+                } catch (Exception e) {
+                    logger.error(e);
+                } finally {
+                    StreamUtil.closeStream(is);
+                }
             } else {
-                files = ResourceUtils.getFile(locations).listFiles();
+                File[] files = ResourceUtils.getFile(locations).listFiles();
+                if (files != null && files.length > 0) {
+                    for (File file : files) {
+                        FileEntity fileEntity = new FileEntity()
+                                .setFileName(file.getName())
+                                .setInputStream(new FileInputStream(file));
+                        fileEntities.add(fileEntity);
+                    }
+                }
             }
-            List<File> fileList = files != null && files.length > 0 ? Arrays.asList(files) : null;
-            if (!CollectionUtils.isEmpty(fileList)) {
-                fileList.removeIf(file -> {
-                    String fileName = file.getName();
+            if (!CollectionUtils.isEmpty(fileEntities)) {
+                fileEntities.removeIf(file -> {
+                    String fileName = file.getFileName();
                     boolean isNeed = fileName.startsWith(initSql.getFileNamePrefix())
                             && fileName.endsWith(initSql.getFileNameSuffix())
                             && fileName.contains(initSql.getFileNameSeparator());
+                    if (!isNeed) {
+                        StreamUtil.closeStream(file.getInputStream());
+                    }
                     return !isNeed;
                 });
-                if (!CollectionUtils.isEmpty(fileList)) {
-                    fileList.sort((o1, o2) -> {
-                        String fileName1 = o1.getName().split(initSql.getFileNameSeparator())[0].split(initSql.getFileNamePrefix())[1];
-                        String fileName2 = o2.getName().split(initSql.getFileNameSeparator())[0].split(initSql.getFileNamePrefix())[1];
+                if (!CollectionUtils.isEmpty(fileEntities)) {
+                    fileEntities.sort((o1, o2) -> {
+                        String fileName1 = o1.getFileName().split(initSql.getFileNameSeparator())[0].split(initSql.getFileNamePrefix())[1];
+                        String fileName2 = o2.getFileName().split(initSql.getFileNameSeparator())[0].split(initSql.getFileNamePrefix())[1];
                         try {
                             return Long.valueOf(fileName1).compareTo(Long.valueOf(fileName2));
                         } catch (Exception e) {
@@ -114,10 +139,13 @@ public class InitializeSqlContext {
                     });
                 }
             }
-            return fileList;
         } catch (Exception e) {
-            return null;
+            logger.error(e);
+            if (!CollectionUtils.isEmpty(fileEntities)) {
+                fileEntities.forEach(fileEntity -> StreamUtil.closeStream(fileEntity.getInputStream()));
+            }
         }
+        return fileEntities;
     }
 
     /**
