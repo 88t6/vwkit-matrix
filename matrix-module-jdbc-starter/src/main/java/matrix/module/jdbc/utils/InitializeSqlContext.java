@@ -11,6 +11,8 @@ import matrix.module.jdbc.properties.JdbcProperties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,7 +23,6 @@ import org.springframework.util.StringUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,7 @@ public class InitializeSqlContext {
     private void initialize() {
         List<FileEntity> fileEntities = this.getSortFileEntity();
         if (CollectionUtils.isEmpty(fileEntities)) {
-            logger.warn(locations + "  no init script");
+            logger.warn(locations + " no init script");
             return;
         }
         existInitTable();
@@ -88,22 +89,12 @@ public class InitializeSqlContext {
         try {
             if (locations.startsWith("classpath:")) {
                 String filePath = locations.replaceFirst("classpath:", "");
-                InputStream is = null;
-                try {
-                    is = InitializeSqlContext.class.getClassLoader().getResourceAsStream(filePath);
-                    String[] fileNames = StreamUtil.streamToString(is).split("\n\r");
-                    if (fileNames.length > 0) {
-                        for (String fileName : fileNames) {
-                            FileEntity fileEntity = new FileEntity()
-                                    .setFileName(fileName)
-                                    .setInputStream(this.getClass().getClassLoader().getResourceAsStream(filePath + "/" + fileName));
-                            fileEntities.add(fileEntity);
-                        }
-                    }
-                } catch (Exception e) {
-                    logger.error(e);
-                } finally {
-                    StreamUtil.closeStream(is);
+                Resource[] resources = new PathMatchingResourcePatternResolver().getResources(filePath + "/*");
+                for (Resource resource : resources) {
+                    FileEntity fileEntity = new FileEntity()
+                            .setFileName(resource.getFilename())
+                            .setInputStream(resource.getInputStream());
+                    fileEntities.add(fileEntity);
                 }
             } else {
                 File[] files = ResourceUtils.getFile(locations).listFiles();
