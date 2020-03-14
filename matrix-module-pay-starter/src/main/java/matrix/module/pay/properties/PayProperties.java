@@ -17,7 +17,7 @@ public class PayProperties {
 
     private String notifyDomain;
 
-    private String db;
+    private String db = "master";
 
     private AlipayProperties alipay;
 

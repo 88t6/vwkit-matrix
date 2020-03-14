@@ -83,6 +83,15 @@ redis:
     password:
     max-redirects: 0
 
+op-log:
+  enabled: false
+  db: master
+
+async:
+  core-pool-size: 10
+  max-pool-size: 30
+  queue-capacity: 2000
+
 pay:
   enabled: false
   notify-domain: http://vwkit.com

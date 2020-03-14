@@ -9,12 +9,14 @@ import com.matrix.demo.dao.mybatis.test2.service.TestService2;
 import matrix.module.common.bean.Result;
 import matrix.module.common.exception.ServiceException;
 import matrix.module.jdbc.annotation.TargetDataSource;
+import matrix.module.oplog.annotation.OpLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -83,5 +85,11 @@ public class DemoController {
     @GetMapping("/demo")
     public Result demo() {
         throw new ServiceException("aaaa");
+    }
+
+    @GetMapping("/oplog")
+    @OpLog
+    public Result oplog(@RequestParam("aaa") String aaa) {
+        return Result.success(aaa);
     }
 }

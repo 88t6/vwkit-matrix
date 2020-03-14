@@ -40,6 +40,10 @@
             <groupId>com.vwkit</groupId>
             <artifactId>matrix-module-pay-starter</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.vwkit</groupId>
+            <artifactId>matrix-module-oplog-starter</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
