@@ -10,6 +10,7 @@ import matrix.module.jdbc.properties.JdbcProperties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -85,7 +86,13 @@ public class InitializeSqlContext {
     private List<File> getSortFiles() {
         Assert.isNotNull(locations, "locations");
         try {
-            File[] files = ResourceUtils.getFile(locations).listFiles();
+            File[] files = null;
+            if (locations.startsWith("classpath:")) {
+                ClassPathResource resource = new ClassPathResource(locations.replaceFirst("classpath:", ""));
+                files = resource.getFile().listFiles();
+            } else {
+                files = ResourceUtils.getFile(locations).listFiles();
+            }
             List<File> fileList = files != null && files.length > 0 ? Arrays.asList(files) : null;
             if (!CollectionUtils.isEmpty(fileList)) {
                 fileList.removeIf(file -> {
