@@ -182,8 +182,13 @@ public class InitializeSqlContext {
     public void executeSql(String sqlContent, InitSqlTableRow initSqlTableRow) {
         if (!StringUtils.isEmpty(sqlContent) && initSqlTableRow != null) {
             //todo 这边应该取出来做下sql检查在处理
-            jdbcTemplate.batchUpdate(sqlContent.replaceAll("\n\r", " ").split(";"));
-            jdbcTemplate.update(String.format("INSERT INTO %s " +
+            String[] sqlList = sqlContent.replaceAll("\n\r", " ").split(";");
+            for (String sql : sqlList) {
+                if (!StringUtils.isEmpty(sql)) {
+                    jdbcTemplate.execute(sql);
+                }
+            }
+            jdbcTemplate.execute(String.format("INSERT INTO %s " +
                             "(SQL_FILE_NAME, FILE_SIGNATURE, CREATE_TIME) " +
                             "VALUES ('%s', '%s', NOW())",
                     initSql.getTableName(),
