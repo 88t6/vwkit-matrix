@@ -64,7 +64,7 @@ public class InitializeSqlContext {
             InitSqlTableRow initSqlTableRow = initSqlTableRowMap.get(fileEntity.getFileName());
             if (initSqlTableRow == null) {
                 try {
-                    String sqlContent = StreamUtil.streamToString(fileEntity.getInputStream()).replaceAll("\n\r", " ").trim();
+                    String sqlContent = StreamUtil.streamToString(fileEntity.getInputStream()).trim();
                     initSqlTableRow = new InitSqlTableRow()
                             .setSqlFileName(fileEntity.getFileName())
                             .setFileSignature(MD5.get32(sqlContent));
@@ -182,8 +182,8 @@ public class InitializeSqlContext {
     public void executeSql(String sqlContent, InitSqlTableRow initSqlTableRow) {
         if (!StringUtils.isEmpty(sqlContent) && initSqlTableRow != null) {
             //todo 这边应该取出来做下sql检查在处理
-            jdbcTemplate.batchUpdate(sqlContent.split(";"));
-            jdbcTemplate.execute(String.format("INSERT INTO %s " +
+            jdbcTemplate.batchUpdate(sqlContent.replaceAll("\n\r", " ").split(";"));
+            jdbcTemplate.update(String.format("INSERT INTO %s " +
                             "(SQL_FILE_NAME, FILE_SIGNATURE, CREATE_TIME) " +
                             "VALUES ('%s', '%s', NOW())",
                     initSql.getTableName(),
