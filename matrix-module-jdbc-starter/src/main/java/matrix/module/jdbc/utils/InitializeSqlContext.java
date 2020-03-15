@@ -64,7 +64,7 @@ public class InitializeSqlContext {
             InitSqlTableRow initSqlTableRow = initSqlTableRowMap.get(fileEntity.getFileName());
             if (initSqlTableRow == null) {
                 try {
-                    String sqlContent = StreamUtil.streamToString(fileEntity.getInputStream()).trim();
+                    String sqlContent = StreamUtil.streamToString(fileEntity.getInputStream()).replaceAll("\n\r", " ").trim();
                     initSqlTableRow = new InitSqlTableRow()
                             .setSqlFileName(fileEntity.getFileName())
                             .setFileSignature(MD5.get32(sqlContent));
