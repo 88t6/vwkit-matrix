@@ -1,5 +1,7 @@
 package matrix.module.pay.enums;
 
+import matrix.module.common.exception.ServiceException;
+
 /**
  * @author wangcheng
  * @date 2019/4/26
@@ -19,6 +21,15 @@ public enum PayMode {
     PayMode(String code, String name) {
         this.code = code;
         this.name = name;
+    }
+
+    public static PayMode getByCode(String code) {
+        for (PayMode payMode : PayMode.values()) {
+            if (payMode.getCode().equals(code)) {
+                return payMode;
+            }
+        }
+        throw new ServiceException("支付方式不存在");
     }
 
     public String getCode() {
