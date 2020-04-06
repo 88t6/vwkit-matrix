@@ -84,10 +84,10 @@ public class DatabaseAutoConfiguration {
         dataSource.setTimeBetweenEvictionRunsMillis(60000);
         dataSource.setMaxWait(60000);
         dataSource.setMaxActive(20);
-        dataSource.setMinIdle(5);
+        dataSource.setMinIdle(10);
         dataSource.setInitialSize(5);
         try {
-            dataSource.setFilters("stat");
+            dataSource.setFilters("stat,wall");
         } catch (Exception e) {
             logger.debug(e);
         }
