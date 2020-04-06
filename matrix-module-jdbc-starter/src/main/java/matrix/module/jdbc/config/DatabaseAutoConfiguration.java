@@ -86,6 +86,7 @@ public class DatabaseAutoConfiguration {
         dataSource.setMaxActive(20);
         dataSource.setMinIdle(10);
         dataSource.setInitialSize(5);
+        dataSource.setAsyncInit(true);
         try {
             dataSource.setFilters("stat");
         } catch (Exception e) {
