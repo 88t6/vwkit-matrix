@@ -87,7 +87,7 @@ public class DatabaseAutoConfiguration {
         dataSource.setMinIdle(10);
         dataSource.setInitialSize(5);
         try {
-            dataSource.setFilters("stat,wall");
+            dataSource.setFilters("stat");
         } catch (Exception e) {
             logger.debug(e);
         }
