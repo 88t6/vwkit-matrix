@@ -79,7 +79,7 @@ public class DatabaseAutoConfiguration {
         dataSource.setMinEvictableIdleTimeMillis(300000);
         dataSource.setValidationQuery("SELECT 1 FROM DUAL");
         dataSource.setTestWhileIdle(true);
-        dataSource.setTestOnBorrow(false);
+        dataSource.setTestOnBorrow(true);
         dataSource.setTestOnReturn(false);
         dataSource.setTimeBetweenEvictionRunsMillis(60000);
         dataSource.setMaxWait(60000);
