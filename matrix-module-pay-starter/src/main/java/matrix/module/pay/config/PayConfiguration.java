@@ -43,7 +43,6 @@ import javax.annotation.PostConstruct;
 
 /**
  * @author wangcheng
- * @date 2020-02-27
  */
 @Configuration
 @EnableConfigurationProperties(PayProperties.class)

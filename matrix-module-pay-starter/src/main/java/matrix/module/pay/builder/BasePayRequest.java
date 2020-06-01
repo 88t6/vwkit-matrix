@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 /**
  * @author wangcheng
- * @date 2018/12/25
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class BasePayRequest implements Serializable {

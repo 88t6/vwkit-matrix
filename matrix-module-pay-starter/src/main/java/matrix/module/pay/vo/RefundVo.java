@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 
 /**
  * @author: wangcheng
- * @date 2019/4/28
  */
 @Data
 @Accessors(chain = true)

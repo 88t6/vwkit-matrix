@@ -7,7 +7,6 @@ import java.util.List;
 
 /**
  * @author wangcheng
- * @date 2019/4/28
  */
 public interface PayInterface {
 
@@ -15,7 +14,7 @@ public interface PayInterface {
      * 支付成功回调
      *
      * @param payEntities
-     * @return
+     * @return boolean
      */
     boolean paySuccess(List<MatrixPayEntity> payEntities);
 
@@ -23,7 +22,7 @@ public interface PayInterface {
      * 退款成功回调
      *
      * @param refundEntities
-     * @return
+     * @return boolean
      */
     boolean refundSuccess(List<MatrixRefundEntity> refundEntities);
 }

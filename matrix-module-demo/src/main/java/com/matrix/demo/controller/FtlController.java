@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * @author WangCheng
- * @date 2020/2/4
  */
 @Controller
 @RequestMapping("/ftl")

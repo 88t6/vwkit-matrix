@@ -26,7 +26,6 @@ import java.util.Map;
 
 /**
  * @author WangCheng
- * @date 2020/2/6
  */
 @Configuration
 @EnableConfigurationProperties({JdbcProperties.class, JpaProperties.class})

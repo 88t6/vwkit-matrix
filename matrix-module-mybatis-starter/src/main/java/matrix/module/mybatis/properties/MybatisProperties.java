@@ -7,7 +7,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * @author WangCheng
- * @date 2020/2/5
  */
 @ConfigurationProperties(prefix = "mybatis")
 @Data

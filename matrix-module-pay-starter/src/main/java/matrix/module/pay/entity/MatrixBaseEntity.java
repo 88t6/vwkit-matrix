@@ -11,7 +11,6 @@ import java.util.Date;
 
 /**
  * @author WangCheng
- * @date 2020/2/20
  */
 @Data
 @Accessors(chain = true)

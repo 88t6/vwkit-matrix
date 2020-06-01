@@ -1,39 +1,20 @@
 package matrix.module.common.helper.files.excel;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import matrix.module.common.enums.ExcelEnum;
 import matrix.module.common.exception.ServiceException;
 import matrix.module.common.helper.Assert;
 import matrix.module.common.utils.RandomUtil;
 import matrix.module.common.utils.StreamUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.DataFormat;
-import org.apache.poi.ss.usermodel.DateUtil;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.*;
+import java.util.*;
+
 /**
  * @author wangcheng
- * @date 2019/3/26
  */
 class ExcelMapHelper {
 
@@ -46,7 +27,7 @@ class ExcelMapHelper {
     /**
      * 导入excel
      *
-     * @return
+     * @return Map
      */
     protected Map<String, List<LinkedHashMap<String, Object>>> importExcel(String fileName, ExcelEnum excelEnum) {
         Assert.isNotNull(fileName, "fileName");
@@ -65,8 +46,8 @@ class ExcelMapHelper {
     /**
      * 解析workbook
      *
-     * @param is
-     * @return
+     * @param is 参数
+     * @return Map
      */
     private Map<String, List<LinkedHashMap<String, Object>>> parseWorkbook(InputStream is, ExcelEnum excelEnum) {
         Map<String, List<LinkedHashMap<String, Object>>> result = new HashMap<>();

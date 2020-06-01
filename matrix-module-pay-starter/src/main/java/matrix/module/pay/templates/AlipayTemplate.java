@@ -35,7 +35,6 @@ import java.util.Map;
 
 /**
  * @author wangcheng
- * @date 2019/4/25
  */
 public class AlipayTemplate extends AbstractTemplate {
 

@@ -2,7 +2,6 @@ package matrix.module.pay.converter;
 
 /**
  * @author wangcheng
- * @date 2019/5/6
  */
 public class HtmlConvert {
 

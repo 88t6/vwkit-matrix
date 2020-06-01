@@ -3,8 +3,7 @@ package matrix.module.common.utils;
 import java.math.BigDecimal;
 
 /**
- * @author: wangcheng
- * @date 2019/5/4
+ * @author wangcheng
  */
 public class BigDecimalUtil {
 

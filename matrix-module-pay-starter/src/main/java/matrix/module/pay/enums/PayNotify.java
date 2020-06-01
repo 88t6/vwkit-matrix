@@ -5,7 +5,6 @@ import matrix.module.pay.constants.WepayConstant;
 
 /**
  * @author wangcheng
- * @date 2019/4/26
  */
 public enum PayNotify {
 

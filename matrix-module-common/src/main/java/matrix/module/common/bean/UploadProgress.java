@@ -4,7 +4,7 @@ import org.apache.commons.fileupload.ProgressListener;
 
 /**
  * @author wangcheng
- * @param <T>
+ * @param <T> 参数
  */
 public abstract class UploadProgress<T> implements ProgressListener {
 
@@ -43,9 +43,9 @@ public abstract class UploadProgress<T> implements ProgressListener {
     }
 
     /**
-     * @param container
-     * @param uploadRate
-     * @param bytesReadKBSpeedWith1s
+     * @param container 参数
+     * @param uploadRate 参数
+     * @param bytesReadKBSpeedWith1s 参数
      */
     public abstract void execute(T container, Integer uploadRate, long bytesReadKBSpeedWith1s);
 

@@ -2,7 +2,6 @@ package matrix.module.pay.enums;
 
 /**
  * @author wangcheng
- * @date 2019/4/26
  */
 public enum PayMode {
 

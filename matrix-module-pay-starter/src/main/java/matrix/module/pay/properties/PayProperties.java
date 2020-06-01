@@ -6,7 +6,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * @author WangCheng
- * @date 2020/2/20
  */
 @ConfigurationProperties(prefix = "pay")
 @Data

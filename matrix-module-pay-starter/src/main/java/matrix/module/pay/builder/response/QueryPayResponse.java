@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 /**
  * @author wangcheng
- * @date 2019/4/29
  */
 public class QueryPayResponse implements Serializable {
 

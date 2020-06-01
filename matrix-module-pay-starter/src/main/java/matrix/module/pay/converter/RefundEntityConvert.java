@@ -5,7 +5,6 @@ import matrix.module.pay.vo.RefundVo;
 
 /**
  * @author wangcheng
- * @date 2019/4/29
  */
 public class RefundEntityConvert {
 

@@ -6,7 +6,6 @@ import matrix.module.pay.builder.BasePayRequest;
 
 /**
  * @author wangcheng
- * @date 2019/04/28
  */
 public class AlipayPayRequest extends BasePayRequest {
 

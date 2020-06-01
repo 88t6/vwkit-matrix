@@ -2,8 +2,8 @@ package matrix.module.common.helper.encrypt;
 
 /**
  * @author wangcheng
- * @byte2hex() byte转字符串
- * @hex2byte() 字符串转byte
+ * byte2hex() byte转字符串
+ * hex2byte() 字符串转byte
  */
 public class Hex {
 

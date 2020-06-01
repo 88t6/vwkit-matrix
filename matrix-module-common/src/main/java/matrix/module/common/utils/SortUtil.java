@@ -85,10 +85,9 @@ public class SortUtil {
     /**
      * list排序
      *
-     * @param list
-     * @param sortKey
-     * @param mode
-     * @throws Exception
+     * @param list 参数
+     * @param sortKey 参数
+     * @param mode 参数
      */
     public static void sort(List<Map<String, Object>> list, String sortKey, Mode mode, Type type) {
         if (list != null && list.size() > 0) {
@@ -126,8 +125,8 @@ public class SortUtil {
     /**
      * 数组排序
      *
-     * @param arr
-     * @param mode
+     * @param arr 参数
+     * @param mode 参数
      */
     public static void sort(int[] arr, Mode mode, Type type) {
         if (arr.length > 0) {

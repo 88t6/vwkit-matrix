@@ -9,7 +9,6 @@ import java.util.List;
 
 /**
  * @author wangcheng
- * @date 2019/6/6
  */
 @TargetDataSource(value = "db1")
 public interface Test2Repository extends PagingAndSortingRepository<Test2Entity, Long>, JpaSpecificationExecutor<Test2Entity> {

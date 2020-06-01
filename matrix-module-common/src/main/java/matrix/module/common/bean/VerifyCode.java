@@ -5,8 +5,8 @@ import java.io.Serializable;
 
 /**
  * @author wangcheng
- * @content 生成的验证码内容
- * @image 验证码的图片
+ * content 生成的验证码内容
+ * image 验证码的图片
  */
 public class VerifyCode implements Serializable {
     private static final long serialVersionUID = 1L;

@@ -7,8 +7,11 @@ import matrix.module.common.utils.RandomUtil;
 import matrix.module.common.utils.SingletonUtil;
 import matrix.module.common.utils.StreamUtil;
 
-import java.awt.Image;
-import java.awt.Rectangle;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -16,14 +19,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Iterator;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReadParam;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.ImageInputStream;
 
 /**
  * @author wangcheng
- * @date 2019/3/29
  */
 public class ImageHelper {
 
@@ -40,8 +38,8 @@ public class ImageHelper {
     /**
      * 获取图片
      *
-     * @param fileName
-     * @return
+     * @param fileName 参数
+     * @return BufferedImage
      */
     public BufferedImage getBufferedImage(String fileName) {
         Assert.isNotNull(fileName, "fileName");
@@ -55,12 +53,12 @@ public class ImageHelper {
     /**
      * 裁剪图片
      *
-     * @param fileName
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     * @return
+     * @param fileName 参数
+     * @param x 参数
+     * @param y 参数
+     * @param width 参数
+     * @param height 参数
+     * @return String
      */
     public String cutImage(String fileName, int x, int y, int width, int height) {
         FileInputStream fis = null;
@@ -90,11 +88,10 @@ public class ImageHelper {
     /**
      * 缩放图片
      *
-     * @param fileName
-     * @param fileName
-     * @param width
-     * @param height
-     * @return
+     * @param fileName 参数
+     * @param width 参数
+     * @param height 参数
+     * @return String
      */
     public String zoomImage(String fileName, Integer width, Integer height) {
         Assert.isNotNull(fileName, "fileName");

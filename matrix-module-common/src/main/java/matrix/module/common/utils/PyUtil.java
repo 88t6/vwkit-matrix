@@ -7,7 +7,6 @@ import java.io.InputStream;
 
 /**
  * @author wangcheng
- * @date 2019/4/11
  */
 public class PyUtil {
 
@@ -15,9 +14,9 @@ public class PyUtil {
 
     /**
      * 执行resource下的py文件
-     * @param resourceFilePath
-     * @param args
-     * @return
+     * @param resourceFilePath 参数
+     * @param args 参数
+     * @return String
      */
     public static String execFile(String resourceFilePath, String ... args) {
         InputStream is;
@@ -38,8 +37,8 @@ public class PyUtil {
 
     /**
      * 执行python命令
-     * @param command
-     * @return
+     * @param command 参数
+     * @return String
      */
     public static String execCommand(String command) {
         return exec(command, "");

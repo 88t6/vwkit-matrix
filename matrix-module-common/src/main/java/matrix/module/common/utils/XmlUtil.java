@@ -8,6 +8,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
 import javax.xml.parsers.DocumentBuilder;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -18,7 +19,6 @@ import java.util.Set;
 
 /**
  * @author wangcheng
- * @date 2018/8/21
  */
 public class XmlUtil {
 
@@ -88,9 +88,9 @@ public class XmlUtil {
     /**
      * xml to string
      *
-     * @param rootName
-     * @param object
-     * @return
+     * @param rootName 参数
+     * @param object 参数
+     * @return String
      */
     public static String toXmlString(String rootName, Object object) {
         Assert.isNotNull(object, "object");

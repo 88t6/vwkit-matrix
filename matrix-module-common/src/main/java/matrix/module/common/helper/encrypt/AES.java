@@ -3,16 +3,16 @@ package matrix.module.common.helper.encrypt;
 import matrix.module.common.exception.ServiceException;
 import matrix.module.common.utils.StringUtil;
 
-import java.security.SecureRandom;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.security.SecureRandom;
 
 /**
  * @author wangcheng
- * @encrypt() AES加密 content:加密的内容  password:加密的密码
- * @decrypt() AES解密 content:解密的内容  password:解密的密码
+ * encrypt() AES加密 content:加密的内容  password:加密的密码
+ * decrypt() AES解密 content:解密的内容  password:解密的密码
  */
 public class AES {
 

@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 /**
  * @author wangcheng
- * @date 2019/5/6
  */
 public class QueryRefundResponse implements Serializable {
 

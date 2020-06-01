@@ -10,7 +10,6 @@ import java.util.Map;
 
 /**
  * @author WangCheng
- * @date 2020/2/4
  */
 @ConfigurationProperties(prefix = "jdbc")
 @Data

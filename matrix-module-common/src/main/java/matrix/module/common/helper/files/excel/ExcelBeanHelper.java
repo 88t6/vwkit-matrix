@@ -1,34 +1,24 @@
 package matrix.module.common.helper.files.excel;
 
 import com.alibaba.fastjson.JSONObject;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import matrix.module.common.annotation.Excel;
 import matrix.module.common.enums.ExcelEnum;
 import matrix.module.common.exception.ServiceException;
 import matrix.module.common.helper.Assert;
 import matrix.module.common.utils.RandomUtil;
 import matrix.module.common.utils.StreamUtil;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.*;
 
 /**
  * @author wangcheng
- * @date 2019/3/26
  */
 class ExcelBeanHelper {
 
@@ -41,9 +31,9 @@ class ExcelBeanHelper {
     /**
      * 导出Excel
      *
-     * @param exportData
-     * @param excelEnum
-     * @return
+     * @param exportData 参数
+     * @param excelEnum 参数
+     * @return String
      */
     protected String exportExcel(Map<String, List<? extends Serializable>> exportData, ExcelEnum excelEnum) {
         Assert.isNotNull(exportData, "exportData");
@@ -147,7 +137,7 @@ class ExcelBeanHelper {
     /**
      * 获取实体对应的excel注解类型
      *
-     * @return
+     * @return List
      */
     private <T extends Serializable> List<ExcelColumnData> parseExcelColumnData(T bean) {
         Field[] fields = bean.getClass().getDeclaredFields();

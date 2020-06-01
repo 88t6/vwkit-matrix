@@ -1,19 +1,18 @@
 package matrix.module.common.utils;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author wangcheng
- * @addCookie() 加入自定义Cookie
- * @addSimpleCookie() 加入简单Cookie
- * @addSimpleHttpOnlyCookie() 加入简单得HttpOnlyCookie
- * @getCookie() 根据key获取Cookie对象
- * @getCookieValue() 根据key获取Cookie中得Value
+ * addCookie() 加入自定义Cookie
+ * addSimpleCookie() 加入简单Cookie
+ * addSimpleHttpOnlyCookie() 加入简单得HttpOnlyCookie
+ * getCookie() 根据key获取Cookie对象
+ * getCookieValue() 根据key获取Cookie中得Value
  */
 public class CookieUtil {
 
@@ -72,8 +71,8 @@ public class CookieUtil {
     /**
      * 将cookie封装到Map里面
      *
-     * @param request
-     * @return
+     * @param request 参数
+     * @return Map
      */
     private static Map<String, Cookie> ReadCookieMap(HttpServletRequest request) {
         Map<String, Cookie> cookieMap = new HashMap<String, Cookie>();

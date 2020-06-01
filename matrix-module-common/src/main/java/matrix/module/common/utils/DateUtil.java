@@ -9,7 +9,7 @@ import java.util.Date;
 
 /**
  * @author wangcheng
- * @effect 处理日期
+ * effect 处理日期
  */
 public class DateUtil {
 
@@ -22,9 +22,8 @@ public class DateUtil {
     }
 
     /**
+     * @param format 参数
      * @return 返回当前时间所在周的星期一的时间   Date类型
-     * @throws ParseException
-     * @author wangcheng
      */
     public static Date getFirstDayAtWhenWeek(TimeFormat format) {
         Calendar calendar = Calendar.getInstance();
@@ -40,9 +39,8 @@ public class DateUtil {
     }
 
     /**
+     * @param format 参数
      * @return 返回当前时间所在周的星期日的时间   Date类型
-     * @throws ParseException
-     * @author wangcheng
      */
     public static Date getLastDayAtWhenWeek(TimeFormat format) {
         Calendar calendar = Calendar.getInstance();
@@ -52,9 +50,8 @@ public class DateUtil {
     }
 
     /**
+     * @param format 参数
      * @return 返回当前时间之前一个月的时间   Date类型
-     * @throws ParseException
-     * @author wangcheng
      */
     public static Date getBeforeOneMonth(TimeFormat format) {
         Calendar calendar = Calendar.getInstance();
@@ -64,9 +61,8 @@ public class DateUtil {
     }
 
     /**
+     * @param format 参数
      * @return 返回当前时间之后一个月的时间   Date类型
-     * @throws ParseException
-     * @author wangcheng
      */
     public static Date getAfterOneMonth(TimeFormat format) {
         Calendar calendar = Calendar.getInstance();
@@ -76,8 +72,9 @@ public class DateUtil {
     }
 
     /**
+     * @param date 参数
+     * @param format 参数
      * @return 根据时间和pattern格式化时间格式   String类型
-     * @author wangcheng
      */
     public static String formatDateStrByPattern(Date date, TimeFormat format) {
         SimpleDateFormat sdf = new SimpleDateFormat(format.getValue());
@@ -85,17 +82,17 @@ public class DateUtil {
     }
 
     /**
+     * @param date 参数
      * @return 将Date格式转化成 String类型
-     * @author wangcheng
      */
     public static String formatDateToStr(Date date) {
         return date.toString();
     }
 
     /**
+     * @param date 参数
+     * @param format 参数
      * @return 将String格式转化成 Date类型
-     * @throws ParseException
-     * @author wangcheng
      */
     public static Date formatStrToDate(String date, TimeFormat format) {
         SimpleDateFormat sdf = new SimpleDateFormat(format.getValue());
@@ -152,9 +149,9 @@ public class DateUtil {
     /**
      * 几天前的时间
      *
-     * @param date
-     * @param day
-     * @return
+     * @param date 参数
+     * @param day 参数
+     * @return Date
      */
     public static Date getBeforeDay(Date date, Integer day) {
         Calendar calendar = Calendar.getInstance();
@@ -166,9 +163,9 @@ public class DateUtil {
     /**
      * 几天后的时间
      *
-     * @param date
-     * @param day
-     * @return
+     * @param date 参数
+     * @param day 参数
+     * @return Date
      */
     public static Date getAfterDay(Date date, Integer day) {
         Calendar calendar = Calendar.getInstance();
@@ -180,9 +177,9 @@ public class DateUtil {
     /**
      * 几周前的时间
      *
-     * @param date
-     * @param week
-     * @return
+     * @param date 参数
+     * @param week 参数
+     * @return Date
      */
     public static Date getBeforeWeek(Date date, Integer week) {
         Calendar calendar = Calendar.getInstance();
@@ -194,9 +191,9 @@ public class DateUtil {
     /**
      * 几周后的时间
      *
-     * @param date
-     * @param week
-     * @return
+     * @param date 参数
+     * @param week 参数
+     * @return Date
      */
     public static Date getAfterWeek(Date date, Integer week) {
         Calendar calendar = Calendar.getInstance();
@@ -208,9 +205,9 @@ public class DateUtil {
     /**
      * 几月前的时间
      *
-     * @param date
-     * @param month
-     * @return
+     * @param date 参数
+     * @param month 参数
+     * @return Date
      */
     public static Date getBeforeMonth(Date date, Integer month) {
         Calendar calendar = Calendar.getInstance();
@@ -222,9 +219,9 @@ public class DateUtil {
     /**
      * 几月后的时间
      *
-     * @param date
-     * @param month
-     * @return
+     * @param date 参数
+     * @param month 参数
+     * @return Date
      */
     public static Date getAfterMonth(Date date, Integer month) {
         Calendar calendar = Calendar.getInstance();
@@ -236,9 +233,9 @@ public class DateUtil {
     /**
      * 几年前的时间
      *
-     * @param date
-     * @param year
-     * @return
+     * @param date 参数
+     * @param year 参数
+     * @return Date
      */
     public static Date getBeforeYear(Date date, Integer year) {
         Calendar calendar = Calendar.getInstance();
@@ -250,9 +247,9 @@ public class DateUtil {
     /**
      * 几年后的时间
      *
-     * @param date
-     * @param year
-     * @return
+     * @param date 参数
+     * @param year 参数
+     * @return Date
      */
     public static Date getAfterYear(Date date, Integer year) {
         Calendar calendar = Calendar.getInstance();
