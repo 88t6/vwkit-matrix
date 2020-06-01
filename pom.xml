@@ -97,6 +97,7 @@
                         </goals>
                         <configuration>
                             <additionalparam>-Xdoclint:none</additionalparam>
+                            <additionalparam>-quiet</additionalparam>
                         </configuration>
                     </execution>
                 </executions>
