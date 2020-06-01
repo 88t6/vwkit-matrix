@@ -4,7 +4,7 @@ package matrix.module.oplog.utils;
  * 用户ID存放，日志必须
  *
  * @author wangcheng
- * @date 2020-03-14
+ * date 2020-03-14
  */
 public class MatrixUserUtil {
 

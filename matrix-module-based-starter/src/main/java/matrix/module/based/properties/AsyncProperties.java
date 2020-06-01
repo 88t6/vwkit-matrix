@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * @author wangcheng
- * @date 2020-03-14
+ * date 2020-03-14
  */
 @ConfigurationProperties(prefix = "async")
 @Data
