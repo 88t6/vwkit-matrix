@@ -3,17 +3,17 @@ package matrix.module.common.helper.files;
 import matrix.module.common.exception.ServiceException;
 import matrix.module.common.utils.StreamUtil;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import javax.servlet.http.HttpServletResponse;
 
 
 /**
  * @author wangcheng
- * @detail 构造函数 filePath为文件下载路径例如:d:\temp
- * @download param(fileName : 文件路径名, ofileName原文件名)
+ * detail 构造函数 filePath为文件下载路径例如:d:\temp
+ * download param(fileName : 文件路径名, ofileName原文件名)
  */
 public class DownloadHelper {
 

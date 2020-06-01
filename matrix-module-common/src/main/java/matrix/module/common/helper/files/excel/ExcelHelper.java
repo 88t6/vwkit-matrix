@@ -10,7 +10,6 @@ import java.util.Map;
 
 /**
  * @author wangcheng
- * @date 2019/3/26
  */
 public class ExcelHelper {
 
@@ -30,9 +29,9 @@ public class ExcelHelper {
     /**
      * 导出Excel With Bean
      *
-     * @param exportData(Map<String,List<? extends Serializable>)
-     * @param excelEnum
-     * @return
+     * @param exportData 参数
+     * @param excelEnum 参数
+     * @return String
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
     public String exportExcelForBean(Map exportData, ExcelEnum excelEnum) {
@@ -42,9 +41,9 @@ public class ExcelHelper {
     /**
      * 导出Excel With Bean
      *
-     * @param data
-     * @param excelEnum
-     * @return
+     * @param data 参数
+     * @param excelEnum 参数
+     * @return String
      */
     public String exportExcelForBean(List<? extends Serializable> data, ExcelEnum excelEnum) {
         Map<String, List<? extends Serializable>> exportData = new HashMap<>();
@@ -55,9 +54,9 @@ public class ExcelHelper {
     /**
      * 导出Excel With Map
      *
-     * @param exportData
-     * @param excelEnum
-     * @return
+     * @param exportData 参数
+     * @param excelEnum 参数
+     * @return String
      */
     public String exportExcelForMap(Map<String, List<LinkedHashMap<String, Object>>> exportData, ExcelEnum excelEnum) {
         return mapExcelHelper.exportExcel(exportData, excelEnum);
@@ -66,9 +65,9 @@ public class ExcelHelper {
     /**
      * 导出Excel With Map
      *
-     * @param data
-     * @param excelEnum
-     * @return
+     * @param data 参数
+     * @param excelEnum 参数
+     * @return String
      */
     public String exportExcelForMap(List<LinkedHashMap<String, Object>> data, ExcelEnum excelEnum) {
         Map<String, List<LinkedHashMap<String, Object>>> exportData = new HashMap<>();
@@ -79,9 +78,9 @@ public class ExcelHelper {
     /**
      * 导入Excel
      *
-     * @param fileName
-     * @param excelEnum
-     * @return
+     * @param fileName 参数
+     * @param excelEnum 参数
+     * @return Map
      */
     public Map<String, List<LinkedHashMap<String, Object>>> importExcel(String fileName, ExcelEnum excelEnum) {
         return mapExcelHelper.importExcel(fileName, excelEnum);

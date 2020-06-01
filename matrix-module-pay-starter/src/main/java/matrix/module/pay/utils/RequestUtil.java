@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 /**
  * @author wangcheng
- * @date 2018/12/25
  */
 public class RequestUtil {
 
@@ -21,7 +20,7 @@ public class RequestUtil {
      * 解析 request params 。
      *
      * @param request
-     * @return
+     * @return Map
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static Map<String, String> parse(HttpServletRequest request) {

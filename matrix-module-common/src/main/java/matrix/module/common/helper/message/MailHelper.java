@@ -4,32 +4,20 @@ import com.sun.net.ssl.internal.ssl.Provider;
 import matrix.module.common.exception.ServiceException;
 import matrix.module.common.helper.Assert;
 import matrix.module.common.utils.DateUtil;
+
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.URLDataSource;
+import javax.mail.*;
+import javax.mail.internet.*;
 import java.net.URL;
 import java.security.Security;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.URLDataSource;
-import javax.mail.Address;
-import javax.mail.Authenticator;
-import javax.mail.BodyPart;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-import javax.mail.internet.MimeUtility;
 
 /**
  * @author wangcheng
- * @date 2019/4/2
  */
 public class MailHelper {
 
@@ -91,9 +79,9 @@ public class MailHelper {
     /**
      * 单人发送
      *
-     * @param receiver
-     * @param title
-     * @param content
+     * @param receiver 参数
+     * @param title 参数
+     * @param content 参数
      */
     public void sendOne(String receiver, String title, String content) {
         this.sendOne(receiver, title, content, null);
@@ -117,9 +105,9 @@ public class MailHelper {
     /**
      * 多人发送
      *
-     * @param receivers
-     * @param title
-     * @param content
+     * @param receivers 参数
+     * @param title 参数
+     * @param content 参数
      */
     public void sendMany(List<String> receivers, String title, String content) {
         this.send(receivers, title, content, null);
@@ -128,10 +116,10 @@ public class MailHelper {
     /**
      * 多人发送
      *
-     * @param receivers
-     * @param title
-     * @param content
-     * @param attachments
+     * @param receivers 参数
+     * @param title 参数
+     * @param content 参数
+     * @param attachments 参数
      */
     public void sendMany(List<String> receivers, String title, String content, List<URL> attachments) {
         this.send(receivers, title, content, attachments);

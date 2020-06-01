@@ -13,7 +13,6 @@ import java.io.Serializable;
 
 /**
  * @author WangCheng
- * @date 2020/2/5
  */
 @Configuration
 @ConditionalOnProperty(value = {"jdbc.enabled"})

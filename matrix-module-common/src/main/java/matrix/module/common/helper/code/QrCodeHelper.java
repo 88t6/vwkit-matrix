@@ -1,14 +1,6 @@
 package matrix.module.common.helper.code;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.Binarizer;
-import com.google.zxing.BinaryBitmap;
-import com.google.zxing.DecodeHintType;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.LuminanceSource;
-import com.google.zxing.MultiFormatReader;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.Result;
+import com.google.zxing.*;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
@@ -33,7 +25,6 @@ import java.util.Map;
  * 二维码生成
  *
  * @author: wangcheng
- * @date 2019/3/30
  */
 public class QrCodeHelper {
 
@@ -118,8 +109,8 @@ public class QrCodeHelper {
 
     /**
      * 解析QrCode
-     * @param fileName
-     * @return
+     * @param fileName 参数
+     * @return String
      */
     public String parseFile(String fileName) {
         Assert.isNotNull(this.filePath, "QrCodeHelper:filePath");

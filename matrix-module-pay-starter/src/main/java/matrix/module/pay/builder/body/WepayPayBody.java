@@ -7,7 +7,6 @@ import java.io.Serializable;
 
 /**
  * @author wangcheng
- * @date 2019/5/5
  */
 @Data
 @Accessors(chain = true)

@@ -30,7 +30,6 @@ import java.util.List;
 
 /**
  * @author WangCheng
- * @date 2020/2/20
  */
 public abstract class AbstractTemplate {
 
@@ -48,8 +47,8 @@ public abstract class AbstractTemplate {
     /**
      * 调用支付
      *
-     * @param payMode
-     * @param payVo
+     * @param payMode 支付方式
+     * @param payVo 支付VO
      * @return payUrl
      */
     protected abstract String invokePay(PayMode payMode, PayVo payVo);
@@ -57,7 +56,7 @@ public abstract class AbstractTemplate {
     /**
      * 调用退款
      *
-     * @param refundVo
+     * @param refundVo 退款VO
      * @return refund status
      */
     protected abstract Integer invokeRefund(RefundVo refundVo);
@@ -65,40 +64,40 @@ public abstract class AbstractTemplate {
     /**
      * 调用支付查询
      *
-     * @param payIds
-     * @return
+     * @param payIds 支付IDS
+     * @return List
      */
     protected abstract List<QueryPayResponse> invokeQueryPay(List<String> payIds);
 
     /**
      * 调用退款查询
      *
-     * @param queryRefundRequests
-     * @return
+     * @param queryRefundRequests 查询退款参数
+     * @return List
      */
     protected abstract List<String> invokeQueryRefund(List<QueryRefundRequest> queryRefundRequests);
 
     /**
      * 解析支付通知
      *
-     * @param request
-     * @return
+     * @param request 请求
+     * @return String
      */
     public abstract String parsePayNotify(HttpServletRequest request);
 
     /**
      * 解析退款通知
      *
-     * @param request
-     * @return
+     * @param request 请求
+     * @return String
      */
     public abstract String parseRefundNotify(HttpServletRequest request);
 
     /**
      * 支付
      *
-     * @param payMode
-     * @param payVo
+     * @param payMode 支付方式
+     * @param payVo 支付VO
      */
     public String doPay(PayMode payMode, PayVo payVo) {
         payVo.validate(payMode);
@@ -116,8 +115,8 @@ public abstract class AbstractTemplate {
     /**
      * 退款
      *
-     * @param refundVo
-     * @return
+     * @param refundVo 退款VO
+     *
      */
     public void doRefund(RefundVo refundVo) {
         refundVo.validate();
@@ -141,7 +140,7 @@ public abstract class AbstractTemplate {
     /**
      * 支付查询(根据支付流水)
      *
-     * @param payId
+     * @param payId 支付ID
      */
     public MatrixPayEntity doQueryPayByPayId(String payId) {
         Assert.isNotNull(payId, "payId");
@@ -161,7 +160,7 @@ public abstract class AbstractTemplate {
     /**
      * 支付查询(根据订单号)
      *
-     * @param orderId
+     * @param orderId 订单号
      */
     public List<MatrixPayEntity> doQueryPayByOrderId(String orderId) {
         Assert.isNotNull(orderId, "orderId");
@@ -183,8 +182,8 @@ public abstract class AbstractTemplate {
     /**
      * 退款查询(根据支付流水)
      *
-     * @param payId
-     * @return
+     * @param payId 支付ID
+     * @return List
      */
     public List<MatrixRefundEntity> doQueryRefundByPayId(String payId) {
         Assert.isNotNull(payId, "payId");
@@ -205,8 +204,8 @@ public abstract class AbstractTemplate {
     /**
      * 支付成功回调
      *
-     * @param queryPayResponse
-     * @return
+     * @param queryPayResponse 查询支付返回
+     * @return boolean
      */
     @Transactional(rollbackFor = Exception.class)
     protected boolean callbackPaySuccess(QueryPayResponse queryPayResponse) {
@@ -225,8 +224,8 @@ public abstract class AbstractTemplate {
     /**
      * 退款成功回调
      *
-     * @param queryRefundResponse
-     * @return
+     * @param queryRefundResponse 退款回调
+     * @return boolean
      */
     @Transactional(rollbackFor = Exception.class)
     protected boolean callbackRefundSuccess(QueryRefundResponse queryRefundResponse) {

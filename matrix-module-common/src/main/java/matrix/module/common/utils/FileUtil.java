@@ -8,10 +8,10 @@ import java.net.URL;
 
 /**
  * @author wangcheng
- * @getPrefix() 获取文件名的前缀.
- * @getSuffix() 获取文件名的后缀.
- * @getPosPath(realPath) 参数：例如/static/upload/... 获取相对路径
- * @getAbsPath(realPath) 参数：例如/static/upload/... 获取绝对路径
+ * getPrefix() 获取文件名的前缀.
+ * getSuffix() 获取文件名的后缀.
+ * getPosPath(realPath) 参数：例如/static/upload/... 获取相对路径
+ * getAbsPath(realPath) 参数：例如/static/upload/... 获取绝对路径
  */
 public class FileUtil {
     public static String getPrefix(String fileName) {
@@ -75,6 +75,7 @@ public class FileUtil {
 
     /**
      * 获取缓存文件夹
+     * @return String
      */
     public static String getTmpDir() {
         return System.getProperty("java.io.tmpdir");

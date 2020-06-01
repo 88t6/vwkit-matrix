@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author WangCheng
- * @date 2020/2/4
  */
 @RestController
 @RequestMapping("/api")

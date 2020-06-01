@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author WangCheng
- * @date 2020/2/6
  */
 @Mapper
 @TargetDataSource(value = "db1")

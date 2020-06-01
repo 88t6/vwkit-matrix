@@ -31,7 +31,6 @@ import java.util.stream.Collectors;
 
 /**
  * @author WangCheng
- * @date 2020/2/16
  */
 public class InitializeSqlContext {
 
@@ -81,7 +80,7 @@ public class InitializeSqlContext {
     /**
      * 获取文件资源
      *
-     * @return
+     * @return List
      */
     private List<FileEntity> getSortFileEntity() {
         Assert.isNotNull(locations, "locations");
@@ -161,7 +160,7 @@ public class InitializeSqlContext {
     /**
      * 获取初始化sql行
      *
-     * @return
+     * @return List
      */
     private List<InitSqlTableRow> getInitSqlTableRow() {
         return jdbcTemplate.query(String.format("select ID as id, " +
@@ -175,8 +174,8 @@ public class InitializeSqlContext {
     /**
      * 执行sql
      *
-     * @param sqlContent
-     * @param initSqlTableRow
+     * @param sqlContent 参数
+     * @param initSqlTableRow 参数
      */
     @Transactional
     public void executeSql(String sqlContent, InitSqlTableRow initSqlTableRow) {

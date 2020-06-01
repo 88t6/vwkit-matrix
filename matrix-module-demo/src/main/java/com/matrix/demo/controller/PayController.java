@@ -15,7 +15,6 @@ import java.math.BigDecimal;
 
 /**
  * @author wangcheng
- * @date 2020-02-27
  */
 @RestController
 @RequestMapping("/pay")

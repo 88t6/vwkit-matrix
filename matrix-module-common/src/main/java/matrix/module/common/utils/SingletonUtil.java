@@ -8,7 +8,6 @@ import java.util.Map;
 /**
  * 单例工具
  * @author wangcheng
- * @date 2019/3/28
  */
 public class SingletonUtil {
 

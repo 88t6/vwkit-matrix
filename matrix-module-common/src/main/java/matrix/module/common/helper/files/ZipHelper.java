@@ -1,16 +1,18 @@
 package matrix.module.common.helper.files;
 
-import java.io.*;
+import matrix.module.common.exception.ServiceException;
+import matrix.module.common.utils.StreamUtil;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
-
-import matrix.module.common.exception.ServiceException;
-import matrix.module.common.utils.StreamUtil;
 
 /**
  * zip工具
@@ -31,7 +33,6 @@ public class ZipHelper {
      *
      * @param sourceFilePath  压缩文件目录或文件
      * @param destZipFilePath 压缩文件路径
-     * @throws IOException
      */
     public void doCompress(String sourceFilePath, String destZipFilePath) {
         if (destZipFilePath == null || "".equals(destZipFilePath)
@@ -72,8 +73,6 @@ public class ZipHelper {
      *
      * @param sourceZipFilePath 压缩文件路径
      * @param destFilePath      解压缩文件路径
-     * @throws ZipException
-     * @throws IOException
      */
     public void doUnCompress(String sourceZipFilePath, String destFilePath) {
         if (sourceZipFilePath == null || "".equals(sourceZipFilePath)

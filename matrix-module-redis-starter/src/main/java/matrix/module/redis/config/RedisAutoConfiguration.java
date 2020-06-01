@@ -32,7 +32,6 @@ import java.util.List;
 
 /**
  * @author WangCheng
- * @date 2020/2/13
  */
 @Configuration
 @EnableConfigurationProperties(RedisProperties.class)

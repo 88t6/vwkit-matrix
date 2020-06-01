@@ -14,9 +14,9 @@ public class PackageScanUtil {
     /**
      * 获取文件列表
      *
-     * @param fileList
-     * @param filePath
-     * @return
+     * @param fileList 参数
+     * @param filePath 参数
+     * @return List
      */
     private static List<File> getFileList(List<File> fileList, String filePath) {
         File[] files = (new File(filePath.toString())).listFiles();
@@ -35,8 +35,8 @@ public class PackageScanUtil {
     /**
      * 获取class列表
      *
-     * @param packageName
-     * @return
+     * @param packageName 参数
+     * @return List
      */
     private static List<Class<?>> getClasses(String packageName) {
         List<Class<?>> classList = new ArrayList<Class<?>>();
@@ -59,8 +59,8 @@ public class PackageScanUtil {
     /**
      * 扫描
      *
-     * @param packageName
-     * @param callback
+     * @param packageName 参数
+     * @param callback 参数
      */
     public static void scan(String packageName, CallBack callback) {
         List<Class<?>> classList = getClasses(packageName);
@@ -77,7 +77,7 @@ public class PackageScanUtil {
         /**
          * 调用
          *
-         * @param classList
+         * @param classList 参数
          */
         void invoke(List<Class<?>> classList);
     }

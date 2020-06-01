@@ -2,11 +2,12 @@ package matrix.module.common.utils;
 
 import matrix.module.common.exception.ServiceException;
 
-import java.util.concurrent.*;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author: wangcheng
- * @date 2019/3/30
  */
 public class ThreadUtil {
 
@@ -21,7 +22,7 @@ public class ThreadUtil {
     /**
      * 获取线程池
      *
-     * @return
+     * @return ThreadPoolExecutor
      */
     public static ThreadPoolExecutor newThreadPool() {
         return new ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_SIZE, KEEP_ALIVE_TIME, TimeUnit.SECONDS,

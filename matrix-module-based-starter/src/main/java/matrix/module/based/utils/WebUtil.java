@@ -34,7 +34,7 @@ public class WebUtil implements ApplicationContextAware {
     /**
      * 获取ApplicationContext
      *
-     * @return
+     * @return ApplicationContext
      */
     public static ApplicationContext getApplicationContext() {
         return applicationContext;
@@ -48,8 +48,8 @@ public class WebUtil implements ApplicationContextAware {
     /**
      * 根据class获取bean
      *
-     * @param clazz
-     * @return
+     * @param clazz 类
+     * @return T
      */
     public static <T> T getBean(Class<T> clazz) {
         return applicationContext.getBean(clazz);
@@ -58,8 +58,8 @@ public class WebUtil implements ApplicationContextAware {
     /**
      * 根据beanName获取bean
      *
-     * @param name
-     * @return
+     * @param name 参数
+     * @return Object
      */
     public static Object getBean(String name) {
         return applicationContext.getBean(name);
@@ -68,9 +68,9 @@ public class WebUtil implements ApplicationContextAware {
     /**
      * 根据beanName和requiredType获取bean
      *
-     * @param name
-     * @param requiredType
-     * @return
+     * @param name 参数
+     * @param requiredType 参数
+     * @return T
      */
     public static <T> T getBean(String name, Class<T> requiredType) {
         return applicationContext.getBean(name, requiredType);
@@ -79,8 +79,8 @@ public class WebUtil implements ApplicationContextAware {
     /**
      * 根据beanName查找bean是否存在
      *
-     * @param name
-     * @return
+     * @param name 参数
+     * @return boolean
      */
     public static boolean containsBean(String name) {
         return applicationContext.containsBean(name);
@@ -89,8 +89,8 @@ public class WebUtil implements ApplicationContextAware {
     /**
      * 根据beanName判断是否是单例
      *
-     * @param name
-     * @return
+     * @param name 参数
+     * @return boolean
      */
     public static boolean isSingleton(String name) {
         return applicationContext.isSingleton(name);
@@ -99,8 +99,8 @@ public class WebUtil implements ApplicationContextAware {
     /**
      * 根据beanName获取类型
      *
-     * @param name
-     * @return
+     * @param name 参数
+     * @return Class
      */
     public static Class<?> getType(String name) {
         return applicationContext.getType(name);
@@ -109,8 +109,8 @@ public class WebUtil implements ApplicationContextAware {
     /**
      * 根据beanName获取别名
      *
-     * @param name
-     * @return
+     * @param name 参数
+     * @return String
      */
     public static String[] getAliases(String name) {
         return applicationContext.getAliases(name);
@@ -119,8 +119,8 @@ public class WebUtil implements ApplicationContextAware {
     /**
      * 获取容器context
      *
-     * @param request
-     * @return
+     * @param request 参数
+     * @return WebApplicationContext
      */
     public static WebApplicationContext getContext(HttpServletRequest request) {
         return WebApplicationContextUtils.getWebApplicationContext(request.getServletContext());
@@ -129,9 +129,9 @@ public class WebUtil implements ApplicationContextAware {
     /**
      * 获取用户唯一标识
      *
-     * @param request
-     * @param response
-     * @return
+     * @param request 参数
+     * @param response 参数
+     * @return String
      */
     public static String getUserTokenId(HttpServletRequest request, HttpServletResponse response) {
         String tokenId = CookieUtil.getCookieValue(request, WebUtil.LOGIN_KEY);

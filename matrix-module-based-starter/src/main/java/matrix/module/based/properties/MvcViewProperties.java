@@ -8,7 +8,6 @@ import java.io.Serializable;
 
 /**
  * @author WangCheng
- * @date 2020/2/4
  */
 @ConfigurationProperties(prefix = "mvc")
 @Data

@@ -2,9 +2,7 @@ package matrix.module.common.helper.code;
 
 import matrix.module.common.bean.VerifyCode;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
@@ -23,7 +21,7 @@ public class VerifyCodeHelper {
 
     /**
      * @param lineCount 模糊线数
-     * @return
+     * @return VerifyCodeHelper
      */
     public static VerifyCodeHelper getInstance(Integer lineCount) {
         return new VerifyCodeHelper(lineCount);
@@ -31,7 +29,6 @@ public class VerifyCodeHelper {
 
     /**
      * @param lineCount 模糊线数
-     * @return
      */
     public VerifyCodeHelper(Integer lineCount) {
         this.lineCount = lineCount;

@@ -2,7 +2,6 @@ package matrix.module.pay.constants;
 
 /**
  * @author wangcheng
- * @date 2019/4/26
  */
 public class PayConstant {
 

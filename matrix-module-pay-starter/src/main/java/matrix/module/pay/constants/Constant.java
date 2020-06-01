@@ -4,8 +4,7 @@ package matrix.module.pay.constants;
 import matrix.module.common.constant.BaseCodeConstant;
 
 /**
- * @author: wangcheng
- * @date 2019/4/26
+ * @author wangcheng
  */
 public class Constant extends BaseCodeConstant {
 

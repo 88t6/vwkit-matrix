@@ -13,7 +13,6 @@ import org.springframework.core.annotation.Order;
 
 /**
  * @author WangCheng
- * @date 2020/2/10
  */
 @Configuration
 @AutoConfigureAfter({DatabaseAutoConfiguration.class})

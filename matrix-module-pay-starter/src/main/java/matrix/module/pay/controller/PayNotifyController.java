@@ -18,7 +18,6 @@ import java.io.IOException;
 
 /**
  * @author wangcheng
- * @date 2019/4/26
  */
 @RestController
 public class PayNotifyController {

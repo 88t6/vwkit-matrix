@@ -6,19 +6,18 @@ import java.util.Date;
 
 /**
  * @author wangcheng
- * @date 2018/6/7
  */
 public class DateVerifyUtil {
 
     /**
      * 校验时间返回校验成功的时间
      *
-     * @param startTime
-     * @param endTime
-     * @param defaultLimitDay
-     * @param maxLimitDay
-     * @param timeFormat
-     * @return
+     * @param startTime 参数
+     * @param endTime 参数
+     * @param defaultLimitDay 参数
+     * @param maxLimitDay 参数
+     * @param timeFormat 参数
+     * @return Date[]
      */
     public static Date[] verifyDate(String startTime, String endTime,
                                     Integer defaultLimitDay, Integer maxLimitDay, DateUtil.TimeFormat timeFormat) {
@@ -46,8 +45,8 @@ public class DateVerifyUtil {
     /**
      * 校验时间
      *
-     * @param startDate
-     * @param endDate
+     * @param startDate 参数
+     * @param endDate 参数
      */
     private static void validate(Date startDate, Date endDate, Integer defaultLimitDay, Integer maxLimitDay) {
 

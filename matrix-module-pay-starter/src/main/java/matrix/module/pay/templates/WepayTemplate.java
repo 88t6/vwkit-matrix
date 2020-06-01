@@ -2,20 +2,17 @@ package matrix.module.pay.templates;
 
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
 import com.github.binarywang.wxpay.bean.notify.WxPayRefundNotifyResult;
-import com.github.binarywang.wxpay.bean.request.WxPayOrderQueryRequest;
 import com.github.binarywang.wxpay.bean.request.WxPayRefundQueryRequest;
 import com.github.binarywang.wxpay.bean.request.WxPayRefundRequest;
 import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.github.binarywang.wxpay.bean.result.WxPayOrderQueryResult;
 import com.github.binarywang.wxpay.bean.result.WxPayRefundQueryResult;
-import com.github.binarywang.wxpay.bean.result.WxPayRefundResult;
 import com.github.binarywang.wxpay.bean.result.WxPayUnifiedOrderResult;
 import com.github.binarywang.wxpay.config.WxPayConfig;
 import com.github.binarywang.wxpay.service.WxPayService;
 import com.github.binarywang.wxpay.util.SignUtils;
 import matrix.module.based.utils.JacksonUtil;
 import matrix.module.common.exception.ServiceException;
-import matrix.module.common.helper.encrypt.Base64;
 import matrix.module.common.helper.encrypt.MD5;
 import matrix.module.common.utils.BigDecimalUtil;
 import matrix.module.common.utils.StreamUtil;
@@ -36,12 +33,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
  * @author wangcheng
- * @date 2019/4/29
  */
 public class WepayTemplate extends AbstractTemplate {
 

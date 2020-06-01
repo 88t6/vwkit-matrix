@@ -1,13 +1,6 @@
 package matrix.module.common.utils;
 
 import com.alibaba.fastjson.JSONObject;
-import java.security.KeyStore;
-import java.security.SecureRandom;
-import java.util.Iterator;
-import java.util.Map;
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLContext;
-
 import matrix.module.common.bean.CertInfo;
 import matrix.module.common.enums.HttpParamEnum;
 import matrix.module.common.exception.ServiceException;
@@ -28,9 +21,15 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.BasicHttpClientConnectionManager;
 
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import java.security.KeyStore;
+import java.security.SecureRandom;
+import java.util.Iterator;
+import java.util.Map;
+
 /**
  * @author wangcheng
- * @date 2019/4/8
  */
 public class HttpClientUtil {
 
@@ -67,11 +66,11 @@ public class HttpClientUtil {
 
     /**
      * 基础get方法
-     * @param url
-     * @param params
-     * @param certInfo
-     * @param callBack
-     * @return
+     * @param url 参数
+     * @param params 参数
+     * @param certInfo 参数
+     * @param callBack 参数
+     * @return T
      */
     public static <T> T sendGet(String url, Map<String, ?> params, CertInfo certInfo, CallBack<T> callBack) {
         HttpGet httpGet = new HttpGet(toParams(params, url));
@@ -80,12 +79,12 @@ public class HttpClientUtil {
 
     /**
      * 基础post方法
-     * @param url
-     * @param body
-     * @param paramType
-     * @param certInfo
-     * @param callBack
-     * @return
+     * @param url 参数
+     * @param body 参数
+     * @param paramType 参数
+     * @param certInfo 参数
+     * @param callBack 参数
+     * @return T
      */
     public static <T> T sendPost(String url, String body, HttpParamEnum paramType, CertInfo certInfo, CallBack<T> callBack) {
     	try {
@@ -107,8 +106,8 @@ public class HttpClientUtil {
     /**
      * 调用
      *
-     * @param request
-     * @return
+     * @param request 参数
+     * @return T
      */
     private static <T> T invoke(final HttpRequestBase request, final CertInfo certInfo, final CallBack<T> callBack) {
         CloseableHttpClient client = null;

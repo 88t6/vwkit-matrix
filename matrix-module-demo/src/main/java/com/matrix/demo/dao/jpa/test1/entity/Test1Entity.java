@@ -10,7 +10,6 @@ import javax.persistence.Table;
 
 /**
  * @author WangCheng
- * @date 2020/2/6
  */
 @Data
 @Accessors(chain = true)

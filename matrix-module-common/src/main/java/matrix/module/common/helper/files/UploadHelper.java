@@ -1,17 +1,5 @@
 package matrix.module.common.helper.files;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
-
 import matrix.module.common.bean.UploadProgress;
 import matrix.module.common.bean.UploadResult;
 import matrix.module.common.exception.ServiceException;
@@ -24,6 +12,17 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * @author wangcheng
@@ -60,7 +59,7 @@ public class UploadHelper {
     /**
      * 文件上传
      *
-     * @return
+     * @return Map
      */
     public Map<String, UploadResult> upload(HttpServletRequest request) {
         return upload(request, null);
@@ -69,7 +68,7 @@ public class UploadHelper {
     /**
      * 文件上传
      *
-     * @return
+     * @return Map
      */
     public Map<String, UploadResult> upload(HttpServletRequest request, UploadProgress<?> progress) {
         if (!request.getClass().getName().toLowerCase().contains(MULTIPART_FLAG)) {
@@ -83,11 +82,7 @@ public class UploadHelper {
      * spring.servlet.multipart.enabled=true
      *
      * @param request
-     * @return
-     * @throws FileUploadException
-     * @throws IOException
-     * @throws InterruptedException
-     * @throws ServletException
+     * @return Map
      */
     public Map<String, UploadResult> uploadMultipart(HttpServletRequest request) {
         try {
@@ -159,11 +154,7 @@ public class UploadHelper {
      *
      * @param request
      * @param progress
-     * @return
-     * @throws FileUploadException
-     * @throws IOException
-     * @throws InterruptedException
-     * @throws ServletException
+     * @return Map
      */
     public Map<String, UploadResult> uploadNoMultipart(HttpServletRequest request, UploadProgress<?> progress) {
         if (!ServletFileUpload.isMultipartContent(request)) {

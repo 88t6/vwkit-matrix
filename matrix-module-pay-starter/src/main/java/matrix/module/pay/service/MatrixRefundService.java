@@ -6,7 +6,6 @@ import java.util.List;
 
 /**
  * @author WangCheng
- * @date 2020/2/20
  */
 public interface MatrixRefundService {
 
@@ -21,7 +20,7 @@ public interface MatrixRefundService {
      * 更新为退款成功
      *
      * @param refundIds
-     * @return
+     * @return List
      */
     List<MatrixRefundEntity> changeRefunded(List<String> refundIds);
 
@@ -29,7 +28,7 @@ public interface MatrixRefundService {
      * 查询未退款的实体
      *
      * @param payId
-     * @return
+     * @return List
      */
     List<MatrixRefundEntity> getRefundEntityByNoRefund(String payId);
 
@@ -37,7 +36,7 @@ public interface MatrixRefundService {
      * 查询已退款的实体
      *
      * @param payId
-     * @return
+     * @return List
      */
     List<MatrixRefundEntity> getRefundEntityByRefunded(String payId);
 }

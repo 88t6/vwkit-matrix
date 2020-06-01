@@ -6,7 +6,6 @@ import java.util.List;
 
 /**
  * @author wangcheng
- * @date 2019/4/11
  */
 public class TreeUtil {
 
@@ -31,16 +30,16 @@ public class TreeUtil {
     public interface Comparator<T> {
         /**
          * 比较是否是父子
-         * @param parent
-         * @param child
-         * @return
+         * @param parent 参数
+         * @param child 参数
+         * @return boolean
          */
         boolean isParentWithChild(T parent, T child);
 
         /**
          * 是否是顶级
-         * @param t
-         * @return
+         * @param t 参数
+         * @return boolean
          */
         boolean isTop(T t);
     }

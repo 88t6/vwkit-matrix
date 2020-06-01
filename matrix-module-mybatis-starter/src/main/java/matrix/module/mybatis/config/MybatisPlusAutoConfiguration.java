@@ -43,7 +43,6 @@ import java.util.List;
 
 /**
  * @author WangCheng
- * @date 2020/2/5
  */
 @Configuration
 @EnableConfigurationProperties(MybatisProperties.class)

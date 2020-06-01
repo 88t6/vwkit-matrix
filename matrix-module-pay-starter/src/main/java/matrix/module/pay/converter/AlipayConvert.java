@@ -19,7 +19,6 @@ import java.math.BigDecimal;
 
 /**
  * @author wangcheng
- * @date 2019/4/26
  */
 public class AlipayConvert {
 

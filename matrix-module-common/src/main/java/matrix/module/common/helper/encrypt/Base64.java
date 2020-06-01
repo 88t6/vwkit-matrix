@@ -4,8 +4,8 @@ import matrix.module.common.utils.StringUtil;
 
 /**
  * @author wangcheng
- * @encrypt base64加密   bytes传入加密数据的字节
- * @decrypt() base64解密  base64code传入需要解密的数据
+ * encrypt base64加密   bytes传入加密数据的字节
+ * decrypt() base64解密  base64code传入需要解密的数据
  */
 public class Base64 {
 

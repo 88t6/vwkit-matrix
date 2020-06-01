@@ -20,7 +20,6 @@ import java.io.IOException;
 
 /**
  * @author wangcheng
- * @date 2019/4/29
  */
 @RestController
 public class ForwardPayController {

@@ -4,7 +4,6 @@ import matrix.module.common.utils.RandomUtil;
 
 /**
  * @author: wangcheng
- * @date 2019/4/29
  */
 public class WepayConstant {
 

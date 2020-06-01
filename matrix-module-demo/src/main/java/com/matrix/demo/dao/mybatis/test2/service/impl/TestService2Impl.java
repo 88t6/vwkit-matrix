@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 /**
  * @author WangCheng
- * @date 2020/2/6
  */
 @Service
 public class TestService2Impl extends ServiceImpl<Test2Mapper, Test2> implements TestService2 {

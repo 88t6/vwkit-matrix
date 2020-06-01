@@ -19,7 +19,6 @@ import javax.sql.DataSource;
 
 /**
  * @author WangCheng
- * @date 2020/2/5
  */
 @Configuration
 @AutoConfigureAfter({DatabaseAutoConfiguration.class})

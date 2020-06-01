@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author WangCheng
- * @date 2020/2/6
  */
 @Transactional
 public interface TestService2 extends IService<Test2> {

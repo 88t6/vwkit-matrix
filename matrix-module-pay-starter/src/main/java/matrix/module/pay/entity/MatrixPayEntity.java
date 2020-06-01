@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 
 /**
  * @author wangcheng
- * @date 2018/12/25
  */
 @Data
 @Accessors(chain = true)

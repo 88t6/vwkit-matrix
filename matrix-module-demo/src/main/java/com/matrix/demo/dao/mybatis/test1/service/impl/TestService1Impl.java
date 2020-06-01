@@ -10,7 +10,6 @@ import javax.annotation.Resource;
 
 /**
  * @author WangCheng
- * @date 2020/2/6
  */
 @Service
 public class TestService1Impl extends ServiceImpl<Test1Mapper, Test1> implements TestService1 {

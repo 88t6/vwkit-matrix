@@ -8,7 +8,6 @@ import java.util.List;
 
 /**
  * @author WangCheng
- * @date 2020/2/20
  */
 public interface MatrixPayService {
 
@@ -23,7 +22,7 @@ public interface MatrixPayService {
      * 更新为支付成功
      *
      * @param queryPayResponses
-     * @return
+     * @return List
      */
     List<MatrixPayEntity> changePayed(List<QueryPayResponse> queryPayResponses);
 
@@ -31,7 +30,7 @@ public interface MatrixPayService {
      * 根据payId获取实体
      *
      * @param payId
-     * @return
+     * @return MatrixPayEntity
      */
     MatrixPayEntity getPayEntityByPayId(String payId);
 
@@ -40,7 +39,7 @@ public interface MatrixPayService {
      *
      * @param orderId
      * @param payChannel
-     * @return
+     * @return List
      */
     List<MatrixPayEntity> getPayEntityByPayed(String orderId, String payChannel);
 
@@ -49,7 +48,7 @@ public interface MatrixPayService {
      *
      * @param outTradeNo
      * @param payChannel
-     * @return
+     * @return List
      */
     List<MatrixPayEntity> getPayEntityByPayedForOutTradeNo(String outTradeNo, String payChannel);
 
@@ -58,7 +57,7 @@ public interface MatrixPayService {
      *
      * @param orderId
      * @param payChannel
-     * @return
+     * @return List
      */
     List<MatrixPayEntity> getPayEntityByNoPay(String orderId, String payChannel);
 
