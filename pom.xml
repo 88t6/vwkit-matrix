@@ -16,8 +16,16 @@
         </developer>
     </developers>
 
+    <description>vwkit-matrix</description>
+    <url>https://github.com/88t6/vwkit-matrix</url>
+    <licenses>
+        <license>
+            <name>Apache 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
     <scm>
-        <url>https://github.com/88t6/vwkit-matrix</url>
+        <url>https://github.com/88t6/vwkit-matrix.git</url>
     </scm>
 
     <modules>
