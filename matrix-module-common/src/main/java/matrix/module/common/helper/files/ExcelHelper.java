@@ -1,5 +1,7 @@
 package matrix.module.common.helper.files;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
 import matrix.module.common.bean.ExcelColumn;
 import matrix.module.common.convert.ExcelColumnConvert;
 import matrix.module.common.enums.ExcelEnum;
@@ -16,6 +18,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -223,4 +226,26 @@ public class ExcelHelper {
             StreamUtil.closeStream(book);
         }
     }
+
+    /**
+     * 导入excel Map
+     * @param fileName 文件名
+     * @param excelEnum excel导入类型
+     * @return excel解析的数据
+     */
+    public Map<String, List<LinkedHashMap<String, Object>>> importForMap(String fileName, ExcelEnum excelEnum) {
+        return null;
+    }
+
+    /**
+     * 导入excel Bean
+     * @param fileName 文件名
+     * @param excelEnum excel导入类型
+     * @param clazz 类名 注解(@Excel)
+     * @return excel解析的数据
+     */
+    public <T extends Serializable> Map<String, List<T>> importForBean(String fileName, ExcelEnum excelEnum, Class<T> clazz) {
+        return null;
+    }
+
 }
