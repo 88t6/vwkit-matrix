@@ -1,9 +1,8 @@
 package poi;
 
-import com.alibaba.fastjson.JSONObject;
 import matrix.module.common.annotation.Excel;
 import matrix.module.common.enums.ExcelEnum;
-import matrix.module.common.helper.files.excel.ExcelHelper;
+import matrix.module.common.helper.files.ExcelHelper;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -30,14 +29,14 @@ public class ExcelTest {
         params.put("sheet1", rows);
 
         ExcelHelper excelHelper = ExcelHelper.getInstance("D:\\");
-        System.out.println(excelHelper.exportExcelForMap(params, ExcelEnum.SXSSF));
+        System.out.println(excelHelper.exportForMap(params, ExcelEnum.SXSSF, "2152ac09-e976-492e-8368-1739c888bb03.xlsx"));
     }
 
-    @Test
-    public void testImportForMap() throws IOException {
-        ExcelHelper excelUtils = ExcelHelper.getInstance("D:\\");
-        System.out.println(JSONObject.toJSONString(excelUtils.importExcel("d3ac136e-3ad9-4ecf-8624-3b2dae5dcf9b.xlsx", ExcelEnum.SXSSF)));
-    }
+//    @Test
+//    public void testImportForMap() throws IOException {
+//        ExcelHelper excelUtils = ExcelHelper.getInstance("D:\\");
+//        System.out.println(JSONObject.toJSONString(excelUtils.importExcel("d3ac136e-3ad9-4ecf-8624-3b2dae5dcf9b.xlsx", ExcelEnum.SXSSF)));
+//    }
 
     @Test
     public void testExportForBean() throws IOException {
@@ -48,7 +47,7 @@ public class ExcelTest {
         }
         exportData.put("test", data);
         ExcelHelper excelUtils = ExcelHelper.getInstance("D:\\");
-        excelUtils.exportExcelForBean(exportData, ExcelEnum.SXSSF);
+        excelUtils.exportForBean(exportData, ExcelEnum.SXSSF, null);
     }
 
     public static class TestVo implements Serializable {
