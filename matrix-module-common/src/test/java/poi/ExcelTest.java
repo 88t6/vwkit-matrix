@@ -12,7 +12,7 @@ import java.util.*;
 
 public class ExcelTest {
 
-    //@Test
+    @Test
     public void testExportForMap() throws IOException {
         LinkedHashMap<String, Object> cells = new LinkedHashMap<>();
         cells.put("date", new Date());
@@ -33,7 +33,7 @@ public class ExcelTest {
         System.out.println(excelHelper.exportExcelForMap(params, ExcelEnum.SXSSF));
     }
 
-    //@Test
+    @Test
     public void testImportForMap() throws IOException {
         ExcelHelper excelUtils = ExcelHelper.getInstance("D:\\");
         System.out.println(JSONObject.toJSONString(excelUtils.importExcel("d3ac136e-3ad9-4ecf-8624-3b2dae5dcf9b.xlsx", ExcelEnum.SXSSF)));

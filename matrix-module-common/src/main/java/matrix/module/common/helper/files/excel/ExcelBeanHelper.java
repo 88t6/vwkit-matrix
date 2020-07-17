@@ -75,9 +75,7 @@ class ExcelBeanHelper {
      * Excel生成
      */
     private void generateExcelFile(Workbook book, Map<String, List<? extends Serializable>> exportData) {
-        Iterator<String> iterator = exportData.keySet().iterator();
-        while (iterator.hasNext()) {
-            String key = iterator.next();
+        for (String key : exportData.keySet()) {
             List<? extends Serializable> list = exportData.get(key);
             Sheet sheet = book.createSheet("AutoCreate_" + key);
             if (list == null || list.size() <= 0) {
@@ -120,12 +118,12 @@ class ExcelBeanHelper {
             if (columnData.getType().equals(Date.class)) {
                 cellStyle.setDataFormat(book.createDataFormat().getFormat("yyyy-MM-dd HH:mm:ss"));
                 Date date = new Date();
-                date.setTime(Long.valueOf(String.valueOf(value)));
+                date.setTime(Long.parseLong(String.valueOf(value)));
                 cell.setCellValue(date);
             } else if (columnData.getType().getName().equals(Double.class.getName())) {
-                cell.setCellValue(Double.valueOf(String.valueOf(value)));
+                cell.setCellValue(Double.parseDouble(String.valueOf(value)));
             } else if (columnData.getType().getName().equals(Boolean.class.getName())) {
-                cell.setCellValue(Boolean.valueOf(String.valueOf(value)));
+                cell.setCellValue(Boolean.parseBoolean(String.valueOf(value)));
             } else {
                 cell.setCellValue(String.valueOf(value));
             }
@@ -146,8 +144,7 @@ class ExcelBeanHelper {
         }
         List<ExcelColumnData> result = new ArrayList<>();
         ExcelColumnData excelColumnData;
-        for (int i = 0; i < fields.length; i++) {
-            Field field = fields[i];
+        for (Field field : fields) {
             Excel annotation = field.getDeclaredAnnotation(Excel.class);
             if (annotation == null) {
                 continue;
@@ -155,7 +152,7 @@ class ExcelBeanHelper {
             excelColumnData = new ExcelColumnData();
             excelColumnData.setName(field.getName());
             //value字段解析
-            if (annotation.value() != null && !"".equals(annotation.value())) {
+            if (!"".equals(annotation.value())) {
                 excelColumnData.setColumnName(annotation.value());
             } else {
                 excelColumnData.setColumnName(field.getName());
@@ -172,7 +169,7 @@ class ExcelBeanHelper {
         return result;
     }
 
-    class ExcelColumnData {
+    static class ExcelColumnData {
         private String name;
 
         private String columnName;

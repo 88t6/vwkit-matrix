@@ -168,9 +168,7 @@ class ExcelMapHelper {
      * Excel生成
      */
     private void generateExcelFile(Workbook book, Map<String, List<LinkedHashMap<String, Object>>> exportData) {
-        Iterator<String> iterator = exportData.keySet().iterator();
-        while (iterator.hasNext()) {
-            String key = iterator.next();
+        for (String key : exportData.keySet()) {
             List<LinkedHashMap<String, Object>> list = exportData.get(key);
             Sheet sheet = book.createSheet("AutoCreate_" + key);
             if (list == null || list.isEmpty()) {
@@ -205,13 +203,13 @@ class ExcelMapHelper {
         if (isTitle) {
             cell.setCellValue(String.valueOf(value));
         } else {
-            if (Date.class.isInstance(value)) {
+            if (value instanceof Date) {
                 cell.setCellValue((Date) value);
                 DataFormat df = book.createDataFormat();
                 cellStyle.setDataFormat(df.getFormat("yyyy-MM-dd HH:mm:ss"));
-            } else if (Double.class.isInstance(value)) {
+            } else if (value instanceof Double) {
                 cell.setCellValue((Double) value);
-            } else if (Boolean.class.isInstance(value)) {
+            } else if (value instanceof Boolean) {
                 cell.setCellValue((Boolean) value);
             } else {
                 cell.setCellValue(String.valueOf(value));
