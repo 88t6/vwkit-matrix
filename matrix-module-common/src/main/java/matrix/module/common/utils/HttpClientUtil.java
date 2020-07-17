@@ -228,12 +228,10 @@ public class HttpClientUtil {
             return url;
         }
         StringBuilder result = new StringBuilder();
-        Iterator<String> iterable = params.keySet().iterator();
-        while (iterable.hasNext()) {
+        for (String key : params.keySet()) {
             if (result.length() > 0) {
                 result.append("&");
             }
-            String key = iterable.next();
             String value = String.valueOf(params.get(key));
             result.append(StringUtil.encodeUrl(key));
             if (value != null && !"".equals(value)) {
