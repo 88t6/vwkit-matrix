@@ -1,13 +1,17 @@
 package matrix.module.common.convert;
 
+import com.alibaba.fastjson.JSONObject;
 import matrix.module.common.annotation.Excel;
 import matrix.module.common.bean.ExcelColumn;
+import matrix.module.common.exception.ServiceException;
 import matrix.module.common.helper.Assert;
 import matrix.module.common.utils.StringUtil;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DateUtil;
+
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * excel列转换器
@@ -79,5 +83,88 @@ public class ExcelColumnConvert {
             result.add(row);
         }
         return result;
+    }
+
+    /**
+     * 转换为列值
+     *
+     * @param cell excel cell
+     * @return cell value
+     */
+    public static Object convertCellValue(Cell cell) {
+        String cellType = cell.getCellTypeEnum().name();
+        if (CellType._NONE.name().equals(cellType)) {
+            return null;
+        }
+        if (CellType.NUMERIC.name().equals(cellType)) {
+            if (DateUtil.isCellDateFormatted(cell)) {
+                return cell.getDateCellValue();
+            } else {
+                return cell.getNumericCellValue();
+            }
+        }
+        if (CellType.STRING.name().equals(cellType)) {
+            return cell.getStringCellValue();
+        }
+        if (CellType.FORMULA.name().equals(cellType)) {
+            throw new ServiceException(
+                    String.format("excel parse error not support formula %s by row:%d cell:%d",
+                            cell.getCellFormula(), cell.getRowIndex() + 1, cell.getColumnIndex() + 1));
+        }
+        if (CellType.BLANK.name().equals(cellType)) {
+            return "";
+        }
+        if (CellType.BOOLEAN.name().equals(cellType)) {
+            return cell.getBooleanCellValue();
+        }
+        if (CellType.ERROR.name().equals(cellType)) {
+            throw new ServiceException("excel import error code: " + cell.getErrorCellValue());
+        }
+        return cell.getStringCellValue();
+    }
+
+    /**
+     * 将json转换为泛型的值
+     *
+     * @param jsonObject json对象
+     * @param clazz      泛型
+     * @return new 泛型对象
+     */
+    public static <T> T convertJsonToGeneric(JSONObject jsonObject, Class<T> clazz) {
+        try {
+            if (Map.class.isAssignableFrom(clazz)) {
+                return JSONObject.parseObject(jsonObject.toJSONString(), clazz);
+            } else {
+                //实体模式
+                T t = clazz.newInstance();
+                Field[] fields = t.getClass().getDeclaredFields();
+                for (Field field : fields) {
+                    field.setAccessible(true);
+                    Excel annotation = field.getDeclaredAnnotation(Excel.class);
+                    if (annotation == null) {
+                        continue;
+                    }
+                    try {
+                        String key = StringUtil.isNotEmpty(annotation.value()) ? annotation.value() : field.getName();
+                        if (Date.class.equals(field.getType())) {
+                            field.set(t, jsonObject.getDate(key));
+                        } else if (Double.class.equals(field.getType())) {
+                            field.set(t, jsonObject.getDoubleValue(key));
+                        } else if (Boolean.class.equals(field.getType())) {
+                            field.set(t, jsonObject.getBooleanValue(key));
+                        } else if (Integer.class.equals(field.getType())) {
+                            field.set(t, jsonObject.getInteger(key));
+                        } else {
+                            field.set(t, jsonObject.getString(key));
+                        }
+                    } catch (Exception e) {
+                        //无需操作
+                    }
+                }
+                return t;
+            }
+        } catch (Exception e) {
+            throw new ServiceException(e);
+        }
     }
 }

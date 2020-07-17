@@ -1,5 +1,6 @@
 package poi;
 
+import com.alibaba.fastjson.JSONObject;
 import matrix.module.common.annotation.Excel;
 import matrix.module.common.enums.ExcelEnum;
 import matrix.module.common.helper.files.ExcelHelper;
@@ -32,11 +33,31 @@ public class ExcelTest {
         System.out.println(excelHelper.exportForMap(params, ExcelEnum.SXSSF, "2152ac09-e976-492e-8368-1739c888bb03.xlsx"));
     }
 
-//    @Test
-//    public void testImportForMap() throws IOException {
-//        ExcelHelper excelUtils = ExcelHelper.getInstance("D:\\");
-//        System.out.println(JSONObject.toJSONString(excelUtils.importExcel("d3ac136e-3ad9-4ecf-8624-3b2dae5dcf9b.xlsx", ExcelEnum.SXSSF)));
-//    }
+    @Test
+    public void testImportForBean() throws IOException {
+        ExcelHelper excelUtils = ExcelHelper.getInstance("D:\\");
+        List<String> list = excelUtils.importExcel("e25c34c0-8cb8-47fa-b2d7-45b00a7603f0.xlsx", ExcelEnum.SXSSF, null, 10, new ExcelHelper.CallBack<String, TestVo>() {
+            @Override
+            public List<String> execute(String sheetName, List<TestVo> rows) {
+                System.out.println(JSONObject.toJSONString(rows));
+                return null;
+            }
+        });
+        System.out.println(JSONObject.toJSONString(list));
+    }
+
+    @Test
+    public void testImportForMap() throws IOException {
+        ExcelHelper excelUtils = ExcelHelper.getInstance("D:\\");
+        List<String> list = excelUtils.importExcel("e25c34c0-8cb8-47fa-b2d7-45b00a7603f0.xlsx", ExcelEnum.SXSSF, null, 10, new ExcelHelper.CallBack<String, HashMap<String, Object>>() {
+            @Override
+            public List<String> execute(String sheetName, List<HashMap<String, Object>> rows) {
+                System.out.println(JSONObject.toJSONString(rows));
+                return null;
+            }
+        });
+        System.out.println(JSONObject.toJSONString(list));
+    }
 
     @Test
     public void testExportForBean() throws IOException {
@@ -61,6 +82,10 @@ public class ExcelTest {
 
         @Excel(value = "日期", width = 300)
         private Date now;
+
+        public TestVo() {
+
+        }
 
         public TestVo(Integer id, String name, Date now) {
             this.id = id;

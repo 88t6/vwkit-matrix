@@ -1,12 +1,12 @@
 package matrix.module.common.helper.files;
 
-import lombok.Data;
-import lombok.experimental.Accessors;
+import com.alibaba.fastjson.JSONObject;
 import matrix.module.common.bean.ExcelColumn;
 import matrix.module.common.convert.ExcelColumnConvert;
 import matrix.module.common.enums.ExcelEnum;
 import matrix.module.common.exception.ServiceException;
 import matrix.module.common.helper.Assert;
+import matrix.module.common.utils.ClassUtil;
 import matrix.module.common.utils.RandomUtil;
 import matrix.module.common.utils.StreamUtil;
 import matrix.module.common.utils.StringUtil;
@@ -15,10 +15,10 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -209,6 +209,8 @@ public class ExcelHelper {
                             cell.setCellValue((Double) column.getValue());
                         } else if (Boolean.class.equals(column.getType())) {
                             cell.setCellValue((Boolean) column.getValue());
+                        } else if (Integer.class.equals(column.getType())) {
+                            cell.setCellValue((Integer) column.getValue());
                         } else {
                             cell.setCellValue(String.valueOf(column.getValue()));
                         }
@@ -228,24 +230,94 @@ public class ExcelHelper {
     }
 
     /**
-     * 导入excel Map
+     * 导入excel
      * @param fileName 文件名
      * @param excelEnum excel导入类型
-     * @return excel解析的数据
+     * @param sheetName sheet名称
+     * @param batchSize 每批次数量
+     * @param callBack 回调函数
+     * @return 处理返回的数据
      */
-    public Map<String, List<LinkedHashMap<String, Object>>> importForMap(String fileName, ExcelEnum excelEnum) {
-        return null;
+    @SuppressWarnings("unchecked")
+    public <T, S> List<T> importExcel(String fileName, ExcelEnum excelEnum, String sheetName, Integer batchSize, CallBack<T, S> callBack) {
+        Assert.isNotNull(fileName, "fileName");
+        Assert.isNotNull(excelEnum, "excelEnum");
+        Assert.isNotNull(callBack, "callBack");
+        Workbook book = null;
+        FileInputStream fis = null;
+        try {
+            File file = new File(filePath, fileName);
+            Assert.state(file.exists(), "file not found!");
+            fis = new FileInputStream(file);
+            if (excelEnum.getClazz().equals(SXSSFWorkbook.class) || excelEnum.getClazz().equals(XSSFWorkbook.class)) {
+                book = new XSSFWorkbook(fis);
+            } else if (excelEnum.getClazz().equals(HSSFWorkbook.class)) {
+                book = new HSSFWorkbook(fis);
+            }
+            Assert.state(book != null, "book获取失败");
+            assert book != null;
+            //创建sheet页集合
+            List<Sheet> sheets = new ArrayList<>();
+            if (StringUtil.isEmpty(sheetName)) {
+                for (Sheet sheet : book) {
+                    sheets.add(sheet);
+                }
+            } else {
+                sheets.add(book.getSheet(sheetName));
+            }
+            //获取callback上的第一个泛型
+            Class<S> clazz = (Class<S>) ClassUtil.getGenericTypes(callBack.getClass(), 1);
+            List<S> params = new ArrayList<>();
+            List<T> result = new ArrayList<>();
+            for (Sheet sheet : sheets) {
+                if (sheet == null || sheet.getLastRowNum() <= 0) {
+                    continue;
+                }
+                List<String> titles = new ArrayList<>();
+                for (Row row : sheet) {
+                    if (row.getRowNum() == 0) {
+                        for (Cell cell : row) {
+                            titles.add(cell.getStringCellValue());
+                        }
+                        continue;
+                    }
+                    JSONObject jsonObject = new JSONObject();
+                    for (int i = 0; i < titles.size(); i++) {
+                        jsonObject.put(titles.get(i), ExcelColumnConvert.convertCellValue(row.getCell(i)));
+                    }
+                    //add数据
+                    params.add(ExcelColumnConvert.convertJsonToGeneric(jsonObject, clazz));
+                    //批处理数据
+                    if (params.size() >= batchSize) {
+                        List<T> processResult = callBack.execute(sheet.getSheetName(), params);
+                        if (!CollectionUtils.isEmpty(processResult)) {
+                            result.addAll(processResult);
+                        }
+                        params.clear();
+                    }
+                }
+                //批处理数据
+                if (!CollectionUtils.isEmpty(params)) {
+                    List<T> processResult = callBack.execute(sheet.getSheetName(), params);
+                    if (!CollectionUtils.isEmpty(processResult)) {
+                        result.addAll(processResult);
+                    }
+                    params.clear();
+                }
+            }
+            return result;
+        } catch (Exception e) {
+            throw new ServiceException(e);
+        } finally {
+            StreamUtil.closeStream(fis);
+            StreamUtil.closeStream(book);
+        }
     }
 
     /**
-     * 导入excel Bean
-     * @param fileName 文件名
-     * @param excelEnum excel导入类型
-     * @param clazz 类名 注解(@Excel)
-     * @return excel解析的数据
+     * 回调函数
      */
-    public <T extends Serializable> Map<String, List<T>> importForBean(String fileName, ExcelEnum excelEnum, Class<T> clazz) {
-        return null;
+    public interface CallBack<T, S> {
+        List<T> execute(String sheetName, List<S> rows);
     }
-
 }
