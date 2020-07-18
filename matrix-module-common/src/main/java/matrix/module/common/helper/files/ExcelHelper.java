@@ -1,6 +1,7 @@
 package matrix.module.common.helper.files;
 
 import com.alibaba.fastjson.JSONObject;
+import com.monitorjbl.xlsx.StreamingReader;
 import matrix.module.common.bean.ExcelColumn;
 import matrix.module.common.convert.ExcelColumnConvert;
 import matrix.module.common.enums.ExcelEnum;
@@ -11,20 +12,10 @@ import matrix.module.common.utils.RandomUtil;
 import matrix.module.common.utils.StreamUtil;
 import matrix.module.common.utils.StringUtil;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.poifs.filesystem.NPOIFSFileSystem;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.util.*;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 /**
  * excel导出工具
@@ -58,7 +49,7 @@ public class ExcelHelper {
     /**
      * 导出Bean单个sheet
      *
-     * @param data  数据
+     * @param data      数据
      * @param excelEnum excel导入类型
      * @return 文件名
      */
@@ -90,7 +81,7 @@ public class ExcelHelper {
     /**
      * 导出Map单个sheet
      *
-     * @param data  数据
+     * @param data      数据
      * @param excelEnum excel导入类型
      * @return 文件名
      */
@@ -145,13 +136,15 @@ public class ExcelHelper {
     /**
      * 导出excel(核心方法)
      *
-     * @param listener 数据监听器
+     * @param listener  数据监听器
      * @param excelEnum excel导入类型
-     * @param isBean  是否是实体（非实体为map）
+     * @param isBean    是否是实体（非实体为map）
      * @return 文件名
      */
     @SuppressWarnings({"unchecked"})
     private <T> String exportExcel(ExportMultiSheetListener<T> listener, ExcelEnum excelEnum, boolean isBean) {
+        Assert.isNotNull(listener, "listener");
+        Assert.isNotNull(excelEnum, "excelEnum");
         Workbook book = null;
         FileOutputStream fos = null;
         try {
@@ -168,7 +161,7 @@ public class ExcelHelper {
             cellStyleMap.put(String.class, commonCellStyle);
             //准备写入数据
             int count = 0;
-            while(true) {
+            while (true) {
                 Map<String, List<T>> originData = listener.getData(count++);
                 //检查数据是否为空（为空停止获取数据）
                 if (originData == null || originData.size() <= 0
@@ -176,7 +169,7 @@ public class ExcelHelper {
                     break;
                 }
                 //解析数据
-                for (String sheetName: originData.keySet()) {
+                for (String sheetName : originData.keySet()) {
                     List<T> originRows = originData.get(sheetName);
                     if (CollectionUtils.isEmpty(originRows)) {
                         continue;
@@ -264,11 +257,12 @@ public class ExcelHelper {
     }
 
     /**
-     * 导入excel
-     * @param fileName 文件名
-     * @param excelEnum excel导入类型
-     * @param sheetName sheet名称
-     * @param batchSize 每批次数量
+     * 导入excel(核心方法)
+     *
+     * @param fileName       文件名
+     * @param excelEnum      excel导入类型
+     * @param sheetName      sheet名称
+     * @param batchSize      每批次数量
      * @param importCallBack 回调函数
      * @return 处理返回的数据
      */
@@ -278,18 +272,10 @@ public class ExcelHelper {
         Assert.isNotNull(excelEnum, "excelEnum");
         Assert.isNotNull(importCallBack, "callBack");
         Workbook book = null;
-        FileInputStream fis = null;
         try {
             File file = new File(filePath, fileName);
             Assert.state(file.exists(), "file not found!");
-            fis = new FileInputStream(file);
-            if (excelEnum.getClazz().equals(SXSSFWorkbook.class) || excelEnum.getClazz().equals(XSSFWorkbook.class)) {
-                book = new XSSFWorkbook(fis);
-            } else if (excelEnum.getClazz().equals(HSSFWorkbook.class)) {
-                book = new HSSFWorkbook(fis);
-            }
-            Assert.state(book != null, "book获取失败");
-            assert book != null;
+            book = StreamingReader.builder().rowCacheSize(ROW_ACCESS_WINDOW_SIZE).open(file);
             //创建sheet页集合
             List<Sheet> sheets = new ArrayList<>();
             if (StringUtil.isEmpty(sheetName)) {
@@ -304,7 +290,7 @@ public class ExcelHelper {
             List<S> params = new ArrayList<>();
             List<T> result = new ArrayList<>();
             for (Sheet sheet : sheets) {
-                if (sheet == null || sheet.getLastRowNum() <= 0) {
+                if (sheet == null) {
                     continue;
                 }
                 List<String> titles = new ArrayList<>();
@@ -343,7 +329,6 @@ public class ExcelHelper {
         } catch (Exception e) {
             throw new ServiceException(e);
         } finally {
-            StreamUtil.closeStream(fis);
             StreamUtil.closeStream(book);
         }
     }
@@ -355,6 +340,7 @@ public class ExcelHelper {
 
         /**
          * 获取数据
+         *
          * @param count 处理次数
          * @return 需要写入excel中的数据
          */
@@ -368,6 +354,7 @@ public class ExcelHelper {
 
         /**
          * 获取数据
+         *
          * @param count 处理次数
          * @return 需要写入excel中的数据
          */
@@ -380,8 +367,9 @@ public class ExcelHelper {
     public interface ImportCallBack<T, S> {
         /**
          * 处理数据
+         *
          * @param sheetName sheet名
-         * @param rows 总行数
+         * @param rows      总行数
          * @return 处理需要返回的值
          */
         List<T> processData(String sheetName, List<S> rows);
