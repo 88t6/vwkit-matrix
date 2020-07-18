@@ -13,32 +13,53 @@ import java.util.*;
 public class ExcelTest {
 
     @Test
-    public void testExportForMap() throws IOException {
-        LinkedHashMap<String, Object> cells = new LinkedHashMap<>();
-        cells.put("date", new Date());
-        cells.put("number", 11111111111L);
-        cells.put("boolean", true);
-        cells.put("str", "asdajsdjaksd");
+    public void testExportForBean() throws IOException {
+        ExcelHelper excelUtils = ExcelHelper.getInstance("D:\\");
+        String fileName = excelUtils.exportMultiForBean(count -> {
+            if (count <= 100) {
+                Map<String, List<TestVo>> exportData = new HashMap<>();
+                List<TestVo> data = new ArrayList<>();
+                for (int i = 0; i < 10000; i++) {
+                    data.add(new TestVo(i, "a", new Date()));
+                }
+                exportData.put("test", data);
+                return exportData;
+            }
+            return null;
+        }, ExcelEnum.EXCEL2007);
+        System.out.println(fileName);
+    }
 
-        List<LinkedHashMap<String, Object>> rows = new ArrayList<>();
-        rows.add(cells);
-        rows.add(cells);
-        rows.add(cells);
-
-        Map<String, List<LinkedHashMap<String, Object>>> params = new HashMap<>();
-        params.put("sheet0", rows);
-        params.put("sheet1", rows);
-
+    @Test
+    public void testExportForMap() {
         ExcelHelper excelHelper = ExcelHelper.getInstance("D:\\");
-        System.out.println(excelHelper.exportForMap(params, ExcelEnum.SXSSF, "2152ac09-e976-492e-8368-1739c888bb03.xlsx"));
+        String fileName = excelHelper.exportMultiForMap(count -> {
+            if (count == 0) {
+                LinkedHashMap<String, Object> cells = new LinkedHashMap<>();
+                cells.put("date", new Date());
+                cells.put("number", 11111111111L);
+                cells.put("boolean", true);
+                cells.put("str", "asdajsdjaksd");
+                List<LinkedHashMap<String, Object>> rows = new ArrayList<>();
+                rows.add(cells);
+                rows.add(cells);
+                rows.add(cells);
+                Map<String, List<LinkedHashMap<String, Object>>> params = new HashMap<>();
+                params.put("sheet0", rows);
+                params.put("sheet1", rows);
+                return params;
+            }
+            return null;
+        }, ExcelEnum.EXCEL2007);
+        System.out.println(fileName);
     }
 
     @Test
     public void testImportForBean() throws IOException {
         ExcelHelper excelUtils = ExcelHelper.getInstance("D:\\");
-        List<String> list = excelUtils.importExcel("e25c34c0-8cb8-47fa-b2d7-45b00a7603f0.xlsx", ExcelEnum.SXSSF, null, 10, new ExcelHelper.CallBack<String, TestVo>() {
+        List<String> list = excelUtils.importExcel("e25c34c0-8cb8-47fa-b2d7-45b00a7603f0.xlsx", ExcelEnum.EXCEL2007, null, 10, new ExcelHelper.ImportCallBack<String, TestVo>() {
             @Override
-            public List<String> execute(String sheetName, List<TestVo> rows) {
+            public List<String> processData(String sheetName, List<TestVo> rows) {
                 System.out.println(JSONObject.toJSONString(rows));
                 return null;
             }
@@ -49,26 +70,14 @@ public class ExcelTest {
     @Test
     public void testImportForMap() throws IOException {
         ExcelHelper excelUtils = ExcelHelper.getInstance("D:\\");
-        List<String> list = excelUtils.importExcel("e25c34c0-8cb8-47fa-b2d7-45b00a7603f0.xlsx", ExcelEnum.SXSSF, null, 10, new ExcelHelper.CallBack<String, HashMap<String, Object>>() {
+        List<String> list = excelUtils.importExcel("1333c23d-fe0a-423c-bb82-a39472254e71.xlsx", ExcelEnum.EXCEL2007, null, 10, new ExcelHelper.ImportCallBack<String, HashMap<String, Object>>() {
             @Override
-            public List<String> execute(String sheetName, List<HashMap<String, Object>> rows) {
+            public List<String> processData(String sheetName, List<HashMap<String, Object>> rows) {
                 System.out.println(JSONObject.toJSONString(rows));
                 return null;
             }
         });
         System.out.println(JSONObject.toJSONString(list));
-    }
-
-    @Test
-    public void testExportForBean() throws IOException {
-        Map<String, List<TestVo>> exportData = new HashMap<>();
-        List<TestVo> data = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            data.add(new TestVo(i, "a", new Date()));
-        }
-        exportData.put("test", data);
-        ExcelHelper excelUtils = ExcelHelper.getInstance("D:\\");
-        excelUtils.exportForBean(exportData, ExcelEnum.SXSSF, null);
     }
 
     public static class TestVo implements Serializable {
