@@ -9,9 +9,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public enum ExcelEnum {
 
-    HSSF(HSSFWorkbook.class, ".xls"),
-    XSSF(XSSFWorkbook.class, ".xlsx"),
-    SXSSF(SXSSFWorkbook.class, ".xlsx");
+    EXCEL2003(HSSFWorkbook.class, ".xls"),
+    EXCEL2007(SXSSFWorkbook.class, ".xlsx");
 
     private Class<?> clazz;
 

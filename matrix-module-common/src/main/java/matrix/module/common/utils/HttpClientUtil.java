@@ -29,64 +29,139 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
+ * http请求工具
  * @author wangcheng
  */
 public class HttpClientUtil {
 
+    /**
+     * get请求
+     * @param url 连接地址
+     * @param callBack 回调方法
+     * @return T
+     */
+    public static <T> T sendGet(String url, CallBack<T> callBack) {
+        return sendGet(url, null, null, null, callBack);
+    }
+
+    /**
+     * get请求
+     * @param url 连接地址
+     * @param params 参数
+     * @param callBack 回调方法
+     * @return T
+     */
 	public static <T> T sendGet(String url, Map<String, ?> params, CallBack<T> callBack) {
-		return sendGet(url, params, null, callBack);
+		return sendGet(url, null, params, null, callBack);
 	}
 
-	public static <T> T sendGet(String url, CallBack<T> callBack) {
-        return sendGet(url, null, null, callBack);
+    /**
+     * get请求
+     * @param url 连接地址
+     * @param headers 请求头
+     * @param params 参数
+     * @param callBack 回调方法
+     * @return T
+     */
+    public static <T> T sendGet(String url, Map<String, String> headers, Map<String, ?> params, CallBack<T> callBack) {
+        return sendGet(url, headers, params, null, callBack);
     }
 
+    /**
+     * get请求
+     * @param url 连接地址
+     * @param certInfo 证书（https需要）
+     * @param callBack 回调方法
+     * @return T
+     */
     public static <T> T sendGet(String url, CertInfo certInfo, CallBack<T> callBack) {
-        return sendGet(url, null, certInfo, callBack);
+        return sendGet(url, null, null, certInfo, callBack);
     }
 
+    /**
+     * post请求
+     * @param url 连接地址
+     * @param body 参数
+     * @param paramType 参数类型
+     * @param callBack 回调方法
+     * @return T
+     */
     public static <T> T sendPost(String url, String body, HttpParamEnum paramType, CallBack<T> callBack) {
-    	return sendPost(url, body, paramType, null, callBack);
+    	return sendPost(url, null, body, paramType, null, callBack);
     }
 
-    public static <T> T sendPost(String url, Map<String, ?> params, HttpParamEnum paramType, CallBack<T> callBack) {
-    	return sendPost(url, params, paramType, null, callBack);
+    /**
+     * post请求
+     * @param url 连接地址
+     * @param headers 请求头
+     * @param body 参数
+     * @param paramType 参数类型
+     * @param callBack 回调方法
+     * @return T
+     */
+    public static <T> T sendPost(String url, Map<String, String> headers, String body, HttpParamEnum paramType, CallBack<T> callBack) {
+        return sendPost(url, headers, body, paramType, null, callBack);
     }
 
-    public static <T> T sendPost(String url, Map<String, ?> params, HttpParamEnum paramType, CertInfo certInfo, CallBack<T> callBack) {
+    /**
+     * post请求
+     * @param url 连接地址
+     * @param headers 请求头
+     * @param params 参数
+     * @param paramType 参数类型
+     * @param callBack 回调方法
+     * @return T
+     */
+    public static <T> T sendPost(String url, Map<String, String> headers, Map<String, ?> params, HttpParamEnum paramType, CallBack<T> callBack) {
+    	return sendPost(url, headers, params, paramType, null, callBack);
+    }
+
+    /**
+     * post请求
+     * @param url 连接地址
+     * @param headers 请求头
+     * @param params 参数
+     * @param paramType 参数类型
+     * @param certInfo 证书（https需要）
+     * @param callBack 回调方法
+     * @return T
+     */
+    public static <T> T sendPost(String url, Map<String, String> headers, Map<String, ?> params, HttpParamEnum paramType, CertInfo certInfo, CallBack<T> callBack) {
     	if (HttpParamEnum.JSON.name().equals(paramType.name())) {
-    		return sendPost(url, JSONObject.toJSONString(params), paramType, certInfo, callBack);
+    		return sendPost(url, headers, JSONObject.toJSONString(params), paramType, certInfo, callBack);
     	} else if (HttpParamEnum.XML.name().equals(paramType.name())) {
     		throw new ServiceException("please invoke sendPost(String url, String body, HttpParamEnum paramType, CallBack<T> callBack)");
     	} else if (HttpParamEnum.FORM.name().equals(paramType.name())){
-    		return sendPost(url, toParams(params, null), paramType, certInfo, callBack);
+    		return sendPost(url, headers, toParams(params, null), paramType, certInfo, callBack);
     	}
     	throw new ServiceException("not support paramType");
     }
 
     /**
      * 基础get方法
-     * @param url 参数
+     * @param url 连接地址
+     * @param headers 请求头
      * @param params 参数
-     * @param certInfo 参数
-     * @param callBack 参数
+     * @param certInfo 证书（https需要）
+     * @param callBack 回调方法
      * @return T
      */
-    public static <T> T sendGet(String url, Map<String, ?> params, CertInfo certInfo, CallBack<T> callBack) {
+    public static <T> T sendGet(String url, Map<String, String> headers, Map<String, ?> params, CertInfo certInfo, CallBack<T> callBack) {
         HttpGet httpGet = new HttpGet(toParams(params, url));
-        return invoke(httpGet, certInfo, callBack);
+        return invoke(httpGet, headers, certInfo, callBack);
     }
 
     /**
      * 基础post方法
-     * @param url 参数
+     * @param url 连接地址
+     * @param headers 请求头
      * @param body 参数
-     * @param paramType 参数
-     * @param certInfo 参数
-     * @param callBack 参数
+     * @param paramType 参数类型
+     * @param certInfo 证书（https需要）
+     * @param callBack 回调方法
      * @return T
      */
-    public static <T> T sendPost(String url, String body, HttpParamEnum paramType, CertInfo certInfo, CallBack<T> callBack) {
+    public static <T> T sendPost(String url, Map<String, String> headers, String body, HttpParamEnum paramType, CertInfo certInfo, CallBack<T> callBack) {
     	try {
             HttpPost httpPost = new HttpPost(url);
             if (!StringUtil.isEmpty(body)) {
@@ -97,7 +172,7 @@ public class HttpClientUtil {
             	}
             	httpPost.setEntity(new StringEntity(body));
             }
-            return invoke(httpPost, certInfo, callBack);
+            return invoke(httpPost, headers, certInfo, callBack);
     	} catch (Exception e) {
             throw new ServiceException(e);
         }
@@ -105,11 +180,13 @@ public class HttpClientUtil {
 
     /**
      * 调用
-     *
-     * @param request 参数
+     * @param request 请求体
+     * @param headers http头
+     * @param certInfo 证书
+     * @param callBack 调用函数
      * @return T
      */
-    private static <T> T invoke(final HttpRequestBase request, final CertInfo certInfo, final CallBack<T> callBack) {
+    private static <T> T invoke(final HttpRequestBase request, final Map<String, String> headers, final CertInfo certInfo, final CallBack<T> callBack) {
         CloseableHttpClient client = null;
         try {
             if (request.getConfig() == null) {
@@ -117,6 +194,10 @@ public class HttpClientUtil {
                         .setSocketTimeout(20000)
                         .setConnectTimeout(10000)
                         .build());
+            }
+            //加入请求头
+            if (headers != null && headers.size() > 0) {
+                headers.forEach(request::addHeader);
             }
             if (certInfo != null) {
             	client = HttpClients.custom()
@@ -147,12 +228,10 @@ public class HttpClientUtil {
             return url;
         }
         StringBuilder result = new StringBuilder();
-        Iterator<String> iterable = params.keySet().iterator();
-        while (iterable.hasNext()) {
+        for (String key : params.keySet()) {
             if (result.length() > 0) {
                 result.append("&");
             }
-            String key = iterable.next();
             String value = String.valueOf(params.get(key));
             result.append(StringUtil.encodeUrl(key));
             if (value != null && !"".equals(value)) {
