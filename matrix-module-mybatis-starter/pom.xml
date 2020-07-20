@@ -3,9 +3,10 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>vwkit-matrix</artifactId>
         <groupId>com.vwkit</groupId>
-        <version>1.0.3-SNAPSHOT</version>
+        <artifactId>matrix-module-dependencies</artifactId>
+        <version>${revision}</version>
+        <relativePath>../matrix-module-dependencies</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

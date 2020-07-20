@@ -4,10 +4,24 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.vwkit</groupId>
     <artifactId>vwkit-matrix</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>${revision}</version>
 
     <name>vwkit-matrix</name>
 	<packaging>pom</packaging>
+
+    <properties>
+        <revision>1.0.3-SNAPSHOT</revision>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <compiler.version>3.3</compiler.version>
+        <source.version>3.2.1</source.version>
+        <javadoc.version>3.2.0</javadoc.version>
+        <gpg.version>1.6</gpg.version>
+        <compiler.jdk>1.8</compiler.jdk>
+        <junit.version>4.12</junit.version>
+        <flatten.version>1.2.4</flatten.version>
+        <releases.url>https://oss.sonatype.org/service/local/staging/deploy/maven2</releases.url>
+        <snapshots.url>https://oss.sonatype.org/content/repositories/snapshots</snapshots.url>
+    </properties>
 
     <developers>
         <developer>
@@ -42,18 +56,6 @@
         <module>matrix-module-oplog-starter</module>
     </modules>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <compiler.version>3.3</compiler.version>
-        <source.version>3.2.1</source.version>
-        <javadoc.version>3.2.0</javadoc.version>
-        <gpg.version>1.6</gpg.version>
-        <compiler.jdk>1.8</compiler.jdk>
-        <junit.version>4.12</junit.version>
-        <releases.url>https://oss.sonatype.org/service/local/staging/deploy/maven2</releases.url>
-        <snapshots.url>https://oss.sonatype.org/content/repositories/snapshots</snapshots.url>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -80,7 +82,6 @@
                     <target>${compiler.jdk}</target>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -124,6 +125,30 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>${flatten.version}</version>
+                <inherited>true</inherited>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                        <configuration>
+                            <updatePomFile>true</updatePomFile>
+                            <flattenMode>oss</flattenMode>
+                            <pomElements>
+                                <parent>expand</parent>
+                                <dependencyManagement>expand</dependencyManagement>
+                                <pluginManagement>expand</pluginManagement>
+                            </pomElements>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -138,22 +163,4 @@
         </snapshotRepository>
     </distributionManagement>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.vwkit</groupId>
-                <artifactId>matrix-module-dependencies</artifactId>
-                <version>1.0.3-SNAPSHOT</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>2.2.4.RELEASE</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 </project>
