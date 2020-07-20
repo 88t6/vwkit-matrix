@@ -5,7 +5,7 @@
     <parent>
         <artifactId>vwkit-matrix</artifactId>
         <groupId>com.vwkit</groupId>
-        <version>1.0.2</version>
+        <version>1.0.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>matrix-module-freemarker-starter</artifactId>
@@ -24,17 +24,4 @@
             <artifactId>spring-boot-starter-freemarker</artifactId>
         </dependency>
     </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.vwkit</groupId>
-                <artifactId>matrix-module-dependencies</artifactId>
-                <version>1.0.2</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
 </project>
