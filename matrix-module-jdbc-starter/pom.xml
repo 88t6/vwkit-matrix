@@ -10,6 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>matrix-module-jdbc-starter</artifactId>
+    <name>matrix-module-jdbc-starter</name>
 
     <dependencies>
         <dependency>
