@@ -3,61 +3,147 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>vwkit-matrix</artifactId>
         <groupId>com.vwkit</groupId>
-        <version>1.0.2</version>
+        <artifactId>vwkit-matrix</artifactId>
+        <version>${revision}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>matrix-module-dependencies</artifactId>
     <packaging>pom</packaging>
 
+    <properties>
+        <source.version>3.2.1</source.version>
+        <javadoc.version>3.2.0</javadoc.version>
+        <gpg.version>1.6</gpg.version>
+    </properties>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>2.2.4.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
                 <groupId>com.vwkit</groupId>
                 <artifactId>matrix-module-common</artifactId>
-                <version>1.0.2</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>com.vwkit</groupId>
                 <artifactId>matrix-module-based-starter</artifactId>
-                <version>1.0.2</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>com.vwkit</groupId>
                 <artifactId>matrix-module-freemarker-starter</artifactId>
-                <version>1.0.2</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>com.vwkit</groupId>
                 <artifactId>matrix-module-jdbc-starter</artifactId>
-                <version>1.0.2</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>com.vwkit</groupId>
                 <artifactId>matrix-module-mybatis-starter</artifactId>
-                <version>1.0.2</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>com.vwkit</groupId>
                 <artifactId>matrix-module-jpa-starter</artifactId>
-                <version>1.0.2</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>com.vwkit</groupId>
                 <artifactId>matrix-module-redis-starter</artifactId>
-                <version>1.0.2</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>com.vwkit</groupId>
                 <artifactId>matrix-module-pay-starter</artifactId>
-                <version>1.0.2</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>com.vwkit</groupId>
                 <artifactId>matrix-module-oplog-starter</artifactId>
-                <version>1.0.2</version>
+                <version>${revision}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${source.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${javadoc.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <additionalJOption>-Xdoclint:none</additionalJOption>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>${gpg.version}</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>${flatten.version}</version>
+                <inherited>true</inherited>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/</outputDirectory>
+                            <updatePomFile>true</updatePomFile>
+                            <flattenMode>oss</flattenMode>
+                            <pomElements>
+                                <dependencyManagement>expand</dependencyManagement>
+                                <repositories>expand</repositories>
+                                <distributionManagement>flatten</distributionManagement>
+                            </pomElements>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

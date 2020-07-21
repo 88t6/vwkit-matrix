@@ -5,7 +5,8 @@
     <parent>
         <groupId>com.vwkit</groupId>
         <artifactId>matrix-module-parent</artifactId>
-        <version>1.0.2</version>
+        <version>${revision}</version>
+        <relativePath>../matrix-module-parent</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>matrix-module-demo</artifactId>
