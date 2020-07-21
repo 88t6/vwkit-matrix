@@ -10,12 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>matrix-module-dependencies</artifactId>
     <packaging>pom</packaging>
-
-    <properties>
-        <source.version>3.2.1</source.version>
-        <javadoc.version>3.2.0</javadoc.version>
-        <gpg.version>1.6</gpg.version>
-    </properties>
+    <name>matrix-module-dependencies</name>
 
     <dependencyManagement>
         <dependencies>

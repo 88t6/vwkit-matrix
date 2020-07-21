@@ -16,6 +16,9 @@
         <compiler.jdk>1.8</compiler.jdk>
         <junit.version>4.12</junit.version>
         <flatten.version>1.2.4</flatten.version>
+        <source.version>3.2.1</source.version>
+        <javadoc.version>3.2.0</javadoc.version>
+        <gpg.version>1.6</gpg.version>
         <releases.url>https://oss.sonatype.org/service/local/staging/deploy/maven2</releases.url>
         <snapshots.url>https://oss.sonatype.org/content/repositories/snapshots</snapshots.url>
     </properties>
@@ -78,6 +81,21 @@
                     <source>${compiler.jdk}</source>
                     <target>${compiler.jdk}</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>${gpg.version}</version>
+                <inherited>false</inherited>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
