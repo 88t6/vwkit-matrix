@@ -11,6 +11,12 @@
     <artifactId>matrix-module-dependencies</artifactId>
     <packaging>pom</packaging>
 
+    <properties>
+        <source.version>3.2.1</source.version>
+        <javadoc.version>3.2.0</javadoc.version>
+        <gpg.version>1.6</gpg.version>
+    </properties>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -67,4 +73,76 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${source.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${javadoc.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <additionalJOption>-Xdoclint:none</additionalJOption>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>${gpg.version}</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>${flatten.version}</version>
+                <inherited>true</inherited>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                        <configuration>
+                            <updatePomFile>true</updatePomFile>
+                            <flattenMode>oss</flattenMode>
+                            <pomElements>
+                                <dependencyManagement>expand</dependencyManagement>
+                                <repositories>expand</repositories>
+                                <distributionManagement>flatten</distributionManagement>
+                            </pomElements>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
