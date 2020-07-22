@@ -92,6 +92,9 @@ public class ExcelColumnConvert {
      * @return cell value
      */
     public static Object convertCellValue(Cell cell) {
+        if (cell == null) {
+            return null;
+        }
         String cellType = cell.getCellTypeEnum().name();
         if (CellType._NONE.name().equals(cellType)) {
             return null;

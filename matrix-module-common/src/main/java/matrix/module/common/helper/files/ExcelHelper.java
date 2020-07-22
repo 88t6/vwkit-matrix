@@ -286,7 +286,7 @@ public class ExcelHelper {
                 sheets.add(book.getSheet(sheetName));
             }
             //获取callback上的第一个泛型
-            Class<S> clazz = (Class<S>) ClassUtil.getGenericTypes(importCallBack.getClass(), 1);
+            Class<S> clazz = (Class<S>) ClassUtil.getGenericSuperClassTypes(importCallBack.getClass(), 1);
             List<S> params = new ArrayList<>();
             List<T> result = new ArrayList<>();
             for (Sheet sheet : sheets) {
@@ -364,7 +364,7 @@ public class ExcelHelper {
     /**
      * 导入回调函数
      */
-    public interface ImportCallBack<T, S> {
+    public static abstract class ImportCallBack<T, S> {
         /**
          * 处理数据
          *
@@ -372,6 +372,6 @@ public class ExcelHelper {
          * @param rows      总行数
          * @return 处理需要返回的值
          */
-        List<T> processData(String sheetName, List<S> rows);
+        public abstract List<T> processData(String sheetName, List<S> rows);
     }
 }

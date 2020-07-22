@@ -70,7 +70,7 @@ public class ExcelTest {
     @Test
     public void testImportForMap() throws IOException {
         ExcelHelper excelUtils = ExcelHelper.getInstance("D:\\");
-        List<String> list = excelUtils.importExcel("43ce2fc6-f136-4c56-b7c3-d80a66c2b78a.xlsx", ExcelEnum.EXCEL2007, null, 10, new ExcelHelper.ImportCallBack<String, HashMap<String, Object>>() {
+        List<String> list = excelUtils.importExcel("xlsx模板.xlsx", ExcelEnum.EXCEL2007, null, 10, new ExcelHelper.ImportCallBack<String, HashMap<String, Object>>() {
             @Override
             public List<String> processData(String sheetName, List<HashMap<String, Object>> rows) {
                 System.out.println(JSONObject.toJSONString(rows));

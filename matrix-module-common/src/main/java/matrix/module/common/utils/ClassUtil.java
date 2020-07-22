@@ -22,12 +22,12 @@ public class ClassUtil {
      * @return 泛型类型
      */
     @SuppressWarnings("unchecked")
-    public static <T> Class<T> getGenericTypes(Class<T> clazz, Integer index) {
+    public static <T> Class<T> getGenericSuperClassTypes(Class<T> clazz, Integer index) {
         if (clazz.isSynthetic()) {
             //泛型
             throw new ServiceException("lambda不支持取出泛型");
         } else {
-            Type[] types = ((ParameterizedTypeImpl) clazz.getGenericInterfaces()[0]).getActualTypeArguments();
+            Type[] types = ((ParameterizedTypeImpl) clazz.getGenericSuperclass()).getActualTypeArguments();
             if (types[index] instanceof ParameterizedTypeImpl) {
                 ParameterizedType parameterizedTypes = (ParameterizedType) types[index];
                 return (Class<T>) parameterizedTypes.getRawType();
