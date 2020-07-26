@@ -12,6 +12,11 @@
     <packaging>pom</packaging>
     <name>matrix-module-parent</name>
 
+    <properties>
+        <springboot.version>2.2.4.RELEASE</springboot.version>
+        <war.version>3.3.1</war.version>
+    </properties>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -29,6 +34,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${springboot.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -40,6 +46,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
+                <version>${war.version}</version>
                 <configuration>
                     <warName>ROOT</warName>
                 </configuration>

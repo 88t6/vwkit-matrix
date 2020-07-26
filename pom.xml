@@ -10,7 +10,7 @@
 	<packaging>pom</packaging>
 
     <properties>
-        <revision>1.0.3</revision>
+        <revision>1.0.4</revision>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <compiler.version>3.3</compiler.version>
         <compiler.jdk>1.8</compiler.jdk>
@@ -19,6 +19,7 @@
         <source.version>3.2.1</source.version>
         <javadoc.version>3.2.0</javadoc.version>
         <gpg.version>1.6</gpg.version>
+        <staging.version>1.6.8</staging.version>
         <releases.url>https://oss.sonatype.org/service/local/staging/deploy/maven2</releases.url>
         <snapshots.url>https://oss.sonatype.org/content/repositories/snapshots</snapshots.url>
     </properties>
@@ -96,6 +97,17 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>${staging.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
