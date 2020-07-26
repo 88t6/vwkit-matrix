@@ -7,6 +7,9 @@ import matrix.module.common.convert.ExcelColumnConvert;
 import matrix.module.common.enums.ExcelEnum;
 import matrix.module.common.exception.ServiceException;
 import matrix.module.common.helper.Assert;
+import matrix.module.common.linstener.ExportMultiSheetListener;
+import matrix.module.common.linstener.ExportSingleSheetListener;
+import matrix.module.common.linstener.ImportSingleSheetCallBack;
 import matrix.module.common.utils.ClassUtil;
 import matrix.module.common.utils.RandomUtil;
 import matrix.module.common.utils.StreamUtil;
@@ -14,7 +17,9 @@ import matrix.module.common.utils.StringUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import java.io.*;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.*;
 
 /**
@@ -54,10 +59,13 @@ public class ExcelHelper {
      * @return 文件名
      */
     public <T> String exportSingleForBean(List<T> data, ExcelEnum excelEnum) {
-        ExportMultiSheetListener<T> multiSheetListener = count -> {
-            Map<String, List<T>> result = new HashMap<>();
-            result.put("AutoCreate_0", data);
-            return result;
+        ExportMultiSheetListener<T> multiSheetListener = new ExportMultiSheetListener<T>() {
+            @Override
+            public Map<String, List<T>> getData(Integer count) {
+                Map<String, List<T>> result = new HashMap<>();
+                result.put("AutoCreate_0", data);
+                return result;
+            }
         };
         return exportMultiForBean(multiSheetListener, excelEnum);
     }
@@ -70,10 +78,13 @@ public class ExcelHelper {
      * @return 文件名
      */
     public <T> String exportSingleForBean(ExportSingleSheetListener<T> listener, ExcelEnum excelEnum) {
-        ExportMultiSheetListener<T> multiSheetListener = count -> {
-            Map<String, List<T>> result = new HashMap<>();
-            result.put("AutoCreate_0", listener.getData(count));
-            return result;
+        ExportMultiSheetListener<T> multiSheetListener = new ExportMultiSheetListener<T>() {
+            @Override
+            public Map<String, List<T>> getData(Integer count) {
+                Map<String, List<T>> result = new HashMap<>();
+                result.put("AutoCreate_0", listener.getData(count));
+                return result;
+            }
         };
         return exportMultiForBean(multiSheetListener, excelEnum);
     }
@@ -86,10 +97,13 @@ public class ExcelHelper {
      * @return 文件名
      */
     public String exportSingleForMap(List<LinkedHashMap<String, Object>> data, ExcelEnum excelEnum) {
-        ExportMultiSheetListener<LinkedHashMap<String, Object>> multiSheetListener = count -> {
-            Map<String, List<LinkedHashMap<String, Object>>> result = new HashMap<>();
-            result.put("AutoCreate_0", data);
-            return result;
+        ExportMultiSheetListener<LinkedHashMap<String, Object>> multiSheetListener = new ExportMultiSheetListener<LinkedHashMap<String, Object>>() {
+            @Override
+            public Map<String, List<LinkedHashMap<String, Object>>> getData(Integer count) {
+                Map<String, List<LinkedHashMap<String, Object>>> result = new HashMap<>();
+                result.put("AutoCreate_0", data);
+                return result;
+            }
         };
         return exportMultiForMap(multiSheetListener, excelEnum);
     }
@@ -102,10 +116,13 @@ public class ExcelHelper {
      * @return 文件名
      */
     public String exportSingleForMap(ExportSingleSheetListener<LinkedHashMap<String, Object>> listener, ExcelEnum excelEnum) {
-        ExportMultiSheetListener<LinkedHashMap<String, Object>> multiSheetListener = count -> {
-            Map<String, List<LinkedHashMap<String, Object>>> result = new HashMap<>();
-            result.put("AutoCreate_0", listener.getData(count));
-            return result;
+        ExportMultiSheetListener<LinkedHashMap<String, Object>> multiSheetListener = new ExportMultiSheetListener<LinkedHashMap<String, Object>>() {
+            @Override
+            public Map<String, List<LinkedHashMap<String, Object>>> getData(Integer count) {
+                Map<String, List<LinkedHashMap<String, Object>>> result = new HashMap<>();
+                result.put("AutoCreate_0", listener.getData(count));
+                return result;
+            }
         };
         return exportMultiForMap(multiSheetListener, excelEnum);
     }
@@ -154,11 +171,15 @@ public class ExcelHelper {
                 book = (Workbook) excelEnum.getClazz().newInstance();
             }
             //创建列类型字典
-            Map<Class<?>, CellStyle> cellStyleMap = new HashMap<>();
+            Map<Object, CellStyle> cellStyleMap = new HashMap<>();
+            //创建标题字体
+            Font font = book.createFont();
+            font.setBold(true);
             //创建默认的CellStyle
             CellStyle commonCellStyle = book.createCellStyle();
             commonCellStyle.setAlignment(HorizontalAlignment.CENTER);
-            cellStyleMap.put(String.class, commonCellStyle);
+            commonCellStyle.setFont(font);
+            cellStyleMap.put("common", commonCellStyle);
             //准备写入数据
             int count = 0;
             while (true) {
@@ -174,7 +195,7 @@ public class ExcelHelper {
                     if (CollectionUtils.isEmpty(originRows)) {
                         continue;
                     }
-                    List<List<ExcelColumn>> rows = null;
+                    List<List<ExcelColumn>> rows;
                     if (isBean) {
                         rows = ExcelColumnConvert.convertForBean(originRows);
                     } else {
@@ -197,7 +218,7 @@ public class ExcelHelper {
                                 sheet.setColumnWidth(cellIndex, column.getWidth() * 20);
                                 Cell cell = excelRow.createCell(cellIndex);
                                 //设置样式
-                                cell.setCellStyle(cellStyleMap.get(String.class));
+                                cell.setCellStyle(cellStyleMap.get("common"));
                                 //设置值
                                 cell.setCellValue(column.getName());
                                 cellIndex++;
@@ -267,7 +288,7 @@ public class ExcelHelper {
      * @return 处理返回的数据
      */
     @SuppressWarnings("unchecked")
-    public <T, S> List<T> importExcel(String fileName, ExcelEnum excelEnum, String sheetName, Integer batchSize, ImportCallBack<T, S> importCallBack) {
+    public <T, S> List<T> importExcel(String fileName, ExcelEnum excelEnum, String sheetName, Integer batchSize, ImportSingleSheetCallBack<T, S> importCallBack) {
         Assert.isNotNull(fileName, "fileName");
         Assert.isNotNull(excelEnum, "excelEnum");
         Assert.isNotNull(importCallBack, "callBack");
@@ -331,47 +352,5 @@ public class ExcelHelper {
         } finally {
             StreamUtil.closeStream(book);
         }
-    }
-
-    /**
-     * 导出单sheet回调函数
-     */
-    public interface ExportSingleSheetListener<T> {
-
-        /**
-         * 获取数据
-         *
-         * @param count 处理次数
-         * @return 需要写入excel中的数据
-         */
-        List<T> getData(Integer count);
-    }
-
-    /**
-     * 导出多sheet回调函数
-     */
-    public interface ExportMultiSheetListener<T> {
-
-        /**
-         * 获取数据
-         *
-         * @param count 处理次数
-         * @return 需要写入excel中的数据
-         */
-        Map<String, List<T>> getData(Integer count);
-    }
-
-    /**
-     * 导入回调函数
-     */
-    public static abstract class ImportCallBack<T, S> {
-        /**
-         * 处理数据
-         *
-         * @param sheetName sheet名
-         * @param rows      总行数
-         * @return 处理需要返回的值
-         */
-        public abstract List<T> processData(String sheetName, List<S> rows);
     }
 }
