@@ -8,6 +8,7 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.SecureRandom;
+import java.util.Objects;
 
 /**
  * @author wangcheng
@@ -28,7 +29,7 @@ public class AES {
     public static String decrypt(String content, String password) {
         try {
             Cipher cipher = getCipher(password, Cipher.DECRYPT_MODE);
-            return new String(cipher.doFinal(Base64.decrypt(content)));
+            return new String(cipher.doFinal(Objects.requireNonNull(Base64.decrypt(content))));
         } catch (Exception e) {
             throw new ServiceException(e);
         }

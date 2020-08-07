@@ -6,16 +6,17 @@ import matrix.module.common.exception.ServiceException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 字符串工具类
- * @author 36509
+ * author 36509
  */
 public class StringUtil {
 
 	public static String encodeStr(String content) {
         try {
-            return new String(content.getBytes(BaseCodeConstant.DEFAULT_CHARSET), "ISO-8859-1");
+            return new String(content.getBytes(BaseCodeConstant.DEFAULT_CHARSET), StandardCharsets.ISO_8859_1);
         } catch (UnsupportedEncodingException e) {
             throw new ServiceException(e);
         }
@@ -23,26 +24,18 @@ public class StringUtil {
 
     public static String decodeStr(String content) {
         try {
-            return new String(content.getBytes("ISO-8859-1"), BaseCodeConstant.DEFAULT_CHARSET);
+            return new String(content.getBytes(StandardCharsets.ISO_8859_1), BaseCodeConstant.DEFAULT_CHARSET);
         } catch (UnsupportedEncodingException e) {
             throw new ServiceException(e);
         }
     }
 
     public static String byteToString(byte[] bytes) {
-        try {
-            return new String(bytes, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new ServiceException(e);
-        }
+        return new String(bytes, StandardCharsets.UTF_8);
     }
 
     public static byte[] stringToByte(String content) {
-        try {
-            return content.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new ServiceException(e);
-        }
+        return content.getBytes(StandardCharsets.UTF_8);
     }
 
     public static String encodeUrl(String content) {
@@ -62,10 +55,7 @@ public class StringUtil {
     }
 
     public static boolean isEmpty(String content) {
-    	if (content != null && !"".equals(content)) {
-    		return false;
-    	}
-    	return true;
+        return content == null || "".equals(content);
     }
 
     public static boolean isNotEmpty(String content) {

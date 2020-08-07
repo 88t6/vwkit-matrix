@@ -12,6 +12,7 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -31,7 +32,7 @@ public class XmlUtil {
         Assert.isNotNull(xml, "xml");
         InputStream inputStream = null;
         try {
-            inputStream = new ByteArrayInputStream(xml.getBytes("UTF-8"));
+            inputStream = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
             DocumentBuilder documentBuilder = DocumentHelper.newDocumentBuilder();
             Document document = documentBuilder.parse(inputStream);
             document.getDocumentElement().normalize();
@@ -95,10 +96,10 @@ public class XmlUtil {
     public static String toXmlString(String rootName, Object object) {
         Assert.isNotNull(object, "object");
         StringBuilder result = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\r");
-        result.append("<" + rootName + ">\n\r");
+        result.append("<").append(rootName).append(">\n\r");
         JSONObject jsonObject = JSONObject.parseObject(JSONObject.toJSONString(object), JSONObject.class);
         XmlUtil.processXmlToString(null, jsonObject, result, 1);
-        result.append("</" + rootName + ">");
+        result.append("</").append(rootName).append(">");
         return result.toString();
     }
 
@@ -109,30 +110,27 @@ public class XmlUtil {
             space.append(" ");
         }
         if (!(value instanceof JSONObject) && !(value instanceof JSONArray)) {
-            result.append(space.toString() + "<" + key + ">");
-            result.append(String.valueOf(value));
-            result.append("</" + key + ">\n\r");
+            result.append(space.toString()).append("<").append(key).append(">");
+            result.append(value);
+            result.append("</").append(key).append(">\n\r");
         } else if (value instanceof JSONObject) {
-            result.append(space.toString() + "<" + key + ">\n\r");
+            result.append(space.toString()).append("<").append(key).append(">\n\r");
             XmlUtil.processXmlToString(null, value, result, level + 1);
-            result.append(space.toString() + "</" + key + ">\n\r");
+            result.append(space.toString()).append("</").append(key).append(">\n\r");
         } else {
             XmlUtil.processXmlToString(key, value, result, level);
         }
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     private static void processXmlToString(String arrayKey, Object object, StringBuilder result, Integer level) {
         if (object == null) {
             return;
         }
         if (object instanceof JSONObject) {
             JSONObject json = (JSONObject) object;
-            Iterator<Map.Entry<String, Object>> iterator = json.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry<String, Object> entry = (Map.Entry) iterator.next();
-                String key = String.valueOf(entry.getKey());
-                Object value = entry.getValue();
+            for (Map.Entry<String, Object> stringObjectEntry : json.entrySet()) {
+                String key = String.valueOf(stringObjectEntry.getKey());
+                Object value = stringObjectEntry.getValue();
                 XmlUtil.processXml(key, value, result, level);
             }
         } else if (object instanceof JSONArray) {

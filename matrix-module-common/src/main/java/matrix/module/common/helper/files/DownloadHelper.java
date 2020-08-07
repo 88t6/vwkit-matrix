@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 
 /**
@@ -37,7 +38,7 @@ public class DownloadHelper {
             }
             File file = new File(filePath, sysFileName);
             try {
-                response.addHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes("gb2312"), "ISO-8859-1"));
+                response.addHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes("gb2312"), StandardCharsets.ISO_8859_1));
             } catch (UnsupportedEncodingException e) {
                 throw new ServiceException(e);
             }

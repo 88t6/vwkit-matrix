@@ -10,7 +10,7 @@ import matrix.module.common.utils.StringUtil;
 public class Base64 {
 
     public static String encrypt(byte[] bytes) {
-        return new String(java.util.Base64.getEncoder().encodeToString(bytes));
+        return java.util.Base64.getEncoder().encodeToString(bytes);
     }
 
     public static byte[] decrypt(String base64Code) {

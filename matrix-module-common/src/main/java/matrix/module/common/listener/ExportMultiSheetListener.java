@@ -1,5 +1,6 @@
 package matrix.module.common.listener;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,6 @@ public abstract class ExportMultiSheetListener<T> {
      * @param count 处理次数
      * @return 需要写入excel中的数据
      */
-    public abstract Map<String, List<T>> getData(Integer count);
+    public abstract LinkedHashMap<String, List<T>> getData(Integer count);
 
 }

@@ -40,16 +40,15 @@ public class PackageScanUtil {
      */
     private static List<Class<?>> getClasses(String packageName) {
         List<Class<?>> classList = new ArrayList<Class<?>>();
-        StringBuilder dirPath = new StringBuilder();
-        dirPath.append(PackageScanUtil.class.getResource("/").getPath());
-        dirPath.append(packageName.replace(".", File.separator));
-        List<File> fileList = getFileList(new ArrayList<>(), dirPath.toString());
+        String dirPath = PackageScanUtil.class.getResource("/").getPath() +
+                packageName.replace(".", File.separator);
+        List<File> fileList = getFileList(new ArrayList<>(), dirPath);
         for (File file : fileList) {
             String classPath = file.getAbsolutePath().replace(File.separator, ".");
             classPath = classPath.substring(classPath.indexOf(packageName), classPath.indexOf(".class"));
             try {
                 classList.add(Class.forName(classPath));
-            } catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException ignored) {
             }
         }
 
@@ -64,8 +63,7 @@ public class PackageScanUtil {
      */
     public static void scan(String packageName, CallBack callback) {
         List<Class<?>> classList = getClasses(packageName);
-        if (classList != null && classList.size() > 0
-                && callback != null) {
+        if (classList.size() > 0 && callback != null) {
             callback.invoke(classList);
         } else {
             System.err.println(packageName + ".未找到class");

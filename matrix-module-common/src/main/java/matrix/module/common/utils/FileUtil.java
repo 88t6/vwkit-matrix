@@ -21,28 +21,26 @@ public class FileUtil {
     public static String getSuffix(String fileName) {
         int index = fileName.lastIndexOf(".");
         if (index >= 0) {
-            return fileName.substring(index, fileName.length());
+            return fileName.substring(index);
         }
         return "";
     }
 
     public static String getPosPath(String realPath) {
-        String result = null;
-        URL fileUrl = null;
-        fileUrl = FileUtil.class.getClass().getResource(realPath);
-        fileUrl = fileUrl != null ? fileUrl : (FileUtil.class.getClass().getResource("/"));
+        String result;
+        URL fileUrl;
+        fileUrl = FileUtil.class.getResource(realPath);
+        fileUrl = fileUrl != null ? fileUrl : (FileUtil.class.getResource("/"));
         fileUrl = fileUrl != null ? fileUrl : (FileUtil.class.getClassLoader().getResource(realPath));
         fileUrl = fileUrl != null ? fileUrl : (FileUtil.class.getClassLoader().getResource("/"));
         if (fileUrl != null) {
             result = fileUrl.getPath();
-            if (result.indexOf(realPath) < 0) {
+            if (!result.contains(realPath)) {
                 result = result.substring(0, result.length() - 1) + realPath;
             }
-            if (result != null) {
-                File fileFolder = new File(result);
-                if (!fileFolder.exists()) {
-                    fileFolder.mkdirs();
-                }
+            File fileFolder = new File(result);
+            if (!fileFolder.exists()) {
+                FolderUtil.mkdirs(fileFolder.getAbsolutePath());
             }
         } else {
             result = getAbsPath(realPath);
@@ -51,7 +49,7 @@ public class FileUtil {
     }
 
     public static String getAbsPath(String realPath) {
-        String result = null;
+        String result;
         try {
             Process process = Runtime.getRuntime().exec("pwd");
             InputStreamReader isr = new InputStreamReader(process.getInputStream());
@@ -64,11 +62,9 @@ public class FileUtil {
         } catch (IOException e) {
             result = "C:" + realPath.replace("/", "\\");
         }
-        if (result != null) {
-            File fileFolder = new File(result);
-            if (!fileFolder.exists()) {
-                fileFolder.mkdirs();
-            }
+        File fileFolder = new File(result);
+        if (!fileFolder.exists()) {
+            FolderUtil.mkdirs(fileFolder.getAbsolutePath());
         }
         return result;
     }

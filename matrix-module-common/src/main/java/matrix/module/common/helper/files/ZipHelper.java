@@ -1,6 +1,7 @@
 package matrix.module.common.helper.files;
 
 import matrix.module.common.exception.ServiceException;
+import matrix.module.common.utils.FolderUtil;
 import matrix.module.common.utils.StreamUtil;
 
 import java.io.File;
@@ -10,6 +11,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -74,6 +76,7 @@ public class ZipHelper {
      * @param sourceZipFilePath 压缩文件路径
      * @param destFilePath      解压缩文件路径
      */
+    @SuppressWarnings("all")
     public void doUnCompress(String sourceZipFilePath, String destFilePath) {
         if (sourceZipFilePath == null || "".equals(sourceZipFilePath)
                 || destFilePath == null || "".equals(destFilePath)) {
@@ -87,12 +90,11 @@ public class ZipHelper {
         }
         File unzipFileDir = new File(destFilePath);
         if (!unzipFileDir.exists() || !unzipFileDir.isDirectory()) {
-            unzipFileDir.mkdirs();
+            FolderUtil.mkdirs(unzipFileDir.getAbsolutePath());
         }
         ZipFile zip = null;
         try {
             zip = new ZipFile(zipFile);
-            @SuppressWarnings("unchecked")
             Enumeration<ZipEntry> entries = (Enumeration<ZipEntry>) zip.entries();
             while (entries.hasMoreElements()) {
                 ZipEntry entry = entries.nextElement();
@@ -105,7 +107,7 @@ public class ZipHelper {
                     }
                     File entryDir = new File(entryDirPath);
                     if (!entryDir.exists() || !entryDir.isDirectory()) {
-                        entryDir.mkdirs();
+                        FolderUtil.mkdirs(entryDir.getAbsolutePath());
                     }
                     File entryFile = new File(entryFilePath);
                     if (entryFile.exists()) {
@@ -129,7 +131,7 @@ public class ZipHelper {
                         securityManager.checkDelete(entryFilePath);
                         entryFile.delete();
                     }
-                    entryFile.mkdirs();
+                    FolderUtil.mkdirs(entryFile.getAbsolutePath());
                 }
             }
         } catch (Exception e) {
@@ -140,10 +142,10 @@ public class ZipHelper {
     }
 
     private void getFileList(File fileDir, List<File> files) {
-        if (fileDir != null && fileDir.list().length > 0) {
+        if (fileDir != null && Objects.requireNonNull(fileDir.list()).length > 0) {
             File[] listFiles = fileDir.listFiles();
-            for (int i = 0; i < listFiles.length; i++) {
-                File file = listFiles[i];
+            assert listFiles != null;
+            for (File file : listFiles) {
                 files.add(file);
                 if (file.isDirectory()) {
                     this.getFileList(file, files);

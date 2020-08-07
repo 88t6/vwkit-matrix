@@ -61,8 +61,8 @@ public class ExcelHelper {
     public <T> String exportSingleForBean(List<T> data, ExcelEnum excelEnum) {
         ExportMultiSheetListener<T> multiSheetListener = new ExportMultiSheetListener<T>() {
             @Override
-            public Map<String, List<T>> getData(Integer count) {
-                Map<String, List<T>> result = new HashMap<>();
+            public LinkedHashMap<String, List<T>> getData(Integer count) {
+                LinkedHashMap<String, List<T>> result = new LinkedHashMap<>();
                 result.put("AutoCreate_0", data);
                 return result;
             }
@@ -80,8 +80,8 @@ public class ExcelHelper {
     public <T> String exportSingleForBean(ExportSingleSheetListener<T> listener, ExcelEnum excelEnum) {
         ExportMultiSheetListener<T> multiSheetListener = new ExportMultiSheetListener<T>() {
             @Override
-            public Map<String, List<T>> getData(Integer count) {
-                Map<String, List<T>> result = new HashMap<>();
+            public LinkedHashMap<String, List<T>> getData(Integer count) {
+                LinkedHashMap<String, List<T>> result = new LinkedHashMap<>();
                 result.put("AutoCreate_0", listener.getData(count));
                 return result;
             }
@@ -99,8 +99,8 @@ public class ExcelHelper {
     public String exportSingleForMap(List<LinkedHashMap<String, Object>> data, ExcelEnum excelEnum) {
         ExportMultiSheetListener<LinkedHashMap<String, Object>> multiSheetListener = new ExportMultiSheetListener<LinkedHashMap<String, Object>>() {
             @Override
-            public Map<String, List<LinkedHashMap<String, Object>>> getData(Integer count) {
-                Map<String, List<LinkedHashMap<String, Object>>> result = new HashMap<>();
+            public LinkedHashMap<String, List<LinkedHashMap<String, Object>>> getData(Integer count) {
+                LinkedHashMap<String, List<LinkedHashMap<String, Object>>> result = new LinkedHashMap<>();
                 result.put("AutoCreate_0", data);
                 return result;
             }
@@ -118,8 +118,8 @@ public class ExcelHelper {
     public String exportSingleForMap(ExportSingleSheetListener<LinkedHashMap<String, Object>> listener, ExcelEnum excelEnum) {
         ExportMultiSheetListener<LinkedHashMap<String, Object>> multiSheetListener = new ExportMultiSheetListener<LinkedHashMap<String, Object>>() {
             @Override
-            public Map<String, List<LinkedHashMap<String, Object>>> getData(Integer count) {
-                Map<String, List<LinkedHashMap<String, Object>>> result = new HashMap<>();
+            public LinkedHashMap<String, List<LinkedHashMap<String, Object>>> getData(Integer count) {
+                LinkedHashMap<String, List<LinkedHashMap<String, Object>>> result = new LinkedHashMap<>();
                 result.put("AutoCreate_0", listener.getData(count));
                 return result;
             }

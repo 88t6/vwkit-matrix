@@ -18,17 +18,14 @@ public abstract class UploadProgress<T> implements ProgressListener {
 
     public UploadProgress(T container) {
         this.container = container;
-        (new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (uploadRate < 100) {
-                    try {
-                        long beforeRead = bytesRead;
-                        Thread.sleep(1000);
-                        bytesReadKBSpeedWith1s = (bytesRead - beforeRead) / 1024;
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+        (new Thread(() -> {
+            while (uploadRate < 100) {
+                try {
+                    long beforeRead = bytesRead;
+                    Thread.sleep(1000);
+                    bytesReadKBSpeedWith1s = (bytesRead - beforeRead) / 1024;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         })).start();
@@ -36,7 +33,7 @@ public abstract class UploadProgress<T> implements ProgressListener {
 
     @Override
     public void update(long bytesRead, long contentLength, int items) {
-        Integer uploadRate = Math.round((bytesRead * 100 / contentLength));
+        Integer uploadRate = Math.round(bytesRead * 100.0f / contentLength);
         this.bytesRead = bytesRead;
         this.uploadRate = uploadRate;
         this.execute(this.container, uploadRate, this.bytesReadKBSpeedWith1s);

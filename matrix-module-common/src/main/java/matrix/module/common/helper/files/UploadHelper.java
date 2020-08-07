@@ -4,10 +4,7 @@ import matrix.module.common.bean.UploadProgress;
 import matrix.module.common.bean.UploadResult;
 import matrix.module.common.exception.ServiceException;
 import matrix.module.common.helper.Assert;
-import matrix.module.common.utils.FileUtil;
-import matrix.module.common.utils.RandomUtil;
-import matrix.module.common.utils.StreamUtil;
-import matrix.module.common.utils.ThreadUtil;
+import matrix.module.common.utils.*;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -34,7 +31,6 @@ public class UploadHelper {
     private String filePath, suffixFilter;
     private Long fileMaxSize;
 
-    private DiskFileItemFactory diskFileItemFactory;
     private ServletFileUpload servletFileUpload;
 
     public static UploadHelper getInstance(String filePath, Long fileMaxSize, String suffixFilter) {
@@ -47,11 +43,11 @@ public class UploadHelper {
         this.filePath = filePath;
         this.fileMaxSize = fileMaxSize;
         this.suffixFilter = suffixFilter;
-        diskFileItemFactory = new DiskFileItemFactory();
+        DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
         servletFileUpload = new ServletFileUpload(diskFileItemFactory);
         servletFileUpload.setSizeMax(fileMaxSize);
         File cacheDir = new File(filePath + "/cache");
-        cacheDir.mkdirs();
+        FolderUtil.mkdirs(cacheDir.getAbsolutePath());
         diskFileItemFactory.setRepository(cacheDir);
         diskFileItemFactory.setSizeThreshold(1024 * 2048);
     }
@@ -81,7 +77,7 @@ public class UploadHelper {
     /**
      * spring.servlet.multipart.enabled=true
      *
-     * @param request
+     * @param request 请求参数
      * @return Map
      */
     public Map<String, UploadResult> uploadMultipart(HttpServletRequest request) {
@@ -112,27 +108,24 @@ public class UploadHelper {
                         countDownLatch.countDown();
                         continue;
                     }
-                    if (!"*".equals(this.suffixFilter) && this.suffixFilter.indexOf(suffixName) < 0) {
+                    if (!"*".equals(this.suffixFilter) && !this.suffixFilter.contains(suffixName)) {
                         resultBean.setMessage("文件类型不在" + this.suffixFilter + "范围内");
                         result.put(fieldName, resultBean);
                         countDownLatch.countDown();
                         continue;
                     }
-                    ThreadUtil.startThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            InputStream is = null;
-                            try {
-                                is = part.getInputStream();
-                                StreamUtil.streamWriteFile(is, filePath, sysFileName);
-                                resultBean.setSuccess(true);
-                                result.put(fieldName, resultBean);
-                            } catch (IOException e) {
-                                System.out.println("Multipart:" + e.getMessage());
-                            } finally {
-                                countDownLatch.countDown();
-                                StreamUtil.closeStream(is);
-                            }
+                    ThreadUtil.startThread(() -> {
+                        InputStream is = null;
+                        try {
+                            is = part.getInputStream();
+                            StreamUtil.streamWriteFile(is, filePath, sysFileName);
+                            resultBean.setSuccess(true);
+                            result.put(fieldName, resultBean);
+                        } catch (IOException e) {
+                            System.out.println("Multipart:" + e.getMessage());
+                        } finally {
+                            countDownLatch.countDown();
+                            StreamUtil.closeStream(is);
                         }
                     });
                 }
@@ -152,8 +145,8 @@ public class UploadHelper {
     /**
      * spring.servlet.multipart.enabled=false
      *
-     * @param request
-     * @param progress
+     * @param request 请求体
+     * @param progress 进度条
      * @return Map
      */
     public Map<String, UploadResult> uploadNoMultipart(HttpServletRequest request, UploadProgress<?> progress) {

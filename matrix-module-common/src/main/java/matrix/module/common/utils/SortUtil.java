@@ -89,13 +89,14 @@ public class SortUtil {
      * @param sortKey 参数
      * @param mode 参数
      */
+    @SuppressWarnings("all")
     public static void sort(List<Map<String, Object>> list, String sortKey, Mode mode, Type type) {
         if (list != null && list.size() > 0) {
             int count = 0;
             for (Map<String, Object> temp : list) {
                 if (temp.get(sortKey) != null) {
                     try {
-                        Double number = Double.valueOf(temp.get(sortKey).toString());
+                        double number = Double.parseDouble(temp.get(sortKey).toString());
                         number = 1.0;
                         count += number;
                     } catch (Exception e) {
@@ -128,6 +129,7 @@ public class SortUtil {
      * @param arr 参数
      * @param mode 参数
      */
+    @SuppressWarnings("all")
     public static void sort(int[] arr, Mode mode, Type type) {
         if (arr.length > 0) {
             try {
@@ -150,8 +152,8 @@ public class SortUtil {
         Map<String, Object> temp;
         for (int i = 0; i < list.size(); i++) {
             for (int j = 0; j < list.size() - 1; j++) {
-                Double num1 = Double.valueOf(list.get(j).get(sortKey).toString());
-                Double num2 = Double.valueOf(list.get(j + 1).get(sortKey).toString());
+                double num1 = Double.parseDouble(list.get(j).get(sortKey).toString());
+                double num2 = Double.parseDouble(list.get(j + 1).get(sortKey).toString());
                 if (isAsc ? num1 > num2 : num1 < num2) {
                     temp = list.get(j);
                     list.set(j, list.get(j + 1));
@@ -184,8 +186,8 @@ public class SortUtil {
         Map<String, Object> temp;
         for (int i = 0; i < list.size(); i++) {
             for (int j = i + 1; j < list.size(); j++) {
-                if (isAsc ? Double.valueOf(list.get(i).get(sortKey).toString()) > Double.valueOf(list.get(j).get(sortKey).toString()) :
-                        Double.valueOf(list.get(i).get(sortKey).toString()) < Double.valueOf(list.get(j).get(sortKey).toString())) {
+                if (isAsc ? Double.parseDouble(list.get(i).get(sortKey).toString()) > Double.parseDouble(list.get(j).get(sortKey).toString()) :
+                        Double.parseDouble(list.get(i).get(sortKey).toString()) < Double.parseDouble(list.get(j).get(sortKey).toString())) {
                     temp = list.get(i);
                     list.set(i, list.get(j));
                     list.set(j, temp);
@@ -216,8 +218,8 @@ public class SortUtil {
         for (int i = 0; i < list.size(); i++) {
             int index = i;
             for (int j = i + 1; j < list.size(); j++) {
-                Double num1 = Double.valueOf(list.get(index).get(sortKey).toString());
-                Double num2 = Double.valueOf(list.get(j).get(sortKey).toString());
+                double num1 = Double.parseDouble(list.get(index).get(sortKey).toString());
+                double num2 = Double.parseDouble(list.get(j).get(sortKey).toString());
                 if (isAsc ? num1 > num2 : num1 < num2) {
                     index = j;
                 }
@@ -257,8 +259,8 @@ public class SortUtil {
         for (int gap = length / 2; gap >= 1; gap /= 2) {
             for (int i = gap; i < length; i++) {
                 for (int j = i - gap; j >= 0; j -= gap) {
-                    Double num1 = Double.valueOf(list.get(j).get(sortKey).toString());
-                    Double num2 = Double.valueOf(list.get(j + gap).get(sortKey).toString());
+                    double num1 = Double.parseDouble(list.get(j).get(sortKey).toString());
+                    double num2 = Double.parseDouble(list.get(j + gap).get(sortKey).toString());
                     if (isAsc ? num1 > num2 : num1 < num2) {
                         temp = list.get(j);
                         list.set(j, list.get(j + gap));
@@ -296,26 +298,26 @@ public class SortUtil {
         Map<String, Object> index = list.get(i);
         while (i < j) {
             if (isAsc) {
-                while (i < j && Double.valueOf(index.get(sortKey).toString()) <= Double.valueOf(String.valueOf(list.get(j).get(sortKey)))) {
+                while (i < j && Double.parseDouble(index.get(sortKey).toString()) <= Double.parseDouble(String.valueOf(list.get(j).get(sortKey)))) {
                     j--;
                 }
                 if (i < j) {
                     list.set(i++, list.get(j));
                 }
-                while (i < j && Double.valueOf(index.get(sortKey).toString()) >= Double.valueOf(String.valueOf(list.get(i).get(sortKey)))) {
+                while (i < j && Double.parseDouble(index.get(sortKey).toString()) >= Double.parseDouble(String.valueOf(list.get(i).get(sortKey)))) {
                     i++;
                 }
                 if (i < j) {
                     list.set(j--, list.get(i));
                 }
             } else {
-                while (i < j && Double.valueOf(index.get(sortKey).toString()) >= Double.valueOf(list.get(j).get(sortKey).toString())) {
+                while (i < j && Double.parseDouble(index.get(sortKey).toString()) >= Double.parseDouble(list.get(j).get(sortKey).toString())) {
                     j--;
                 }
                 if (i < j) {
                     list.set(i++, list.get(j));
                 }
-                while (i < j && Double.valueOf(index.get(sortKey).toString()) <= Double.valueOf(list.get(i).get(sortKey).toString())) {
+                while (i < j && Double.parseDouble(index.get(sortKey).toString()) <= Double.parseDouble(list.get(i).get(sortKey).toString())) {
                     i++;
                 }
                 if (i < j) {

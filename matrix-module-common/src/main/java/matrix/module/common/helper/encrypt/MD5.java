@@ -11,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
 public class MD5 {
 
     public static String get32(String content) {
-        StringBuffer str = new StringBuffer();
+        StringBuilder str = new StringBuilder();
         MessageDigest md;
         try {
             md = MessageDigest.getInstance("MD5");
@@ -21,8 +21,8 @@ public class MD5 {
         md.update(content.getBytes());
         byte[] b = md.digest();
         int i;
-        for (int offset = 0; offset < b.length; offset++) {
-            i = b[offset];
+        for (byte value : b) {
+            i = value;
             if (i < 0) {
                 i += 256;
             }

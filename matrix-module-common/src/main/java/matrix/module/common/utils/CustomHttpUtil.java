@@ -7,7 +7,6 @@ import javax.net.ssl.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.KeyManagementException;
@@ -63,7 +62,7 @@ public class CustomHttpUtil {
                 while (iterator.hasNext()) {
                     String key = iterator.next();
                     String value = String.valueOf(params.get(key));
-                    result.append(key + "=" + value + "&");
+                    result.append(key).append("=").append(value).append("&");
                 }
                 return result.toString().length() > 0 ? (result.toString().substring(0, result.toString().length() - 1)) : "";
             }
@@ -75,13 +74,11 @@ public class CustomHttpUtil {
         URLConnection conn;
         try {
             conn = (new URL(url + (!isPost ? ("?" + params) : ""))).openConnection();
-        } catch (MalformedURLException e) {
-            throw new ServiceException(e);
         } catch (IOException e) {
             throw new ServiceException(e);
         }
-        conn.setRequestProperty("Accept", accept);
         conn.setRequestProperty("Connection", connection);
+        conn.setRequestProperty("Accept", accept);
         conn.setRequestProperty("User-Agent", userAgent);
         conn.setRequestProperty("Cookie", cookie != null ? cookie : "");
         if (contentType != null && !"".equals(contentType)) {
@@ -96,17 +93,11 @@ public class CustomHttpUtil {
         } else {
             conn.setDoOutput(true);
             conn.setDoInput(true);
-            PrintWriter out = null;
-            try {
-                out = new PrintWriter(conn.getOutputStream());
+            try (PrintWriter out = new PrintWriter(conn.getOutputStream())) {
                 out.print(params);
                 out.flush();
             } catch (Exception e) {
                 throw new ServiceException(e);
-            } finally {
-                if (out != null) {
-                    out.close();
-                }
             }
         }
         try {
@@ -132,8 +123,6 @@ public class CustomHttpUtil {
         HttpsURLConnection conn;
         try {
             conn = (HttpsURLConnection) (new URL(url + (!isPost ? ("?" + params) : ""))).openConnection();
-        } catch (MalformedURLException e) {
-            throw new ServiceException(e);
         } catch (IOException e) {
             throw new ServiceException(e);
         }

@@ -25,33 +25,28 @@ public class SysFontUtil {
      * 获取当前系统所有支持的字体名称
      */
     public static Map<String, String> getSystemFontsDict() {
-        return SingletonUtil.get("systemFontNameList", new SingletonUtil.CallBack<Map<String, String>>() {
-            @Override
-            public Map<String, String> execute() {
-                GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-                Font[] fonts = graphicsEnvironment.getAllFonts();
-                if (fonts != null && fonts.length > 0) {
-                    Map<String, String> result = new LinkedHashMap<>();
-                    try {
-                        Method method = Font.class.getDeclaredMethod("getFont2D");
-                        method.setAccessible(true);
-                        Field field = PhysicalFont.class.getDeclaredField("platName");
-                        field.setAccessible(true);
-                        for (int i = 0;i<fonts.length;i++) {
-                            Font font = fonts[i];
-                            try {
-                                result.put(font.getFamily(), String.valueOf(field.get(method.invoke(font))));
-                            } catch (Exception e){
-                                continue;
-                            }
+        return SingletonUtil.get("systemFontNameList", () -> {
+            GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            Font[] fonts = graphicsEnvironment.getAllFonts();
+            if (fonts != null && fonts.length > 0) {
+                Map<String, String> result = new LinkedHashMap<>();
+                try {
+                    Method method = Font.class.getDeclaredMethod("getFont2D");
+                    method.setAccessible(true);
+                    Field field = PhysicalFont.class.getDeclaredField("platName");
+                    field.setAccessible(true);
+                    for (Font font : fonts) {
+                        try {
+                            result.put(font.getFamily(), String.valueOf(field.get(method.invoke(font))));
+                        } catch (Exception ignored) {
                         }
-                    } catch (Exception e) {
-                        throw new ServiceException(e);
                     }
-                    return result;
+                } catch (Exception e) {
+                    throw new ServiceException(e);
                 }
-                return null;
+                return result;
             }
+            return null;
         });
     }
 

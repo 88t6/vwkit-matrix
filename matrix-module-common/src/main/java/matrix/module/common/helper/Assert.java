@@ -10,8 +10,8 @@ public class Assert {
     /**
      * 判断不为空
      *
-     * @param content
-     * @param varName
+     * @param content 内容
+     * @param varName 参数名称
      */
     public static void isNotNull(Object content, String varName) {
         boolean isTrue = content == null || (content.getClass() == String.class && "".equals(content));
@@ -23,9 +23,9 @@ public class Assert {
     /**
      * 判断字符串长度最小值
      *
-     * @param content
-     * @param length
-     * @param varName
+     * @param content 内容
+     * @param length 长度
+     * @param varName 参数名称
      */
     public static void minLength(String content, Integer length, String varName) {
         Assert.isNotNull(content, varName);
@@ -37,9 +37,9 @@ public class Assert {
     /**
      * 判断字符串长度最大值
      *
-     * @param content
-     * @param length
-     * @param varName
+     * @param content 内容
+     * @param length 长度
+     * @param varName 参数名称
      */
     public static void maxLength(String content, Integer length, String varName) {
         Assert.isNotNull(content, varName);
@@ -51,8 +51,8 @@ public class Assert {
     /**
      * 判断数字最小值
      *
-     * @param content
-     * @param varName
+     * @param content 内容
+     * @param varName 参数名称
      */
     public static void minNum(Integer content, Integer minNum, String varName) {
         Assert.isNotNull(content, varName);
@@ -64,8 +64,8 @@ public class Assert {
     /**
      * 判断数字最大值
      *
-     * @param content
-     * @param varName
+     * @param content 内容
+     * @param varName 参数名称
      */
     public static void maxNum(Integer content, Integer maxNum, String varName) {
         Assert.isNotNull(content, varName);
@@ -77,10 +77,10 @@ public class Assert {
     /**
      * 不满足正则
      *
-     * @param regex
-     * @param content
-     * @param msg
-     * @param flag
+     * @param regex 正则
+     * @param content 内容
+     * @param msg 信息
+     * @param flag 标记
      */
     public static void matchRegex(String regex, String content, String msg, Integer flag) {
         if (flag == null) {

@@ -49,20 +49,14 @@ public class CookieUtil {
     }
 
     public static Cookie getCookie(HttpServletRequest request, String name) {
-        Map<String, Cookie> cookieMap = ReadCookieMap(request);
-        if (cookieMap.containsKey(name)) {
-            Cookie cookie = (Cookie) cookieMap.get(name);
-            return cookie;
-        } else {
-            return null;
-        }
+        Map<String, Cookie> cookieMap = readCookieMap(request);
+        return cookieMap.getOrDefault(name, null);
     }
 
     public static String getCookieValue(HttpServletRequest request, String name) {
-        Map<String, Cookie> cookieMap = ReadCookieMap(request);
+        Map<String, Cookie> cookieMap = readCookieMap(request);
         if (cookieMap.containsKey(name)) {
-            Cookie cookie = (Cookie) cookieMap.get(name);
-            return cookie.getValue();
+            return cookieMap.get(name).getValue();
         } else {
             return null;
         }
@@ -74,7 +68,7 @@ public class CookieUtil {
      * @param request 参数
      * @return Map
      */
-    private static Map<String, Cookie> ReadCookieMap(HttpServletRequest request) {
+    private static Map<String, Cookie> readCookieMap(HttpServletRequest request) {
         Map<String, Cookie> cookieMap = new HashMap<String, Cookie>();
         Cookie[] cookies = request.getCookies();
         if (null != cookies) {

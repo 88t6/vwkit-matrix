@@ -20,9 +20,9 @@ public class ExcelTest {
         String fileName = excelUtils.exportMultiForBean(new ExportMultiSheetListener<TestVo>() {
 
             @Override
-            public Map<String, List<TestVo>> getData(Integer count) {
+            public LinkedHashMap<String, List<TestVo>> getData(Integer count) {
                 if (count <= 10) {
-                    Map<String, List<TestVo>> exportData = new HashMap<>();
+                    LinkedHashMap<String, List<TestVo>> exportData = new LinkedHashMap<>();
                     List<TestVo> data = new ArrayList<>();
                     for (int i = 0; i < 10000; i++) {
                         data.add(new TestVo(i, "a", new Date()));
@@ -42,7 +42,7 @@ public class ExcelTest {
         ExcelHelper excelHelper = ExcelHelper.getInstance("D:\\");
         String fileName = excelHelper.exportMultiForMap(new ExportMultiSheetListener<LinkedHashMap<String, Object>>() {
             @Override
-            public Map<String, List<LinkedHashMap<String, Object>>> getData(Integer count) {
+            public LinkedHashMap<String, List<LinkedHashMap<String, Object>>> getData(Integer count) {
                 if (count == 0) {
                     LinkedHashMap<String, Object> cells = new LinkedHashMap<>();
                     cells.put("date", new Date());
@@ -53,7 +53,7 @@ public class ExcelTest {
                     rows.add(cells);
                     rows.add(cells);
                     rows.add(cells);
-                    Map<String, List<LinkedHashMap<String, Object>>> params = new HashMap<>();
+                    LinkedHashMap<String, List<LinkedHashMap<String, Object>>> params = new LinkedHashMap<>();
                     params.put("sheet0", rows);
                     params.put("sheet1", rows);
                     return params;

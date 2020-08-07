@@ -1,6 +1,6 @@
 package matrix.module.common.utils;
-import matrix.module.common.exception.ServiceException;
 
+import matrix.module.common.exception.ServiceException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -23,8 +23,7 @@ public class DeepCopyUtil {
             out.writeObject(src);
             byteIn = new ByteArrayInputStream(byteOut.toByteArray());
             in = new ObjectInputStream(byteIn);
-            T dest = (T) in.readObject();
-            return dest;
+            return (T) in.readObject();
         } catch (Exception e) {
             throw new ServiceException("深度拷贝失败");
         } finally {

@@ -52,7 +52,7 @@ public class MailHelper {
         Properties props = System.getProperties();
         props.put("mail.smtp.auth", "true");
         props.setProperty("mail.transport.protocol", "smtp");
-        if (!isSsl) {
+        if (!this.isSsl) {
             //非安全连接
             props.put("mail.smtp.port", port != null ? port : "25");
             this.session = Session.getInstance(props, (Authenticator) null);
@@ -90,10 +90,10 @@ public class MailHelper {
     /**
      * 单人发送
      *
-     * @param receiver
-     * @param title
-     * @param content
-     * @param attachments
+     * @param receiver 接收者
+     * @param title 标题
+     * @param content 内容
+     * @param attachments 附件
      */
     public void sendOne(String receiver, String title, String content, List<URL> attachments) {
         Assert.isNotNull(receiver, "receiver");
@@ -131,6 +131,7 @@ public class MailHelper {
     private void send(List<String> receivers, String title, String content, List<URL> attachments) {
         Assert.state(receivers != null && receivers.size() >= 1, "receivers长度必须大于等于1");
         try {
+            assert receivers != null;
             Address[] address = new Address[receivers.size()];
             for (int i = 0; i < receivers.size(); ++i) {
                 address[i] = new InternetAddress(receivers.get(i));
@@ -171,8 +172,7 @@ public class MailHelper {
             if (transport != null) {
                 try {
                     transport.close();
-                } catch (MessagingException e) {
-                    throw new ServiceException(e);
+                } catch (MessagingException ignored) {
                 }
             }
         }

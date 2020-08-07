@@ -18,7 +18,7 @@ import java.io.OutputStreamWriter;
 public class StreamUtil {
 
     public static String streamToString(InputStream is) {
-        StringBuffer result = new StringBuffer("");
+        StringBuilder result = new StringBuilder("");
         InputStreamReader isr = null;
         BufferedReader br = null;
         try {
@@ -26,7 +26,7 @@ public class StreamUtil {
             br = new BufferedReader(isr);
             String line = null;
             while ((line = br.readLine()) != null) {
-                result.append(line + "\n\r");
+                result.append(line).append("\n\r");
             }
         } catch (Exception e) {
             throw new ServiceException(e);
@@ -37,6 +37,7 @@ public class StreamUtil {
         return result.toString();
     }
 
+    @SuppressWarnings("all")
     public static File streamWriteFile(InputStream is, String filePath, String fileName) {
         FileOutputStream fos = null;
         File file = new File(filePath, fileName);
@@ -79,6 +80,7 @@ public class StreamUtil {
         }
     }
 
+    @SuppressWarnings("all")
     public static File stringWriteFile(String command, String filePath, String fileName) {
         File file = new File(filePath, fileName);
         FileOutputStream fos = null;
@@ -105,7 +107,7 @@ public class StreamUtil {
             if (closeable != null) {
                 closeable.close();
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 }

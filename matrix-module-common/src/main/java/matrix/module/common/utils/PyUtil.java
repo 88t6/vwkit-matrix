@@ -58,8 +58,8 @@ public class PyUtil {
         } catch (Exception e) {
             throw new ServiceException(e.getMessage());
         } finally {
-            if (file.exists()) {
-                file.delete();
+            if (file.exists() && !file.delete()) {
+                System.err.println("delete error");
             }
         }
     }
