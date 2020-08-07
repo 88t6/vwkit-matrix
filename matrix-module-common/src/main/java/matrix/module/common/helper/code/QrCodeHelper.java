@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * 二维码生成
  *
- * @author: wangcheng
+ * @author wangcheng
  */
 public class QrCodeHelper {
 

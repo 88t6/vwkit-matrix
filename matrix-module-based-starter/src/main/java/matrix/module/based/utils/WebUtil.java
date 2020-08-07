@@ -148,7 +148,7 @@ public class WebUtil implements ApplicationContextAware {
     /**
      * 获取request
      *
-     * @return
+     * @return request
      */
     public static HttpServletRequest getRequest() {
         return REQUEST_THREAD_LOCAL.get();
@@ -157,7 +157,7 @@ public class WebUtil implements ApplicationContextAware {
     /**
      * 放入request
      *
-     * @param request
+     * @param request request
      */
     public static void setRequest(HttpServletRequest request) {
         REQUEST_THREAD_LOCAL.set(request);
@@ -166,7 +166,7 @@ public class WebUtil implements ApplicationContextAware {
     /**
      * 获取response
      *
-     * @return
+     * @return response
      */
     public static HttpServletResponse getResponse() {
         return RESPONSE_THREAD_LOCAL.get();
@@ -175,7 +175,7 @@ public class WebUtil implements ApplicationContextAware {
     /**
      * 放入response
      *
-     * @param response
+     * @param response response
      */
     public static void setResponse(HttpServletResponse response) {
         RESPONSE_THREAD_LOCAL.set(response);

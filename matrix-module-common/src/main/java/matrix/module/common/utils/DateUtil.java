@@ -15,7 +15,6 @@ public class DateUtil {
 
     /**
      * @return 返回当前时间   Date类型
-     * @author wangcheng
      */
     public static Date getNowDate() {
         return new Date();
