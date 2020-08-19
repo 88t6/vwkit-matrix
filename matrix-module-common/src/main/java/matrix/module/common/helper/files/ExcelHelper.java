@@ -79,6 +79,19 @@ public class ExcelHelper {
      */
     public <T> String exportSingleForBean(ExportSingleSheetListener<T> listener, ExcelEnum excelEnum) {
         ExportMultiSheetListener<T> multiSheetListener = new ExportMultiSheetListener<T>() {
+
+            @Override
+            public void beforeProcessData(Workbook workbook) {
+                super.beforeProcessData(workbook);
+                listener.beforeProcessData(workbook);
+            }
+
+            @Override
+            public void afterProcessData(Workbook workbook) {
+                super.afterProcessData(workbook);
+                listener.afterProcessData(workbook);
+            }
+
             @Override
             public LinkedHashMap<String, List<T>> getData(Integer count) {
                 LinkedHashMap<String, List<T>> result = new LinkedHashMap<>();
@@ -117,6 +130,19 @@ public class ExcelHelper {
      */
     public String exportSingleForMap(ExportSingleSheetListener<LinkedHashMap<String, Object>> listener, ExcelEnum excelEnum) {
         ExportMultiSheetListener<LinkedHashMap<String, Object>> multiSheetListener = new ExportMultiSheetListener<LinkedHashMap<String, Object>>() {
+
+            @Override
+            public void beforeProcessData(Workbook workbook) {
+                super.beforeProcessData(workbook);
+                listener.beforeProcessData(workbook);
+            }
+
+            @Override
+            public void afterProcessData(Workbook workbook) {
+                super.afterProcessData(workbook);
+                listener.afterProcessData(workbook);
+            }
+
             @Override
             public LinkedHashMap<String, List<LinkedHashMap<String, Object>>> getData(Integer count) {
                 LinkedHashMap<String, List<LinkedHashMap<String, Object>>> result = new LinkedHashMap<>();
@@ -180,8 +206,12 @@ public class ExcelHelper {
             commonCellStyle.setAlignment(HorizontalAlignment.CENTER);
             commonCellStyle.setFont(font);
             cellStyleMap.put("common", commonCellStyle);
-            //准备写入数据
+            // 数据sheet页
+            Set<String> dataSheets = new HashSet<>();
             int count = 0;
+            //调用处理数据前操作
+            listener.beforeProcessData(book);
+            //准备写入数据
             while (true) {
                 Map<String, List<T>> originData = listener.getData(count++);
                 //检查数据是否为空（为空停止获取数据）
@@ -206,10 +236,10 @@ public class ExcelHelper {
                     if (sheet == null) {
                         sheet = book.createSheet(sheetName);
                     }
-                    int rowIndex = sheet.getLastRowNum() == 0 ? 0 : (sheet.getLastRowNum() + 1);
+                    int rowIndex = sheet.getPhysicalNumberOfRows();
                     for (List<ExcelColumn> columns : rows) {
                         //新增标题
-                        if (rowIndex == 0) {
+                        if (!dataSheets.contains(sheetName) && dataSheets.add(sheetName)) {
                             Row excelRow = sheet.createRow(rowIndex++);
                             //起始列标识
                             int cellIndex = (excelRow.getLastCellNum() < 0 ? 0 : excelRow.getLastCellNum());
@@ -264,6 +294,8 @@ public class ExcelHelper {
                 }
             }
             //写入数据结束
+            //调用处理数据后操作
+            listener.afterProcessData(book);
             //随机文件名称
             String fileName = RandomUtil.getUUID() + excelEnum.getSuffix();
             fos = new FileOutputStream(new File(filePath, fileName));
@@ -277,18 +309,64 @@ public class ExcelHelper {
         }
     }
 
+
+    /**
+     * 导入excel
+     * @param fileName 文件名
+     * @param excelEnum excel导入类型
+     * @param importCallBack 回调函数
+     * @return 处理返回的数据
+     */
+    public <T, S> List<T> importExcel(String fileName, ExcelEnum excelEnum, ImportSingleSheetCallBack<T, S> importCallBack) {
+        return this.importExcel(fileName, excelEnum, null, null, 2000, importCallBack);
+    }
+
+    /**
+     * 导入excel
+     * @param fileName 文件名
+     * @param excelEnum excel导入类型
+     * @param sheetName sheet名称
+     * @param batchSize 每批次数量
+     * @param importCallBack 回调函数
+     * @return 处理返回的数据
+     */
+    public <T, S> List<T> importExcel(String fileName, ExcelEnum excelEnum, String sheetName, Integer batchSize, ImportSingleSheetCallBack<T, S> importCallBack) {
+        return this.importExcel(fileName, excelEnum, sheetName, null, batchSize, importCallBack);
+    }
+
+    /**
+     * 导入excel
+     * @param fileName 文件名
+     * @param excelEnum excel导入类型
+     * @param sheetName sheet名称
+     * @param titleRowIndex 标题行Index
+     * @param batchSize 每批次数量
+     * @param importCallBack 回调函数
+     * @return 处理返回的数据
+     */
+    public <T, S> List<T> importExcel(String fileName, ExcelEnum excelEnum, String sheetName, int titleRowIndex, Integer batchSize, ImportSingleSheetCallBack<T, S> importCallBack) {
+        Assert.isNotNull(sheetName, "sheetName");
+        Map<String, Integer> sheetTitleRowIndexMap = new HashMap<String, Integer>(){{
+            put(sheetName, titleRowIndex);
+        }};
+        return this.importExcel(fileName, excelEnum, sheetName, sheetTitleRowIndexMap, batchSize, importCallBack);
+    }
+
     /**
      * 导入excel(核心方法)
      *
      * @param fileName       文件名
      * @param excelEnum      excel导入类型
      * @param sheetName      sheet名称
+     * @param sheetTitleRowIndexMap 每个sheet页的标题行Index
      * @param batchSize      每批次数量
      * @param importCallBack 回调函数
      * @return 处理返回的数据
      */
     @SuppressWarnings("unchecked")
-    public <T, S> List<T> importExcel(String fileName, ExcelEnum excelEnum, String sheetName, Integer batchSize, ImportSingleSheetCallBack<T, S> importCallBack) {
+    public <T, S> List<T> importExcel(String fileName, ExcelEnum excelEnum, String sheetName,
+                                      Map<String, Integer> sheetTitleRowIndexMap,
+                                      Integer batchSize, ImportSingleSheetCallBack<T, S> importCallBack) {
         Assert.isNotNull(fileName, "fileName");
         Assert.isNotNull(excelEnum, "excelEnum");
         Assert.isNotNull(importCallBack, "callBack");
@@ -314,11 +392,16 @@ public class ExcelHelper {
                 if (sheet == null) {
                     continue;
                 }
+                //标题行Index
+                Integer titleRowIndex = sheetTitleRowIndexMap == null ? null : sheetTitleRowIndexMap.get(sheet.getSheetName());
+                titleRowIndex = titleRowIndex == null ? 0 : titleRowIndex;
                 List<String> titles = new ArrayList<>();
                 for (Row row : sheet) {
-                    if (row.getRowNum() == 0) {
-                        for (Cell cell : row) {
-                            titles.add(cell.getStringCellValue());
+                    if (row.getRowNum() <= titleRowIndex) {
+                        if (row.getRowNum() == titleRowIndex) {
+                            for (Cell cell : row) {
+                                titles.add(cell.getStringCellValue());
+                            }
                         }
                         continue;
                     }
