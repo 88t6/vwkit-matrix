@@ -78,7 +78,7 @@ public class ExcelTest {
     @Test
     public void testImportForBean() throws IOException {
         ExcelHelper excelUtils = ExcelHelper.getInstance("D:\\");
-        List<String> list = excelUtils.importExcel("245a4c26-2060-4830-ad01-37cc2a0af55f.xlsx", ExcelEnum.EXCEL2007, null, 10, new ImportSingleSheetCallBack<String, TestVo>() {
+        List<String> list = excelUtils.importExcel("245a4c26-2060-4830-ad01-37cc2a0af55f.xlsx", null, 10, new ImportSingleSheetCallBack<String, TestVo>() {
             @Override
             public List<String> processData(String sheetName, List<TestVo> rows) {
                 System.out.println(JSONObject.toJSONString(rows));
@@ -91,7 +91,7 @@ public class ExcelTest {
     @Test
     public void testImportForMap() throws IOException {
         ExcelHelper excelUtils = ExcelHelper.getInstance("D:\\");
-        List<String> list = excelUtils.importExcel("93316cd7-e14b-41ab-897e-2e7bb2774d9a.xlsx", ExcelEnum.EXCEL2007, "test", 1, 10,
+        List<String> list = excelUtils.importExcel("93316cd7-e14b-41ab-897e-2e7bb2774d9a.xlsx", "test", 1, 10,
                 new ImportSingleSheetCallBack<String, HashMap<String, Object>>() {
             @Override
             public List<String> processData(String sheetName, List<HashMap<String, Object>> rows) {

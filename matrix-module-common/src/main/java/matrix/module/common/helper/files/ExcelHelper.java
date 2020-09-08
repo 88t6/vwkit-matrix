@@ -313,50 +313,46 @@ public class ExcelHelper {
     /**
      * 导入excel
      * @param fileName 文件名
-     * @param excelEnum excel导入类型
      * @param importCallBack 回调函数
      * @return 处理返回的数据
      */
-    public <T, S> List<T> importExcel(String fileName, ExcelEnum excelEnum, ImportSingleSheetCallBack<T, S> importCallBack) {
-        return this.importExcel(fileName, excelEnum, null, null, 2000, importCallBack);
+    public <T, S> List<T> importExcel(String fileName, ImportSingleSheetCallBack<T, S> importCallBack) {
+        return this.importExcel(fileName, null, null, 2000, importCallBack);
     }
 
     /**
      * 导入excel
      * @param fileName 文件名
-     * @param excelEnum excel导入类型
      * @param sheetName sheet名称
      * @param batchSize 每批次数量
      * @param importCallBack 回调函数
      * @return 处理返回的数据
      */
-    public <T, S> List<T> importExcel(String fileName, ExcelEnum excelEnum, String sheetName, Integer batchSize, ImportSingleSheetCallBack<T, S> importCallBack) {
-        return this.importExcel(fileName, excelEnum, sheetName, null, batchSize, importCallBack);
+    public <T, S> List<T> importExcel(String fileName, String sheetName, Integer batchSize, ImportSingleSheetCallBack<T, S> importCallBack) {
+        return this.importExcel(fileName, sheetName, null, batchSize, importCallBack);
     }
 
     /**
      * 导入excel
      * @param fileName 文件名
-     * @param excelEnum excel导入类型
      * @param sheetName sheet名称
      * @param titleRowIndex 标题行Index
      * @param batchSize 每批次数量
      * @param importCallBack 回调函数
      * @return 处理返回的数据
      */
-    public <T, S> List<T> importExcel(String fileName, ExcelEnum excelEnum, String sheetName, int titleRowIndex, Integer batchSize, ImportSingleSheetCallBack<T, S> importCallBack) {
+    public <T, S> List<T> importExcel(String fileName, String sheetName, int titleRowIndex, Integer batchSize, ImportSingleSheetCallBack<T, S> importCallBack) {
         Assert.isNotNull(sheetName, "sheetName");
         Map<String, Integer> sheetTitleRowIndexMap = new HashMap<String, Integer>(){{
             put(sheetName, titleRowIndex);
         }};
-        return this.importExcel(fileName, excelEnum, sheetName, sheetTitleRowIndexMap, batchSize, importCallBack);
+        return this.importExcel(fileName, sheetName, sheetTitleRowIndexMap, batchSize, importCallBack);
     }
 
     /**
      * 导入excel(核心方法)
      *
      * @param fileName       文件名
-     * @param excelEnum      excel导入类型
      * @param sheetName      sheet名称
      * @param sheetTitleRowIndexMap 每个sheet页的标题行Index
      * @param batchSize      每批次数量
@@ -364,11 +360,10 @@ public class ExcelHelper {
      * @return 处理返回的数据
      */
     @SuppressWarnings("unchecked")
-    public <T, S> List<T> importExcel(String fileName, ExcelEnum excelEnum, String sheetName,
+    public <T, S> List<T> importExcel(String fileName, String sheetName,
                                       Map<String, Integer> sheetTitleRowIndexMap,
                                       Integer batchSize, ImportSingleSheetCallBack<T, S> importCallBack) {
         Assert.isNotNull(fileName, "fileName");
-        Assert.isNotNull(excelEnum, "excelEnum");
         Assert.isNotNull(importCallBack, "callBack");
         Workbook book = null;
         try {
