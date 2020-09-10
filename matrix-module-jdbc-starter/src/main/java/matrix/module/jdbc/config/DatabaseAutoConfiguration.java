@@ -72,7 +72,7 @@ public class DatabaseAutoConfiguration {
         dataSource.setPoolPreparedStatements(true);
         dataSource.setMaxPoolPreparedStatementPerConnectionSize(20);
         //通过connectProperties属性来打开mergeSql功能
-        dataSource.setConnectionProperties("druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000");
+        dataSource.setConnectionProperties("druid.stat.mergeSql=false;druid.stat.slowSqlMillis=5000");
         //合并多个DruidDataSource的监控数据
         dataSource.setUseGlobalDataSourceStat(true);
         dataSource.setMinEvictableIdleTimeMillis(300000);
