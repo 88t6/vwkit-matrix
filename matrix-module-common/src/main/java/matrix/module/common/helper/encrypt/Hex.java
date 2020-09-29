@@ -1,5 +1,7 @@
 package matrix.module.common.helper.encrypt;
 
+import matrix.module.common.exception.ServiceException;
+
 /**
  * @author wangcheng
  * byte2hex() byte转字符串
@@ -22,7 +24,7 @@ public class Hex {
 
     public static byte[] hex2byte(byte[] b) {
         if ((b.length % 2) != 0) {
-            throw new IllegalArgumentException();
+            throw new ServiceException();
         }
         byte[] b2 = new byte[b.length / 2];
         for (int n = 0; n < b.length; n += 2) {

@@ -2,6 +2,7 @@ package matrix.module.pay.vo;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
+import matrix.module.common.exception.ServiceException;
 import matrix.module.common.helper.Assert;
 import matrix.module.common.helper.encrypt.MD5;
 import matrix.module.common.utils.RandomUtil;
@@ -32,8 +33,8 @@ public class RefundVo implements Serializable {
 
     public void validate() {
         if (StringUtils.isEmpty(outTradeNo) && StringUtils.isEmpty(payId)) {
-            throw new IllegalArgumentException("outTradeNo和payId不能同时为空");
+            throw new ServiceException("outTradeNo和payId不能同时为空");
         }
-        Assert.isNotNull(refundAmount, "refundAmount");
+        Assert.notNullTip(refundAmount, "refundAmount");
     }
 }

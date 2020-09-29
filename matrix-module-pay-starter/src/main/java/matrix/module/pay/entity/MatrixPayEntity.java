@@ -1,6 +1,7 @@
 package matrix.module.pay.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
@@ -9,6 +10,7 @@ import java.math.BigDecimal;
  * @author wangcheng
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 public class MatrixPayEntity extends MatrixBaseEntity {
 

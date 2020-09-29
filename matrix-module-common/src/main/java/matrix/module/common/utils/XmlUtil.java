@@ -14,7 +14,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,7 +28,7 @@ public class XmlUtil {
      * parseXml
      */
     public static JSONObject parseXml(String xml) {
-        Assert.isNotNull(xml, "xml");
+        Assert.notNullTip(xml, "xml");
         InputStream inputStream = null;
         try {
             inputStream = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
@@ -94,7 +93,7 @@ public class XmlUtil {
      * @return String
      */
     public static String toXmlString(String rootName, Object object) {
-        Assert.isNotNull(object, "object");
+        Assert.notNullTip(object, "object");
         StringBuilder result = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\r");
         result.append("<").append(rootName).append(">\n\r");
         JSONObject jsonObject = JSONObject.parseObject(JSONObject.toJSONString(object), JSONObject.class);

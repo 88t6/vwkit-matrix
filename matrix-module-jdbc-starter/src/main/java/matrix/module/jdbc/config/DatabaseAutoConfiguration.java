@@ -37,7 +37,7 @@ public class DatabaseAutoConfiguration {
             throw new ServiceException("master db not found!");
         }
         String driverClass = jdbcProperties.getDriverClass();
-        Assert.isNotNull(driverClass, "jdbc.driver-class");
+        Assert.notNullTip(driverClass, "jdbc.driver-class");
         DataSource masterDataSource = build(jdbcProperties.getMaster(), DynamicDataSourceHolder.MASTER_DB, driverClass);
         beanFactory.registerSingleton(DynamicDataSourceHolder.MASTER_DB, masterDataSource);
         if (jdbcProperties.getSlave().isEnabled()) {
@@ -57,11 +57,11 @@ public class DatabaseAutoConfiguration {
 
     private static DataSource build(JdbcProperties.JdbcParam jdbcParam, String key, String driverClass) {
         String url = jdbcParam.getUrl();
-        Assert.isNotNull(url, "jdbc." + key + ".url");
+        Assert.notNullTip(url, "jdbc." + key + ".url");
         String username = jdbcParam.getUsername();
         String password = jdbcParam.getPassword();
-        Assert.isNotNull(username, "jdbc." + key + ".username");
-        Assert.isNotNull(password, "jdbc." + key + ".password");
+        Assert.notNullTip(username, "jdbc." + key + ".username");
+        Assert.notNullTip(password, "jdbc." + key + ".password");
         com.alibaba.druid.pool.DruidDataSource dataSource = new com.alibaba.druid.pool.DruidDataSource();
         dataSource.setDbType(DatabaseAutoConfiguration.TYPE);
         dataSource.setDriverClassName(driverClass);

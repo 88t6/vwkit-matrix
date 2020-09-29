@@ -30,9 +30,9 @@ public class FreeMarkerAutoConfiguration {
     @Bean
     public FreeMarkerConfigurer freeMarkerConfigurer() {
         Integer updateDelay = freeMarkerProperties.getUpdateDelay();
-        Assert.isNotNull(updateDelay, "freemarker.update-delay");
+        Assert.notNullTip(updateDelay, "freemarker.update-delay");
         String templatePath = freeMarkerProperties.getTemplatePath();
-        Assert.isNotNull(templatePath, "freemarker.template-path");
+        Assert.notNullTip(templatePath, "freemarker.template-path");
         FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
         configurer.setTemplateLoaderPaths(templatePath);
         configurer.setPreferFileSystemAccess(true);
@@ -57,7 +57,7 @@ public class FreeMarkerAutoConfiguration {
     public FreeMarkerViewResolver freeMarkerViewResolver() {
         String prefix = freeMarkerProperties.getPrefix();
         String suffix = freeMarkerProperties.getSuffix();
-        Assert.isNotNull(suffix, "freemarker.suffix");
+        Assert.notNullTip(suffix, "freemarker.suffix");
         FreeMarkerViewResolver resolver = new FreeMarkerViewResolver();
         resolver.setRequestContextAttribute("context");
         resolver.setAllowRequestOverride(true);

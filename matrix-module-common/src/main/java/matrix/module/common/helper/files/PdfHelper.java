@@ -36,8 +36,8 @@ public class PdfHelper {
     }
 
     public String htmlToPdf(String html) {
-        Assert.isNotNull(html, "html");
-        Assert.isNotNull(fontPath, "fontPath");
+        Assert.notNullTip(html, "html");
+        Assert.notNullTip(fontPath, "fontPath");
         FileOutputStream fos = null;
         try {
             File file = new File(filePath, RandomUtil.getUUID() + ".pdf");

@@ -1,6 +1,7 @@
 package matrix.module.mybatis.config;
 
 import matrix.module.common.exception.GlobalControllerException;
+import matrix.module.common.exception.ServiceException;
 import matrix.module.jdbc.utils.DynamicDataSourceHolder;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -24,7 +25,7 @@ public class SwitchDbAspectAutoConfiguration {
         try {
             return DynamicDataSourceHolder.processDataSource(joinPoint);
         } catch (Throwable e) {
-            throw new GlobalControllerException(e);
+            throw new ServiceException(e);
         }
     }
 }

@@ -83,7 +83,7 @@ public class InitializeSqlContext {
      * @return List
      */
     private List<FileEntity> getSortFileEntity() {
-        Assert.isNotNull(locations, "locations");
+        Assert.notNullTip(locations, "locations");
         List<FileEntity> fileEntities = new ArrayList<>();
         try {
             if (locations.startsWith("classpath:")) {

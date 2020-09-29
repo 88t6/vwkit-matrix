@@ -186,8 +186,8 @@ public class ExcelHelper {
      */
     @SuppressWarnings({"unchecked"})
     private <T> String exportExcel(ExportMultiSheetListener<T> listener, ExcelEnum excelEnum, boolean isBean) {
-        Assert.isNotNull(listener, "listener");
-        Assert.isNotNull(excelEnum, "excelEnum");
+        Assert.notNullTip(listener, "listener");
+        Assert.notNullTip(excelEnum, "excelEnum");
         Workbook book = null;
         FileOutputStream fos = null;
         try {
@@ -342,7 +342,7 @@ public class ExcelHelper {
      * @return 处理返回的数据
      */
     public <T, S> List<T> importExcel(String fileName, String sheetName, int titleRowIndex, Integer batchSize, ImportSingleSheetCallBack<T, S> importCallBack) {
-        Assert.isNotNull(sheetName, "sheetName");
+        Assert.notNullTip(sheetName, "sheetName");
         Map<String, Integer> sheetTitleRowIndexMap = new HashMap<String, Integer>(){{
             put(sheetName, titleRowIndex);
         }};
@@ -363,8 +363,8 @@ public class ExcelHelper {
     public <T, S> List<T> importExcel(String fileName, String sheetName,
                                       Map<String, Integer> sheetTitleRowIndexMap,
                                       Integer batchSize, ImportSingleSheetCallBack<T, S> importCallBack) {
-        Assert.isNotNull(fileName, "fileName");
-        Assert.isNotNull(importCallBack, "callBack");
+        Assert.notNullTip(fileName, "fileName");
+        Assert.notNullTip(importCallBack, "callBack");
         Workbook book = null;
         try {
             File file = new File(filePath, fileName);

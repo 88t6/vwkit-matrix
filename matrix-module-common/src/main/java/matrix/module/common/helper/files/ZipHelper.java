@@ -39,7 +39,7 @@ public class ZipHelper {
     public void doCompress(String sourceFilePath, String destZipFilePath) {
         if (destZipFilePath == null || "".equals(destZipFilePath)
                 || sourceFilePath == null || "".equals(sourceFilePath)) {
-            throw new IllegalArgumentException("doCompress参数异常");
+            throw new ServiceException("doCompress参数异常");
         }
         File fileDir = new File(sourceFilePath);
         List<File> files = new ArrayList<>();
@@ -80,7 +80,7 @@ public class ZipHelper {
     public void doUnCompress(String sourceZipFilePath, String destFilePath) {
         if (sourceZipFilePath == null || "".equals(sourceZipFilePath)
                 || destFilePath == null || "".equals(destFilePath)) {
-            throw new IllegalArgumentException("doUnCompress参数异常");
+            throw new ServiceException("doUnCompress参数异常");
         }
         File zipFile = new File(sourceZipFilePath);
         if (zipFile.exists()) {

@@ -1,5 +1,7 @@
 package matrix.module.common.utils;
 
+import matrix.module.common.exception.ServiceException;
+
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
@@ -115,10 +117,10 @@ public class SortUtil {
                         method.invoke(SortUtil.class.newInstance(), list, sortKey, 0, list.size() - 1, type.isAsc);
                     }
                 } catch (Exception e) {
-                    throw new IllegalArgumentException("Mode类型错误Exception:" + e.getMessage());
+                    throw new ServiceException("Mode类型错误Exception:" + e.getMessage());
                 }
             } else {
-                throw new IllegalArgumentException("排序字段不为数字，不支持排序");
+                throw new ServiceException("排序字段不为数字，不支持排序");
             }
         }
     }
@@ -140,7 +142,7 @@ public class SortUtil {
                     method.invoke(SortUtil.class.newInstance(), arr, 0, arr.length - 1, type.isAsc);
                 }
             } catch (Exception e) {
-                throw new IllegalArgumentException("Mode类型错误Exception:" + e.getMessage());
+                throw new ServiceException("Mode类型错误Exception:" + e.getMessage());
             }
         }
     }

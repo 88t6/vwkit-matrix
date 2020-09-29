@@ -42,7 +42,7 @@ public class ImageHelper {
      * @return BufferedImage
      */
     public BufferedImage getBufferedImage(String fileName) {
-        Assert.isNotNull(fileName, "fileName");
+        Assert.notNullTip(fileName, "fileName");
         try {
             return ImageIO.read(new File(filePath, fileName));
         } catch (Exception e) {
@@ -94,7 +94,7 @@ public class ImageHelper {
      * @return String
      */
     public String zoomImage(String fileName, Integer width, Integer height) {
-        Assert.isNotNull(fileName, "fileName");
+        Assert.notNullTip(fileName, "fileName");
         Assert.state(width != null || height != null, "width和height不允许同时为空");
         BufferedImage bufferedImage = this.getBufferedImage(fileName);
         if (width == null) {

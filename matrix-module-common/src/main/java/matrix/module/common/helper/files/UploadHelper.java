@@ -38,8 +38,8 @@ public class UploadHelper {
     }
 
     public UploadHelper(String filePath, Long fileMaxSize, String suffixFilter) {
-        Assert.isNotNull(filePath, "filePath");
-        Assert.isNotNull(suffixFilter, "suffixFilter");
+        Assert.notNullTip(filePath, "filePath");
+        Assert.notNullTip(suffixFilter, "suffixFilter");
         this.filePath = filePath;
         this.fileMaxSize = fileMaxSize;
         this.suffixFilter = suffixFilter;

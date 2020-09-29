@@ -47,11 +47,11 @@ public class JpaAutoConfiguration {
     @Primary
     public EntityManagerFactory entityManagerFactory() {
         String basePackage = jpaProperties.getBasePackage();
-        Assert.isNotNull(basePackage, "jpa.base-package");
+        Assert.notNullTip(basePackage, "jpa.base-package");
         boolean showSql = jpaProperties.isShowSql();
-        Assert.isNotNull(showSql, "jpa.show-sql");
+        Assert.notNullTip(showSql, "jpa.show-sql");
         String dialect = jpaProperties.getDialect();
-        Assert.isNotNull(dialect, "jpa.dialect");
+        Assert.notNullTip(dialect, "jpa.dialect");
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);

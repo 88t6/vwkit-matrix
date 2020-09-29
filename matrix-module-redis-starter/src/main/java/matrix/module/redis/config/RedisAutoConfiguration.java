@@ -81,12 +81,12 @@ public class RedisAutoConfiguration {
         if (redisProperties.getStandalone().isEnabled()) {
             RedisProperties.Standalone standaloneConfig = redisProperties.getStandalone();
             String hostName = standaloneConfig.getHost();
-            Assert.isNotNull(hostName, "redis.host");
+            Assert.notNullTip(hostName, "redis.host");
             Integer database = standaloneConfig.getDatabase();
-            Assert.isNotNull(database, "redis.database");
+            Assert.notNullTip(database, "redis.database");
             String password = standaloneConfig.getPassword();
             String port = standaloneConfig.getPort();
-            Assert.isNotNull(port, "redis.port");
+            Assert.notNullTip(port, "redis.port");
             RedisStandaloneConfiguration standalone = new RedisStandaloneConfiguration();
             standalone.setHostName(hostName);
             standalone.setDatabase(database);
@@ -99,12 +99,12 @@ public class RedisAutoConfiguration {
         if (redisProperties.getSentinel().isEnabled()) {
             RedisProperties.Sentinel sentinelConfig = redisProperties.getSentinel();
             String master = sentinelConfig.getMaster();
-            Assert.isNotNull(master, "redis.sentinel.master");
+            Assert.notNullTip(master, "redis.sentinel.master");
             String nodes = sentinelConfig.getNodes();
-            Assert.isNotNull(nodes, "redis.sentinel.nodes");
+            Assert.notNullTip(nodes, "redis.sentinel.nodes");
             String password = sentinelConfig.getPassword();
             Integer database = sentinelConfig.getDatabase();
-            Assert.isNotNull(database, "redis.sentinel.database");
+            Assert.notNullTip(database, "redis.sentinel.database");
             RedisSentinelConfiguration sentinel = new RedisSentinelConfiguration();
             sentinel.master(master);
             sentinel.setSentinels(this.createRedisNodes(nodes));
@@ -117,10 +117,10 @@ public class RedisAutoConfiguration {
         if (redisProperties.getCluster().isEnabled()) {
             RedisProperties.Cluster clusterConfig = redisProperties.getCluster();
             String nodes = clusterConfig.getNodes();
-            Assert.isNotNull(nodes, "redis.cluster.nodes");
+            Assert.notNullTip(nodes, "redis.cluster.nodes");
             String password = clusterConfig.getPassword();
             Integer maxRedirects = clusterConfig.getMaxRedirects();
-            Assert.isNotNull(maxRedirects, "redis.cluster.max-redirects");
+            Assert.notNullTip(maxRedirects, "redis.cluster.max-redirects");
             RedisClusterConfiguration cluster = new RedisClusterConfiguration();
             cluster.setClusterNodes(this.createRedisNodes(nodes));
             if (!StringUtils.isEmpty(password)) {

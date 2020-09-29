@@ -38,9 +38,9 @@ public class MailHelper {
     private Transport transport = null;
 
     public MailHelper(String username, String password, String server, Boolean isSsl) {
-        Assert.isNotNull(username, "username");
-        Assert.isNotNull(password, "password");
-        Assert.isNotNull(server, "server");
+        Assert.notNullTip(username, "username");
+        Assert.notNullTip(password, "password");
+        Assert.notNullTip(server, "server");
         this.username = username;
         this.password = password;
         this.server = server;
@@ -96,7 +96,7 @@ public class MailHelper {
      * @param attachments 附件
      */
     public void sendOne(String receiver, String title, String content, List<URL> attachments) {
-        Assert.isNotNull(receiver, "receiver");
+        Assert.notNullTip(receiver, "receiver");
         List<String> receivers = new ArrayList<>();
         receivers.add(receiver);
         this.send(receivers, title, content, attachments);

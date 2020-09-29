@@ -1,5 +1,8 @@
 package matrix.module.common.helper;
 
+import matrix.module.common.exception.ServiceException;
+import matrix.module.common.utils.StringUtil;
+
 import java.util.regex.Pattern;
 
 /**
@@ -8,70 +11,33 @@ import java.util.regex.Pattern;
 public class Assert {
 
     /**
+     * 判断不为空（带提示语）
+     *
+     * @param content 内容
+     * @param varName 参数名称
+     */
+    public static void notNullTip(Object content, String varName) {
+        Assert.state(content != null && StringUtil.isNotEmpty(String.valueOf(content)), varName + " not be null!");
+    }
+
+    /**
      * 判断不为空
      *
      * @param content 内容
-     * @param varName 参数名称
+     * @param msg 错误信息
      */
-    public static void isNotNull(Object content, String varName) {
-        boolean isTrue = content == null || (content.getClass() == String.class && "".equals(content));
-        if (isTrue) {
-            throw new IllegalArgumentException(varName + "  not be null!");
-        }
+    public static void notNull(Object content, String msg) {
+        Assert.state(content != null && StringUtil.isNotEmpty(String.valueOf(content)), msg);
     }
 
     /**
-     * 判断字符串长度最小值
+     * 判断有内容
      *
      * @param content 内容
-     * @param length 长度
-     * @param varName 参数名称
+     * @param msg 错误信息
      */
-    public static void minLength(String content, Integer length, String varName) {
-        Assert.isNotNull(content, varName);
-        if (content.length() < length) {
-            throw new IllegalArgumentException(varName + "长度不允许小于" + length + "!");
-        }
-    }
-
-    /**
-     * 判断字符串长度最大值
-     *
-     * @param content 内容
-     * @param length 长度
-     * @param varName 参数名称
-     */
-    public static void maxLength(String content, Integer length, String varName) {
-        Assert.isNotNull(content, varName);
-        if (content.length() > length) {
-            throw new IllegalArgumentException(varName + "长度不允许大于" + length + "!");
-        }
-    }
-
-    /**
-     * 判断数字最小值
-     *
-     * @param content 内容
-     * @param varName 参数名称
-     */
-    public static void minNum(Integer content, Integer minNum, String varName) {
-        Assert.isNotNull(content, varName);
-        if (content < minNum) {
-            throw new IllegalArgumentException(varName + "数字不允许小于" + minNum + "!");
-        }
-    }
-
-    /**
-     * 判断数字最大值
-     *
-     * @param content 内容
-     * @param varName 参数名称
-     */
-    public static void maxNum(Integer content, Integer maxNum, String varName) {
-        Assert.isNotNull(content, varName);
-        if (content > maxNum) {
-            throw new IllegalArgumentException(varName + "数字不允许大于" + maxNum + "!");
-        }
+    public static void hasText(String content, String msg) {
+        Assert.state(StringUtil.isNotEmpty(content), msg);
     }
 
     /**
@@ -84,13 +50,9 @@ public class Assert {
      */
     public static void matchRegex(String regex, String content, String msg, Integer flag) {
         if (flag == null) {
-            if (!Pattern.compile(regex).matcher(content).matches()) {
-                throw new IllegalArgumentException(msg);
-            }
+            Assert.state(Pattern.compile(regex).matcher(content).matches(), msg);
         } else {
-            if (!Pattern.compile(regex, flag).matcher(content).matches()) {
-                throw new IllegalArgumentException(msg);
-            }
+            Assert.state(Pattern.compile(regex, flag).matcher(content).matches(), msg);
         }
     }
 
@@ -99,7 +61,7 @@ public class Assert {
      */
     public static void state(Boolean value, String msg) {
         if (!value) {
-            throw new IllegalArgumentException(msg);
+            throw new ServiceException(msg);
         }
     }
 

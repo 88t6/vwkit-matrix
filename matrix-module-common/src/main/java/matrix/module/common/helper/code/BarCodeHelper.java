@@ -66,7 +66,7 @@ public class BarCodeHelper {
     }
 
     public String writeToFile(String content) {
-        Assert.isNotNull(this.filePath, "BarCodeHelper:filePath");
+        Assert.notNullTip(this.filePath, "BarCodeHelper:filePath");
         FileOutputStream fos = null;
         try {
             BufferedImage bufferedImage = this.getBufferedImage(content);
@@ -82,8 +82,8 @@ public class BarCodeHelper {
     }
 
     public String parseFile(String fileName) {
-        Assert.isNotNull(this.filePath, "BarCodeHelper:filePath");
-        Assert.isNotNull(fileName, "BarCodeHelper:fileName");
+        Assert.notNullTip(this.filePath, "BarCodeHelper:filePath");
+        Assert.notNullTip(fileName, "BarCodeHelper:fileName");
         try {
             BufferedImage image = ImageIO.read(new File(filePath, fileName));
             LuminanceSource source = new BufferedImageLuminanceSource(image);

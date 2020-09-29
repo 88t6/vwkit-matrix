@@ -130,7 +130,7 @@ public class OpLogAutoConfiguration {
                 matrixOpLogService.saveOpLog(opLogEntity);
                 return result;
             } catch (Throwable e) {
-                throw new GlobalControllerException(e);
+                throw new ServiceException(e);
             }
         }
     }

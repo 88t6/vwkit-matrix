@@ -37,15 +37,15 @@ public class PayVo implements Serializable {
     private String openId;
 
     public void validate(PayMode payMode) {
-        Assert.isNotNull(this.orderId, "orderId");
-        Assert.isNotNull(this.price, "price");
-        Assert.isNotNull(this.title, "title");
-        Assert.isNotNull(this.desc, "desc");
+        Assert.notNullTip(this.orderId, "orderId");
+        Assert.notNullTip(this.price, "price");
+        Assert.notNullTip(this.title, "title");
+        Assert.notNullTip(this.desc, "desc");
         if (PayMode.QrCode.equals(payMode)) {
-            Assert.isNotNull(this.qrCodeWidth, "qrCodeWidth");
+            Assert.notNullTip(this.qrCodeWidth, "qrCodeWidth");
         }
         if (PayMode.WEJSAPI.equals(payMode)) {
-            Assert.isNotNull(this.openId, "openId");
+            Assert.notNullTip(this.openId, "openId");
         }
     }
 }

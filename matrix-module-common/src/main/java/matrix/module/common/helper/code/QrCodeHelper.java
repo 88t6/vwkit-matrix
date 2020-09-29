@@ -92,7 +92,7 @@ public class QrCodeHelper {
      * 将二维码输出到文件返回文件名
      */
     public String writeToFile(String content) {
-        Assert.isNotNull(filePath, "QrCodeHelper:filePath");
+        Assert.notNullTip(filePath, "QrCodeHelper:filePath");
         FileOutputStream fos = null;
         try {
             BufferedImage bufferedImage = getBufferedImage(content);
@@ -113,8 +113,8 @@ public class QrCodeHelper {
      * @return String
      */
     public String parseFile(String fileName) {
-        Assert.isNotNull(this.filePath, "QrCodeHelper:filePath");
-        Assert.isNotNull(fileName, "QrCodeHelper:fileName");
+        Assert.notNullTip(this.filePath, "QrCodeHelper:filePath");
+        Assert.notNullTip(fileName, "QrCodeHelper:fileName");
         try {
             BufferedImage image = ImageIO.read(new File(filePath, fileName));
             LuminanceSource source = new BufferedImageLuminanceSource(image);

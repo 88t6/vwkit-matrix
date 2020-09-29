@@ -25,7 +25,7 @@ public class WebMvcAutoConfiguration implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         String staticPath = mvcViewProperties.getStaticPath();
-        Assert.isNotNull(staticPath, "mvc.static-path");
+        Assert.notNullTip(staticPath, "mvc.static-path");
         registry.addResourceHandler("/static/**").addResourceLocations(staticPath);
         WebMvcConfigurer.super.addResourceHandlers(registry);
     }
@@ -33,7 +33,7 @@ public class WebMvcAutoConfiguration implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         String index = mvcViewProperties.getIndex();
-        Assert.isNotNull(index, "mvc.index");
+        Assert.notNullTip(index, "mvc.index");
         registry.addViewController("/").setViewName("forward:" + index);
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
         WebMvcConfigurer.super.addViewControllers(registry);

@@ -21,7 +21,7 @@ public class SingletonUtil {
      */
     @SuppressWarnings("unchecked")
 	public static <T> T get(Object key, CallBack<T> callBack) {
-        Assert.isNotNull(key, "key");
+        Assert.notNullTip(key, "key");
         T result = (T) SINGLETON_DICT.get(key);
         if (result != null) {
             return result;

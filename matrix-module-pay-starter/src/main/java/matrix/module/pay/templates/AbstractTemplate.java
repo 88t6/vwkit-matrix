@@ -131,7 +131,7 @@ public abstract class AbstractTemplate {
             payEntity = matrixPayEntities.get(0);
             refundVo.setPayId(payEntity.getPayId());
         }
-        Assert.isNotNull(payEntity, "payEntity");
+        Assert.notNullTip(payEntity, "payEntity");
         Integer refundStatus = this.invokeRefund(refundVo);
         MatrixRefundEntity refundEntity = RefundEntityConvert.convert(refundVo, payEntity.getOrderId(), refundStatus);
         refundService.saveRefundEntity(refundEntity);
@@ -143,9 +143,9 @@ public abstract class AbstractTemplate {
      * @param payId 支付ID
      */
     public MatrixPayEntity doQueryPayByPayId(String payId) {
-        Assert.isNotNull(payId, "payId");
+        Assert.notNullTip(payId, "payId");
         MatrixPayEntity payEntity = payService.getPayEntityByPayId(payId);
-        Assert.isNotNull(payEntity, "payEntity");
+        Assert.notNullTip(payEntity, "payEntity");
         if (PayConstant.PAYED.equals(payEntity.getStatus())) {
             return payEntity;
         }
@@ -163,7 +163,7 @@ public abstract class AbstractTemplate {
      * @param orderId 订单号
      */
     public List<MatrixPayEntity> doQueryPayByOrderId(String orderId) {
-        Assert.isNotNull(orderId, "orderId");
+        Assert.notNullTip(orderId, "orderId");
         String payChannel = this.getClass().getSimpleName();
         List<MatrixPayEntity> noPayList = payService.getPayEntityByNoPay(orderId, payChannel);
         if (!CollectionUtils.isEmpty(noPayList)) {
@@ -186,7 +186,7 @@ public abstract class AbstractTemplate {
      * @return List
      */
     public List<MatrixRefundEntity> doQueryRefundByPayId(String payId) {
-        Assert.isNotNull(payId, "payId");
+        Assert.notNullTip(payId, "payId");
         List<MatrixRefundEntity> noRefundList = refundService.getRefundEntityByNoRefund(payId);
         if (!CollectionUtils.isEmpty(noRefundList)) {
             List<QueryRefundRequest> refundRequests = new ArrayList<>();

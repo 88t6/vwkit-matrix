@@ -76,8 +76,8 @@ public class MybatisPlusAutoConfiguration {
     }
 
     private SqlSessionFactory getSqlSessionFactory(DataSource dataSource, String typeAliasesPackage, String mapperLocations) throws Exception {
-        Assert.isNotNull(typeAliasesPackage, "mybatis.type-aliases-package");
-        Assert.isNotNull(mapperLocations, "mybatis.mapper-locations");
+        Assert.notNullTip(typeAliasesPackage, "mybatis.type-aliases-package");
+        Assert.notNullTip(mapperLocations, "mybatis.mapper-locations");
         MybatisSqlSessionFactoryBean sqlSessionFactory = new MybatisSqlSessionFactoryBean();
         sqlSessionFactory.setDataSource(dataSource);
         MybatisConfiguration configuration = new MybatisConfiguration();

@@ -26,7 +26,7 @@ public class FolderUtil {
      * @param path 单个文件夹地址
      */
     private static void mkdirs(String path) {
-        Assert.isNotNull(path, "path");
+        Assert.notNullTip(path, "path");
         path = path.replace(File.separator, "&");
         String[] folders = path.split("&");
         StringBuilder folderPath = new StringBuilder();

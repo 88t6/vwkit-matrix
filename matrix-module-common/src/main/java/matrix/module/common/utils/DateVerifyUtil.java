@@ -51,10 +51,10 @@ public class DateVerifyUtil {
     private static void validate(Date startDate, Date endDate, Integer defaultLimitDay, Integer maxLimitDay) {
 
         if (DateUtil.getNowDate().getTime() < startDate.getTime()) {
-            throw new IllegalArgumentException("开始时间不允许为未来时间");
+            throw new ServiceException("开始时间不允许为未来时间");
         }
         if (startDate.getTime() > endDate.getTime()) {
-            throw new IllegalArgumentException("开始时间必须小于结束时间");
+            throw new ServiceException("开始时间必须小于结束时间");
         }
         if (DateUtil.getBeforeDay(endDate, maxLimitDay).getTime() > startDate.getTime()) {
             throw new ServiceException("查询最长周期为:" + maxLimitDay + "天");
