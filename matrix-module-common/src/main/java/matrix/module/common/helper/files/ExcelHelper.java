@@ -62,9 +62,12 @@ public class ExcelHelper {
         ExportMultiSheetListener<T> multiSheetListener = new ExportMultiSheetListener<T>() {
             @Override
             public LinkedHashMap<String, List<T>> getData(Integer count) {
-                LinkedHashMap<String, List<T>> result = new LinkedHashMap<>();
-                result.put("AutoCreate_0", data);
-                return result;
+                if (count == 0) {
+                    LinkedHashMap<String, List<T>> result = new LinkedHashMap<>();
+                    result.put("AutoCreate_0", data);
+                    return result;
+                }
+                return null;
             }
         };
         return exportMultiForBean(multiSheetListener, excelEnum);
@@ -113,9 +116,12 @@ public class ExcelHelper {
         ExportMultiSheetListener<LinkedHashMap<String, Object>> multiSheetListener = new ExportMultiSheetListener<LinkedHashMap<String, Object>>() {
             @Override
             public LinkedHashMap<String, List<LinkedHashMap<String, Object>>> getData(Integer count) {
-                LinkedHashMap<String, List<LinkedHashMap<String, Object>>> result = new LinkedHashMap<>();
-                result.put("AutoCreate_0", data);
-                return result;
+                if (count == 0) {
+                    LinkedHashMap<String, List<LinkedHashMap<String, Object>>> result = new LinkedHashMap<>();
+                    result.put("AutoCreate_0", data);
+                    return result;
+                }
+                return null;
             }
         };
         return exportMultiForMap(multiSheetListener, excelEnum);
