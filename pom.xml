@@ -15,7 +15,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <compiler.version>3.3</compiler.version>
         <compiler.jdk>1.8</compiler.jdk>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <flatten.version>1.2.4</flatten.version>
         <source.version>3.2.1</source.version>
         <javadoc.version>3.2.0</javadoc.version>
