@@ -77,7 +77,7 @@ public class ExcelColumnConvert {
                 //设置值
                 column.setValue(item.get(name));
                 //设置类型
-                column.setType(item.get(name).getClass());
+                column.setType(item.get(name) == null ? String.class : item.get(name).getClass());
                 row.add(column);
             }
             result.add(row);
