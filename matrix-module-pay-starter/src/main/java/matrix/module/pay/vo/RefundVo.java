@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- * @author: wangcheng
+ * author: wangcheng
  */
 @Data
 @Accessors(chain = true)

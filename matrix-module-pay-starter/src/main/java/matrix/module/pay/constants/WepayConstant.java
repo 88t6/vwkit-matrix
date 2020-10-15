@@ -3,7 +3,7 @@ package matrix.module.pay.constants;
 import matrix.module.common.utils.RandomUtil;
 
 /**
- * @author: wangcheng
+ * author: wangcheng
  */
 public class WepayConstant {
 
