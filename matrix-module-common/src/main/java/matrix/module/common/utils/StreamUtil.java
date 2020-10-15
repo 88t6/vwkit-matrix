@@ -1,7 +1,6 @@
 package matrix.module.common.utils;
 
 import matrix.module.common.exception.ServiceException;
-
 import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.File;
@@ -37,10 +36,14 @@ public class StreamUtil {
         return result.toString();
     }
 
+    public static File streamWriteFile(InputStream is, String filePath) {
+        return StreamUtil.streamWriteFile(is, filePath, null);
+    }
+
     @SuppressWarnings("all")
     public static File streamWriteFile(InputStream is, String filePath, String fileName) {
         FileOutputStream fos = null;
-        File file = new File(filePath, fileName);
+        File file = StringUtil.isEmpty(fileName) ? new File(filePath) : new File(filePath, fileName);
         try {
             if (file.exists()) {
                 file.delete();
@@ -80,9 +83,26 @@ public class StreamUtil {
         }
     }
 
+    public static File fileWriteFile(String sourceFilePath, String distFilePath) {
+        File file = new File(sourceFilePath);
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(file);
+            return StreamUtil.streamWriteFile(fis, distFilePath);
+        } catch (Exception e) {
+            throw new ServiceException(e);
+        } finally {
+            StreamUtil.closeStream(fis);
+        }
+    }
+
+    public static File stringWriteFile(String command, String filePath) {
+        return StreamUtil.stringWriteFile(command, filePath, null);
+    }
+
     @SuppressWarnings("all")
     public static File stringWriteFile(String command, String filePath, String fileName) {
-        File file = new File(filePath, fileName);
+        File file = StringUtil.isEmpty(fileName) ? new File(filePath) : new File(filePath, fileName);
         FileOutputStream fos = null;
         OutputStreamWriter osw = null;
         try {

@@ -1,8 +1,8 @@
 package matrix.module.common.helper.files;
 
 import matrix.module.common.exception.ServiceException;
-import matrix.module.common.utils.FolderUtil;
-import matrix.module.common.utils.StreamUtil;
+import matrix.module.common.helper.Assert;
+import matrix.module.common.utils.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,7 +11,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -23,35 +22,61 @@ import java.util.zip.ZipOutputStream;
  */
 public class ZipHelper {
 
-    public static ZipHelper getInstance() {
-        return new ZipHelper();
+    /**
+     * 文件路径
+     */
+    private final String filePath;
+
+    public static ZipHelper getInstance(String filePath) {
+        return new ZipHelper(filePath);
     }
 
-    public ZipHelper() {
+    public ZipHelper(String filePath) {
+        this.filePath = filePath;
+    }
+
+    /**
+     * zip压缩
+     * @param sourceFilePath 原文件路径
+     * @return 文件名称
+     */
+    public String doCompress(String[] sourceFilePath) {
+        Assert.state(sourceFilePath != null && sourceFilePath.length > 0, "sourceFilePath must not null");
+        String folderPath = (filePath.endsWith(File.separator) ? filePath : (filePath + File.separator)) +RandomUtil.getUUID();
+        //创建文件夹
+        FolderUtil.mkdirs(folderPath);
+        //复制原文件至此文件夹
+        assert sourceFilePath != null;
+        for (String filePath: sourceFilePath) {
+            StreamUtil.fileWriteFile(filePath, folderPath + File.separator + new File(filePath).getName());
+        }
+        try {
+            return this.doCompress(folderPath);
+        } finally {
+            FolderUtil.rmdir(folderPath);
+        }
     }
 
     /**
      * zip压缩
      *
-     * @param sourceFilePath  压缩文件目录或文件
-     * @param destZipFilePath 压缩文件路径
+     * @param sourceFolderPath  压缩文件目录或文件
+     * @return 文件名称
      */
-    public void doCompress(String sourceFilePath, String destZipFilePath) {
-        if (destZipFilePath == null || "".equals(destZipFilePath)
-                || sourceFilePath == null || "".equals(sourceFilePath)) {
-            throw new ServiceException("doCompress参数异常");
-        }
-        File fileDir = new File(sourceFilePath);
+    public String doCompress(String sourceFolderPath) {
+        Assert.state(StringUtil.isNotEmpty(sourceFolderPath), "doCompress参数异常");
+        File fileDir = new File(sourceFolderPath);
         List<File> files = new ArrayList<>();
-        this.getFileList(fileDir, files);
+        FolderUtil.getFileList(fileDir, files);
         FileOutputStream fos = null;
         ZipOutputStream zos = null;
         try {
-            fos = new FileOutputStream(new File(destZipFilePath));
+            String fileName = RandomUtil.getUUID() + ".zip";
+            fos = new FileOutputStream(new File(filePath, fileName));
             zos = new ZipOutputStream(fos);
             for (File file : files) {
                 if (!file.isDirectory()) {
-                    ZipEntry entry = new ZipEntry(file.getAbsolutePath().replace(sourceFilePath, ""));
+                    ZipEntry entry = new ZipEntry(file.getAbsolutePath().replace(fileDir.getAbsolutePath() + File.separator, ""));
                     zos.putNextEntry(entry);
                     FileInputStream fis = null;
                     try {
@@ -62,6 +87,7 @@ public class ZipHelper {
                     }
                 }
             }
+            return fileName;
         } catch (Exception e) {
             throw new ServiceException(e);
         } finally {
@@ -138,19 +164,6 @@ public class ZipHelper {
             throw new ServiceException(e);
         } finally {
             StreamUtil.closeStream(zip);
-        }
-    }
-
-    private void getFileList(File fileDir, List<File> files) {
-        if (fileDir != null && Objects.requireNonNull(fileDir.list()).length > 0) {
-            File[] listFiles = fileDir.listFiles();
-            assert listFiles != null;
-            for (File file : listFiles) {
-                files.add(file);
-                if (file.isDirectory()) {
-                    this.getFileList(file, files);
-                }
-            }
         }
     }
 }
