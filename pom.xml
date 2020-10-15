@@ -10,8 +10,8 @@
 	<packaging>pom</packaging>
 
     <properties>
-<!--        <revision>1.0.6-SNAPSHOT</revision>-->
-        <revision>1.0.6</revision>
+<!--        <revision>1.0.7-SNAPSHOT</revision>-->
+        <revision>1.0.7</revision>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <compiler.version>3.3</compiler.version>
         <compiler.jdk>1.8</compiler.jdk>
