@@ -1,8 +1,6 @@
 package matrix.module.common.utils;
 
 import matrix.module.common.exception.ServiceException;
-import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
-
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
@@ -27,8 +25,8 @@ public class ClassUtil {
             //泛型
             throw new ServiceException("lambda不支持取出泛型");
         } else {
-            Type[] types = ((ParameterizedTypeImpl) clazz.getGenericSuperclass()).getActualTypeArguments();
-            if (types[index] instanceof ParameterizedTypeImpl) {
+            Type[] types = ((ParameterizedType) clazz.getGenericSuperclass()).getActualTypeArguments();
+            if (types[index] instanceof ParameterizedType) {
                 ParameterizedType parameterizedTypes = (ParameterizedType) types[index];
                 return (Class<T>) parameterizedTypes.getRawType();
             }
