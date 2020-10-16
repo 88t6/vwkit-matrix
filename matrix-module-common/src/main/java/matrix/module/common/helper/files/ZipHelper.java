@@ -102,7 +102,6 @@ public class ZipHelper {
      * @param sourceZipFilePath 压缩文件路径
      * @param destFilePath      解压缩文件路径
      */
-    @SuppressWarnings("all")
     public void doUnCompress(String sourceZipFilePath, String destFilePath) {
         if (sourceZipFilePath == null || "".equals(sourceZipFilePath)
                 || destFilePath == null || "".equals(destFilePath)) {
@@ -121,7 +120,7 @@ public class ZipHelper {
         ZipFile zip = null;
         try {
             zip = new ZipFile(zipFile);
-            Enumeration<ZipEntry> entries = (Enumeration<ZipEntry>) zip.entries();
+            Enumeration<? extends ZipEntry> entries = zip.entries();
             while (entries.hasMoreElements()) {
                 ZipEntry entry = entries.nextElement();
                 String entryFilePath = destFilePath + File.separator + entry.getName();
@@ -136,10 +135,7 @@ public class ZipHelper {
                         FolderUtil.mkdirs(entryDir.getAbsolutePath());
                     }
                     File entryFile = new File(entryFilePath);
-                    if (entryFile.exists()) {
-                        new SecurityManager().checkDelete(entryFilePath);
-                        entryFile.delete();
-                    }
+                    FileUtil.rm(entryFile);
                     FileOutputStream fos = null;
                     InputStream is = null;
                     try {
@@ -152,11 +148,7 @@ public class ZipHelper {
                     }
                 } else {
                     File entryFile = new File(entryFilePath);
-                    if (entryFile.exists()) {
-                        SecurityManager securityManager = new SecurityManager();
-                        securityManager.checkDelete(entryFilePath);
-                        entryFile.delete();
-                    }
+                    FileUtil.rm(entryFile);
                     FolderUtil.mkdirs(entryFile.getAbsolutePath());
                 }
             }

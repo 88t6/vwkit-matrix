@@ -66,7 +66,7 @@ public class FolderUtil {
      * 删除文件夹
      * @param folderPath 文件夹地址
      */
-    @SuppressWarnings("all")
+    @SuppressWarnings({"ResultOfMethodCallIgnored"})
     public static void rmdir(String folderPath) {
         List<File> files = new ArrayList<>();
         File folderFile = new File(folderPath);

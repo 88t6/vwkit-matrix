@@ -76,4 +76,15 @@ public class FileUtil {
     public static String getTmpDir() {
         return System.getProperty("java.io.tmpdir");
     }
+
+    /**
+     * 删除文件
+     */
+    @SuppressWarnings({"ResultOfMethodCallIgnored"})
+    public static void rm(File file) {
+        if (file.exists()) {
+            new SecurityManager().checkDelete(file.getAbsolutePath());
+            file.delete();
+        }
+    }
 }
