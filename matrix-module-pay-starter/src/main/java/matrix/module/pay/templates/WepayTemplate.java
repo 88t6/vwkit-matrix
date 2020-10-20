@@ -69,7 +69,7 @@ public class WepayTemplate extends AbstractTemplate {
                 payBody.setUrl(result.getMwebUrl());
             } else if (PayMode.PC.equals(payMode) || PayMode.QrCode.equals(payMode)) {
                 payBody.setUrl(result.getCodeURL());
-            } else if (PayMode.WEJSAPI.equals(payMode) || PayMode.APP.equals(payMode)) {
+            } else if (PayMode.WEJSAPI.equals(payMode)) {
                 Map<String, String> params = new HashMap<>();
                 params.put("appId", wxPayConfig.getAppId());
                 params.put("timeStamp", String.valueOf(System.currentTimeMillis()));
@@ -78,8 +78,18 @@ public class WepayTemplate extends AbstractTemplate {
                 params.put("signType", "MD5");
                 String paySign = SignUtils.createSign(params, "MD5", wxPayConfig.getMchKey(), new String[0]);
                 params.put("paySign", paySign);
-                logger.info("组装jsapi参数：" + JacksonUtil.toJsonString(params));
                 payBody.setJsApiParams(JacksonUtil.toJsonString(params));
+            } else if (PayMode.APP.equals(payMode)) {
+                Map<String, String> params = new HashMap<>();
+                params.put("appid", wxPayConfig.getAppId());
+                params.put("partnerid", wxPayConfig.getMchId());
+                params.put("prepayid", result.getPrepayId());
+                params.put("package", "Sign=WXPay");
+                params.put("noncestr", MD5.get32(UUID.randomUUID().toString()));
+                params.put("timestamp", String.valueOf(System.currentTimeMillis()));
+                String paySign = SignUtils.createSign(params, "MD5", wxPayConfig.getMchKey(), new String[0]);
+                params.put("sign", paySign);
+                payBody.setAppParams(JacksonUtil.toJsonString(params));
             }
             return JacksonUtil.toJsonString(payBody);
         } catch (Exception e) {

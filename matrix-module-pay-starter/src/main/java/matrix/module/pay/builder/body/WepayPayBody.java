@@ -16,6 +16,8 @@ public class WepayPayBody implements Serializable {
 
     private String jsApiParams;
 
+    private String appParams;
+
     private String url;
 
     private Long qrCodeWidth;

@@ -22,10 +22,12 @@ public class PayEntityConvert {
                 .setPrice(payVo.getPrice())
                 .setBody(body);
         if (WepayTemplate.class.getSimpleName().equals(payChannel)) {
+            WepayPayBody payBody = JacksonUtil.parseJson(body, WepayPayBody.class);
             //app和wejsapi支付方式直接返回请求参数
-            if (PayMode.APP.getCode().equals(payModeCode) || PayMode.WEJSAPI.getCode().equals(payModeCode)) {
-                WepayPayBody payBody = JacksonUtil.parseJson(body, WepayPayBody.class);
+            if (PayMode.WEJSAPI.getCode().equals(payModeCode)) {
                 payEntity.setUrl(payBody.getJsApiParams());
+            } else if (PayMode.APP.getCode().equals(payModeCode)) {
+                payEntity.setUrl(payBody.getAppParams());
             }
         }
         //如果url为空，则为跳转路径
