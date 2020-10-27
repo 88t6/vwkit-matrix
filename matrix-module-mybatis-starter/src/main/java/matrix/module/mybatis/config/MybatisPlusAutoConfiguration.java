@@ -4,12 +4,14 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.core.MybatisXMLLanguageDriver;
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
+import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import matrix.module.common.helper.Assert;
 import matrix.module.jdbc.config.DatabaseAutoConfiguration;
 import matrix.module.mybatis.properties.MybatisProperties;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.type.JdbcType;
@@ -22,6 +24,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -30,6 +33,7 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.annotation.*;
 import org.springframework.core.io.ResourceLoader;
@@ -57,6 +61,15 @@ public class MybatisPlusAutoConfiguration {
 
     @Resource
     private DataSource dataSource;
+
+    private final Interceptor[] interceptors;
+
+    private final ApplicationContext applicationContext;
+
+    public MybatisPlusAutoConfiguration(ObjectProvider<Interceptor[]> interceptorsProvider, ApplicationContext applicationContext) {
+        this.interceptors = interceptorsProvider.getIfAvailable();
+        this.applicationContext = applicationContext;
+    }
 
     @Bean("sqlSessionFactory")
     @Qualifier("sqlSessionFactory")
@@ -87,23 +100,22 @@ public class MybatisPlusAutoConfiguration {
         configuration.setCacheEnabled(false);
         sqlSessionFactory.setConfiguration(configuration);
         sqlSessionFactory.setTypeAliasesPackage(typeAliasesPackage);
-        sqlSessionFactory.setPlugins(new PaginationInterceptor());
+        //设置插件
+        if (interceptors != null && interceptors.length > 0) {
+            sqlSessionFactory.setPlugins(interceptors);
+        }
         GlobalConfig globalConfig = new GlobalConfig();
         globalConfig.setBanner(false);
         globalConfig.setDbConfig(new GlobalConfig.DbConfig()
                 .setIdType(IdType.INPUT));
+        //自动填充插件
+        if (this.applicationContext.getBeanNamesForType(MetaObjectHandler.class, false, false).length > 0) {
+            globalConfig.setMetaObjectHandler(this.applicationContext.getBean(MetaObjectHandler.class));
+        }
         sqlSessionFactory.setGlobalConfig(globalConfig);
         sqlSessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver()
                 .getResources(mapperLocations));
         return sqlSessionFactory.getObject();
-    }
-
-    /**
-     * 分页插件
-     */
-    @Bean
-    public PaginationInterceptor paginationInterceptor() {
-        return new PaginationInterceptor();
     }
 
     public static class AutoConfiguredMapperScannerRegistrar
@@ -142,6 +154,19 @@ public class MybatisPlusAutoConfiguration {
         public void setResourceLoader(ResourceLoader resourceLoader) {
             this.resourceLoader = resourceLoader;
         }
+    }
+
+    @Configuration
+    public static class AutoMybatisPlusInterceptor {
+
+        /**
+         * 分页插件
+         */
+        @Bean
+        public PaginationInterceptor paginationInterceptor() {
+            return new PaginationInterceptor();
+        }
+
     }
 
     @Configuration

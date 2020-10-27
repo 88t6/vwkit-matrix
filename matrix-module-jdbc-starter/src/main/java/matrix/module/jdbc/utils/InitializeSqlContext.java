@@ -130,7 +130,7 @@ public class InitializeSqlContext {
                 }
             }
         } catch (Exception e) {
-            logger.error(e);
+            logger.warn("read {} directory no file!", locations);
             if (!CollectionUtils.isEmpty(fileEntities)) {
                 fileEntities.forEach(fileEntity -> StreamUtil.closeStream(fileEntity.getInputStream()));
             }
