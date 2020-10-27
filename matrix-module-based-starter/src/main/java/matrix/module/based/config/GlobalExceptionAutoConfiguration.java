@@ -7,6 +7,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,5 +32,13 @@ public class GlobalExceptionAutoConfiguration {
     public Result<?> defaultHandler(HttpServletRequest req, HttpServletResponse resp, Exception e) {
         logger.error(e);
         return Result.fail(e.getMessage()).setResultCode(BaseCodeConstant.FAIL);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(code = HttpStatus.OK)
+    @ResponseBody
+    public Result<?> defaultHandler(MethodArgumentNotValidException ex) {
+        BindingResult bindingResult = ex.getBindingResult();
+        return Result.fail(bindingResult.getFieldError() != null ? bindingResult.getFieldError().getDefaultMessage() : "Error").setResultCode(BaseCodeConstant.FAIL);
     }
 }
