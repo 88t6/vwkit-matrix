@@ -32,7 +32,7 @@ public class RandomUtil {
                 'X', 'Y', 'Z'};
         StringBuilder rand = new StringBuilder();
         for (int i = 0; i < num; i++) {
-            rand.append(codeSequence[random.nextInt(36)]);
+            rand.append(codeSequence[random.nextInt(26)]);
         }
         return rand.toString();
     }
