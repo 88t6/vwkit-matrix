@@ -32,7 +32,7 @@ public class RandomUtil {
                 'X', 'Y', 'Z'};
         StringBuilder rand = new StringBuilder();
         for (int i = 0; i < num; i++) {
-            rand.append(codeSequence[random.nextInt(26)]);
+            rand.append(codeSequence[random.nextInt(codeSequence.length)]);
         }
         return rand.toString();
     }
@@ -55,7 +55,7 @@ public class RandomUtil {
                 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
         StringBuilder rand = new StringBuilder();
         for (int i = 0; i < num; i++) {
-            rand.append(codeSequence[random.nextInt(36)]);
+            rand.append(codeSequence[random.nextInt(codeSequence.length)]);
         }
         return rand.toString();
     }
