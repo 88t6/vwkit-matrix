@@ -208,7 +208,7 @@ public class MailHelper {
                 transport.connect(this.server, this.username, this.password);
                 transport.sendMessage(message, message.getAllRecipients());
             } else {
-                Transport.send(message, address);
+                Transport.send(message, message.getAllRecipients());
             }
         } catch (Exception e) {
             throw new ServiceException(e);
