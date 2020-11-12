@@ -4,6 +4,7 @@ import com.sun.net.ssl.internal.ssl.Provider;
 import matrix.module.common.exception.ServiceException;
 import matrix.module.common.helper.Assert;
 import matrix.module.common.utils.DateUtil;
+import org.apache.commons.collections4.CollectionUtils;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -78,10 +79,9 @@ public class MailHelper {
 
     /**
      * 单人发送
-     *
-     * @param receiver 参数
-     * @param title 参数
-     * @param content 参数
+     * @param receiver 接收人
+     * @param title 标题
+     * @param content 内容
      */
     public void sendOne(String receiver, String title, String content) {
         this.sendOne(receiver, title, content, null);
@@ -89,8 +89,7 @@ public class MailHelper {
 
     /**
      * 单人发送
-     *
-     * @param receiver 接收者
+     * @param receiver 接收人
      * @param title 标题
      * @param content 内容
      * @param attachments 附件
@@ -99,47 +98,92 @@ public class MailHelper {
         Assert.notNullTip(receiver, "receiver");
         List<String> receivers = new ArrayList<>();
         receivers.add(receiver);
-        this.send(receivers, title, content, attachments);
+        this.send(receivers, null, null, title, content, attachments);
     }
 
     /**
      * 多人发送
-     *
-     * @param receivers 参数
-     * @param title 参数
-     * @param content 参数
+     * @param receivers 接收人
+     * @param title 标题
+     * @param content 内容
      */
     public void sendMany(List<String> receivers, String title, String content) {
-        this.send(receivers, title, content, null);
+        this.sendMany(receivers, null, null, title, content, null);
     }
 
     /**
      * 多人发送
-     *
-     * @param receivers 参数
-     * @param title 参数
-     * @param content 参数
-     * @param attachments 参数
+     * @param receivers 接收人
+     * @param ccReceivers 抄送人
+     * @param bccReceivers 密送人
+     * @param title 标题
+     * @param content 内容
+     */
+    public void sendMany(List<String> receivers, List<String> ccReceivers, List<String> bccReceivers, String title, String content) {
+        this.send(receivers, ccReceivers, bccReceivers, title, content, null);
+    }
+
+    /**
+     * 多人发送
+     * @param receivers 接收人
+     * @param title 标题
+     * @param content 内容
+     * @param attachments 附件
      */
     public void sendMany(List<String> receivers, String title, String content, List<URL> attachments) {
-        this.send(receivers, title, content, attachments);
+        this.sendMany(receivers, null, null, title, content, attachments);
+    }
+
+    /**
+     * 多人发送
+     * @param receivers 接收人
+     * @param ccReceivers 抄送人
+     * @param bccReceivers 密送人
+     * @param title 标题
+     * @param content 内容
+     * @param attachments 附件
+     */
+    public void sendMany(List<String> receivers, List<String> ccReceivers, List<String> bccReceivers, String title, String content, List<URL> attachments) {
+        this.send(receivers, ccReceivers, bccReceivers, title, content, attachments);
     }
 
     /**
      * 发送邮件
+     * @param receivers 接收人
+     * @param ccReceivers 抄送人
+     * @param bccReceivers 密送人
+     * @param title 邮件标题
+     * @param content 邮件内容
+     * @param attachments 附件信息
      */
-    private void send(List<String> receivers, String title, String content, List<URL> attachments) {
-        Assert.state(receivers != null && receivers.size() >= 1, "receivers长度必须大于等于1");
+    private void send(List<String> receivers, List<String> ccReceivers, List<String> bccReceivers, String title, String content, List<URL> attachments) {
+        Assert.state(!CollectionUtils.isEmpty(receivers), "接收人不能为空");
         try {
-            assert receivers != null;
+            MimeMessage message = new MimeMessage(this.session);
+            message.setFrom(new InternetAddress(this.username));
+            message.setSentDate(DateUtil.getNowDate());
+            //接收人
             Address[] address = new Address[receivers.size()];
             for (int i = 0; i < receivers.size(); ++i) {
                 address[i] = new InternetAddress(receivers.get(i));
             }
-            MimeMessage message = new MimeMessage(this.session);
-            message.setFrom(new InternetAddress(this.username));
-            message.setSentDate(DateUtil.getNowDate());
             message.addRecipients(Message.RecipientType.TO, address);
+            //抄送人
+            if (!CollectionUtils.isEmpty(ccReceivers)) {
+                Address[] ccAddress = new Address[ccReceivers.size()];
+                for (int i = 0; i < ccReceivers.size(); ++i) {
+                    ccAddress[i] = new InternetAddress(ccReceivers.get(i));
+                }
+                message.addRecipients(Message.RecipientType.CC, ccAddress);
+            }
+            //密送人
+            if (!CollectionUtils.isEmpty(bccReceivers)) {
+                Address[] bccAddress = new Address[bccReceivers.size()];
+                for (int i = 0; i < bccReceivers.size(); ++i) {
+                    bccAddress[i] = new InternetAddress(bccReceivers.get(i));
+                }
+                message.addRecipients(Message.RecipientType.BCC, bccAddress);
+            }
             //邮件主题
             message.setSubject(MimeUtility.encodeText(title, "gb2312", "B"));
             Multipart multipart = new MimeMultipart();
