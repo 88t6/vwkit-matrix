@@ -206,7 +206,7 @@ public class MailHelper {
             if (!isSsl) {
                 transport = this.session.getTransport();
                 transport.connect(this.server, this.username, this.password);
-                transport.sendMessage(message, address);
+                transport.sendMessage(message, message.getAllRecipients());
             } else {
                 Transport.send(message, address);
             }
