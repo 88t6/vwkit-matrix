@@ -84,7 +84,7 @@ public class PayAutoConfiguration {
                     "  `ORDER_BY` INT(10) NOT NULL DEFAULT 0 COMMENT '排序字段', " +
                     "  `CREATE_TIME` DATETIME NOT NULL COMMENT '创建时间', " +
                     "  `UPDATE_TIME` DATETIME NOT NULL COMMENT '更新时间', " +
-                    "  `STATUS` INT(1) NOT NULL DEFAULT 0 COMMENT '状态(0:禁用,1:启用,-1:删除)', " +
+                    "  `STATUS` INT(1) NOT NULL DEFAULT 0 COMMENT '状态(0:未支付,1:已支付,-1:删除)', " +
                     "  PRIMARY KEY (`PAY_ID`)" +
                     ")";
             jdbcTemplate.execute(createTableSql);
@@ -102,7 +102,7 @@ public class PayAutoConfiguration {
                     "  `ORDER_BY` INT(10) NOT NULL DEFAULT 0 COMMENT '排序字段', " +
                     "  `CREATE_TIME` DATETIME NOT NULL COMMENT '创建时间', " +
                     "  `UPDATE_TIME` DATETIME NOT NULL COMMENT '更新时间', " +
-                    "  `STATUS` INT(1) NOT NULL DEFAULT 0 COMMENT '状态(0:禁用,1:启用,-1:删除)', " +
+                    "  `STATUS` INT(1) NOT NULL DEFAULT 0 COMMENT '状态(0:退款中,1:已退款,-1:删除)', " +
                     "  PRIMARY KEY (`REFUND_ID`)" +
                     ")";
             jdbcTemplate.execute(createTableSql);
