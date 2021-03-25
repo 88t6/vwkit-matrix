@@ -85,6 +85,11 @@ public class ZipHelper {
                     } finally {
                         StreamUtil.closeStream(fis);
                     }
+                } else {
+                    //创建空文件夹
+                    if (Objects.requireNonNull(file.list()).length <= 0) {
+                        zos.putNextEntry(new ZipEntry(file.getAbsolutePath().replace(fileDir.getAbsolutePath() + File.separator, "") + File.separator));
+                    }
                 }
             }
             return fileName;
