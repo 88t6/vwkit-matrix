@@ -280,7 +280,9 @@ public class ExcelHelper {
                                 cellStyleMap.put(column.getType(), cellStyle);
                             }
                             assert cellStyle != null;
-                            cellStyle.setAlignment(HorizontalAlignment.CENTER);
+                            cellStyle.setAlignment(HorizontalAlignment.LEFT);
+                            cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+                            cellStyle.setWrapText(true);
                             //设置样式
                             cell.setCellStyle(cellStyle);
                             //设置值
