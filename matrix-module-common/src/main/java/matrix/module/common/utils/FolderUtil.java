@@ -52,7 +52,9 @@ public class FolderUtil {
     public static void getFileList(File folderPath, List<File> files) {
         if (folderPath != null && Objects.requireNonNull(folderPath.list()).length > 0) {
             File[] listFiles = folderPath.listFiles();
-            assert listFiles != null;
+            if (listFiles == null || listFiles.length <= 0) {
+                return;
+            }
             for (File file : listFiles) {
                 files.add(file);
                 if (file.isDirectory()) {
