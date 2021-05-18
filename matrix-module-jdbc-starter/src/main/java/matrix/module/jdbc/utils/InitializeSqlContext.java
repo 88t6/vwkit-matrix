@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import matrix.module.common.exception.ServiceException;
 import matrix.module.common.helper.Assert;
-import matrix.module.common.helper.encrypt.MD5;
+import matrix.module.common.utils.encrypt.MD5;
 import matrix.module.common.utils.StreamUtil;
 import matrix.module.jdbc.entity.FileEntity;
 import matrix.module.jdbc.properties.JdbcProperties;

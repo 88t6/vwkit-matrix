@@ -1,8 +1,7 @@
-package matrix.module.common.helper.message;
+package matrix.module.common.helper;
 
 import com.sun.net.ssl.internal.ssl.Provider;
 import matrix.module.common.exception.ServiceException;
-import matrix.module.common.helper.Assert;
 import matrix.module.common.utils.DateUtil;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -20,13 +19,13 @@ import java.util.Properties;
 /**
  * @author wangcheng
  */
-public class MailHelper {
+public class EmailHelper {
 
-    private String username;
+    private final String username;
 
-    private String password;
+    private final String password;
 
-    private String server;
+    private final String server;
 
     private boolean isSsl = false;
 
@@ -34,11 +33,11 @@ public class MailHelper {
         Security.addProvider(new Provider());
     }
 
-    private Session session;
+    private final Session session;
 
     private Transport transport = null;
 
-    public MailHelper(String username, String password, String server, Boolean isSsl) {
+    public EmailHelper(String username, String password, String server, Boolean isSsl) {
         Assert.notNullTip(username, "username");
         Assert.notNullTip(password, "password");
         Assert.notNullTip(server, "server");
@@ -73,8 +72,8 @@ public class MailHelper {
         this.session.setDebug(false);
     }
 
-    public static MailHelper getInstance(String username, String password, String server, Boolean isSsl) {
-        return new MailHelper(username, password, server, isSsl);
+    public static EmailHelper getInstance(String username, String password, String server, Boolean isSsl) {
+        return new EmailHelper(username, password, server, isSsl);
     }
 
     /**

@@ -1,7 +1,7 @@
 package verifycode;
 
 import matrix.module.common.bean.VerifyCode;
-import matrix.module.common.helper.code.VerifyCodeHelper;
+import matrix.module.common.helper.VerifyCodeHelper;
 import org.junit.Test;
 
 /**

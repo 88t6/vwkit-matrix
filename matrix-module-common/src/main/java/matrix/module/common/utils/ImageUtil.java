@@ -1,7 +1,7 @@
 package matrix.module.common.utils;
 
 import matrix.module.common.exception.ServiceException;
-import matrix.module.common.helper.encrypt.Base64;
+import matrix.module.common.utils.encrypt.Base64;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;

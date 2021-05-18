@@ -1,4 +1,4 @@
-package matrix.module.common.helper.encrypt;
+package matrix.module.common.utils.encrypt;
 
 import matrix.module.common.utils.StringUtil;
 

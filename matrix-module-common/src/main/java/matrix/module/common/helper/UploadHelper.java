@@ -1,9 +1,8 @@
-package matrix.module.common.helper.files;
+package matrix.module.common.helper;
 
 import matrix.module.common.bean.UploadProgress;
 import matrix.module.common.bean.UploadResult;
 import matrix.module.common.exception.ServiceException;
-import matrix.module.common.helper.Assert;
 import matrix.module.common.utils.*;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;

@@ -1,7 +1,7 @@
 package encrypt;
 
-import matrix.module.common.helper.encrypt.Base64;
-import matrix.module.common.helper.encrypt.MD5;
+import matrix.module.common.utils.encrypt.Base64;
+import matrix.module.common.utils.encrypt.MD5;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
