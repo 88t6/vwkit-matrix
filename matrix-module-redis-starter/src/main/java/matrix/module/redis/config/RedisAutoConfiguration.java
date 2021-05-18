@@ -67,7 +67,7 @@ public class RedisAutoConfiguration {
     @Order(value = 1)
     public JedisConnectionFactory redisConnectionFactory() {
         JedisClientConfiguration.JedisClientConfigurationBuilder builder = JedisClientConfiguration.builder();
-        Duration duration = Duration.ofSeconds(60000);
+        Duration duration = Duration.ofSeconds(redisProperties.getTimeout());
         builder.readTimeout(duration).connectTimeout(duration);
         JedisPoolConfig poolConfig = new JedisPoolConfig();
         poolConfig.setMaxIdle(20);

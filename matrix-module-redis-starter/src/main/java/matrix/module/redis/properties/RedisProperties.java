@@ -16,6 +16,8 @@ public class RedisProperties {
 
     private Long defaultExpire;
 
+    private Long timeout = 10L;
+
     private Standalone standalone;
 
     private Sentinel sentinel;
