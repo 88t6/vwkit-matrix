@@ -14,6 +14,8 @@ public class RedisProperties {
 
     private boolean enabled = false;
 
+    private boolean redisson = true;
+
     private Long defaultExpire;
 
     private Long timeout = 10L;

@@ -16,8 +16,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
-import java.time.Duration;
-
 /**
  * @author wangcheng
  * 2021/4/22
@@ -25,7 +23,7 @@ import java.time.Duration;
 @Configuration
 @ConditionalOnClass(Config.class)
 @EnableConfigurationProperties(RedisProperties.class)
-@ConditionalOnProperty(value = {"redis.enabled"})
+@ConditionalOnProperty(value = {"redis.enabled", "redis.redisson"})
 public class RedissonAutoConfiguration {
 
     @Autowired
@@ -34,12 +32,12 @@ public class RedissonAutoConfiguration {
     @Bean
     public RedissonClient redisson() {
         Config config = new Config();
-        Duration duration = Duration.ofSeconds(redisProperties.getTimeout());
+        int timeout = redisProperties.getTimeout().intValue() * 1000;
         if (redisProperties.getStandalone().isEnabled()) {
             //单机模式
             SingleServerConfig serverConfig = config.useSingleServer()
-                    .setAddress(redisProperties.getStandalone().getHost() + ":" + redisProperties.getStandalone().getPort())
-                    .setTimeout(duration.getNano())
+                    .setAddress("redis://" + redisProperties.getStandalone().getHost() + ":" + redisProperties.getStandalone().getPort())
+                    .setTimeout(timeout)
                     .setDatabase(redisProperties.getStandalone().getDatabase());
             if(!StringUtils.isEmpty(redisProperties.getStandalone().getPassword())) {
                 serverConfig.setPassword(redisProperties.getStandalone().getPassword());
@@ -49,12 +47,15 @@ public class RedissonAutoConfiguration {
         if (redisProperties.getCluster().isEnabled()) {
             //集群模式
             ClusterServersConfig serverConfig = config.useClusterServers()
-                    .setTimeout(duration.getNano());
+                    .setTimeout(timeout);
             if (!StringUtils.isEmpty(redisProperties.getCluster().getNodes())) {
-                serverConfig.addNodeAddress(redisProperties.getCluster().getNodes().split(","));
+                String[] nodes = redisProperties.getCluster().getNodes().split(",");
+                for (String node: nodes) {
+                    serverConfig.addNodeAddress("redis://" + node);
+                }
             }
             if(!StringUtils.isEmpty(redisProperties.getCluster().getPassword())) {
-                serverConfig.setPassword(redisProperties.getSentinel().getPassword());
+                serverConfig.setPassword(redisProperties.getCluster().getPassword());
             }
             return Redisson.create(config);
         }
@@ -62,10 +63,13 @@ public class RedissonAutoConfiguration {
             //哨兵模式
             SentinelServersConfig serverConfig = config.useSentinelServers()
                     .setMasterName(redisProperties.getSentinel().getMaster())
-                    .setTimeout(duration.getNano())
+                    .setTimeout(timeout)
                     .setDatabase(redisProperties.getSentinel().getDatabase());
             if (!StringUtils.isEmpty(redisProperties.getSentinel().getNodes())) {
-                serverConfig.addSentinelAddress(redisProperties.getSentinel().getNodes().split(","));
+                String[] nodes = redisProperties.getSentinel().getNodes().split(",");
+                for (String node: nodes) {
+                    serverConfig.addSentinelAddress("redis://" + node);
+                }
             }
             if(!StringUtils.isEmpty(redisProperties.getSentinel().getPassword())) {
                 serverConfig.setPassword(redisProperties.getSentinel().getPassword());

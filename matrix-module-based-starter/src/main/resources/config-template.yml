@@ -64,7 +64,9 @@ jpa:
 
 redis:
   enabled: false
+  redisson: false
   default-expire: 7200
+  timeout: 10
   standalone:
     enabled: false
     host: 0.0.0.0
