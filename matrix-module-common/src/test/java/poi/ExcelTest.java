@@ -3,12 +3,9 @@ package poi;
 import com.alibaba.fastjson.JSONObject;
 import matrix.module.common.annotation.Excel;
 import matrix.module.common.enums.ExcelEnum;
-import matrix.module.common.helper.files.ExcelHelper;
+import matrix.module.common.helper.ExcelHelper;
 import matrix.module.common.listener.ExportMultiSheetListener;
 import matrix.module.common.listener.ImportSingleSheetCallBack;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -22,20 +19,20 @@ public class ExcelTest {
         ExcelHelper excelUtils = ExcelHelper.getInstance("D:\\");
         String fileName = excelUtils.exportMultiForBean(new ExportMultiSheetListener<TestVo>() {
 
-            @Override
-            public void beforeProcessData(Workbook workbook) {
-                super.beforeProcessData(workbook);
-                Sheet sheet = workbook.createSheet("test");
-                sheet.createRow(0).createCell(0).setCellValue("212334");
-                sheet.createRow(1).createCell(0).setCellValue("234");
-            }
+//            @Override
+//            public void beforeProcessData(Workbook workbook) {
+//                super.beforeProcessData(workbook);
+//                Sheet sheet = workbook.createSheet("test");
+//                sheet.createRow(0).createCell(0).setCellValue("212334");
+//                sheet.createRow(1).createCell(0).setCellValue("234");
+//            }
 
             @Override
             public LinkedHashMap<String, List<TestVo>> getData(Integer count) {
                 if (count <= 10) {
                     LinkedHashMap<String, List<TestVo>> exportData = new LinkedHashMap<>();
                     List<TestVo> data = new ArrayList<>();
-                    for (int i = 0; i < 10000; i++) {
+                    for (int i = 0; i < 1000; i++) {
                         data.add(new TestVo(i, "a", new Date()));
                     }
                     exportData.put("test", data);
@@ -44,7 +41,7 @@ public class ExcelTest {
                 return null;
             }
 
-        }, ExcelEnum.EXCEL2007);
+        }, ExcelEnum.EXCEL2003);
         System.out.println(fileName);
     }
 
@@ -78,7 +75,7 @@ public class ExcelTest {
     @Test
     public void testImportForBean() throws IOException {
         ExcelHelper excelUtils = ExcelHelper.getInstance("D:\\");
-        List<String> list = excelUtils.importExcel("245a4c26-2060-4830-ad01-37cc2a0af55f.xlsx", null, 10, new ImportSingleSheetCallBack<String, TestVo>() {
+        List<String> list = excelUtils.importExcel("78857e25-c0eb-451e-9701-0602ac118a2f.xls", ExcelEnum.EXCEL2003, null, 10, new ImportSingleSheetCallBack<String, TestVo>() {
             @Override
             public List<String> processData(String sheetName, List<TestVo> rows) {
                 System.out.println(JSONObject.toJSONString(rows));
@@ -91,14 +88,14 @@ public class ExcelTest {
     @Test
     public void testImportForMap() throws IOException {
         ExcelHelper excelUtils = ExcelHelper.getInstance("D:\\");
-        List<String> list = excelUtils.importExcel("93316cd7-e14b-41ab-897e-2e7bb2774d9a.xlsx", "test", 1, 10,
+        List<String> list = excelUtils.importExcel("93316cd7-e14b-41ab-897e-2e7bb2774d9a.xlsx", ExcelEnum.EXCEL2007, "test", 1, 10,
                 new ImportSingleSheetCallBack<String, HashMap<String, Object>>() {
-            @Override
-            public List<String> processData(String sheetName, List<HashMap<String, Object>> rows) {
-                System.out.println(JSONObject.toJSONString(rows));
-                return null;
-            }
-        });
+                    @Override
+                    public List<String> processData(String sheetName, List<HashMap<String, Object>> rows) {
+                        System.out.println(JSONObject.toJSONString(rows));
+                        return null;
+                    }
+                });
         System.out.println(JSONObject.toJSONString(list));
     }
 

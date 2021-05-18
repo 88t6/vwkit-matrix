@@ -1,8 +1,7 @@
-package matrix.module.common.helper.files;
+package matrix.module.common.helper;
 
 import com.lowagie.text.pdf.BaseFont;
 import matrix.module.common.exception.ServiceException;
-import matrix.module.common.helper.Assert;
 import matrix.module.common.utils.RandomUtil;
 import matrix.module.common.utils.StreamUtil;
 import matrix.module.common.utils.SysFontUtil;

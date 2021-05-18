@@ -1,6 +1,6 @@
 package zip;
 
-import matrix.module.common.helper.files.ZipHelper;
+import matrix.module.common.helper.ZipHelper;
 import org.junit.Test;
 
 /**

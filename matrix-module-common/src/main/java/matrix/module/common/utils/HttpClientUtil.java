@@ -277,6 +277,7 @@ public class HttpClientUtil {
     /**
      * 回调函数
      */
+    @FunctionalInterface
     public interface CallBack<T> {
         T execute(HttpEntity entity);
     }

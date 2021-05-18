@@ -13,7 +13,7 @@ import com.github.binarywang.wxpay.service.WxPayService;
 import com.github.binarywang.wxpay.util.SignUtils;
 import matrix.module.based.utils.JacksonUtil;
 import matrix.module.common.exception.ServiceException;
-import matrix.module.common.helper.encrypt.MD5;
+import matrix.module.common.utils.encrypt.MD5;
 import matrix.module.common.utils.BigDecimalUtil;
 import matrix.module.common.utils.StreamUtil;
 import matrix.module.pay.builder.body.WepayPayBody;

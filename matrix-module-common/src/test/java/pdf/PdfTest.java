@@ -1,7 +1,7 @@
 package pdf;
 
 import com.alibaba.fastjson.JSONObject;
-import matrix.module.common.helper.files.PdfHelper;
+import matrix.module.common.helper.PdfHelper;
 import matrix.module.common.utils.SysFontUtil;
 import org.junit.Test;
 

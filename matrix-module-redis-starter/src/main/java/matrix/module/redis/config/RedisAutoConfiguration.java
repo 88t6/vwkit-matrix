@@ -67,7 +67,7 @@ public class RedisAutoConfiguration {
     @Order(value = 1)
     public JedisConnectionFactory redisConnectionFactory() {
         JedisClientConfiguration.JedisClientConfigurationBuilder builder = JedisClientConfiguration.builder();
-        Duration duration = Duration.ofSeconds(60000);
+        Duration duration = Duration.ofSeconds(redisProperties.getTimeout());
         builder.readTimeout(duration).connectTimeout(duration);
         JedisPoolConfig poolConfig = new JedisPoolConfig();
         poolConfig.setMaxIdle(20);
@@ -93,7 +93,7 @@ public class RedisAutoConfiguration {
             if (!StringUtils.isEmpty(password)) {
                 standalone.setPassword(RedisPassword.of(password));
             }
-            standalone.setPort(Integer.valueOf(port));
+            standalone.setPort(Integer.parseInt(port));
             return new JedisConnectionFactory(standalone, client);
         }
         if (redisProperties.getSentinel().isEnabled()) {
@@ -140,7 +140,7 @@ public class RedisAutoConfiguration {
             if (!StringUtils.isEmpty(text)) {
                 String[] parts = text.split(":");
                 Assert.state(parts.length == 2, "Must be defined as 'host:port'");
-                nodes.add(new RedisNode(parts[0], Integer.valueOf(parts[1])));
+                nodes.add(new RedisNode(parts[0], Integer.parseInt(parts[1])));
             }
         }
         return nodes;
@@ -166,7 +166,7 @@ public class RedisAutoConfiguration {
             List<String> cacheKey = new ArrayList<>();
             cacheKey.add(target.getClass().getName());
             cacheKey.add(method.getName());
-            if (params != null && params.length > 0) {
+            if (params.length > 0) {
                 StringBuilder sb = new StringBuilder();
                 for (Object obj : params) {
                     sb.append(obj != null ? String.valueOf(obj) : "NONE");

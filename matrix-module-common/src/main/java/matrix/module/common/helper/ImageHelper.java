@@ -1,7 +1,6 @@
-package matrix.module.common.helper.files;
+package matrix.module.common.helper;
 
 import matrix.module.common.exception.ServiceException;
-import matrix.module.common.helper.Assert;
 import matrix.module.common.utils.FileUtil;
 import matrix.module.common.utils.RandomUtil;
 import matrix.module.common.utils.SingletonUtil;

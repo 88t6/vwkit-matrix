@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * @author wangcheng
  */
-public class CustomHttpUtil {
+public class HttpUtil {
 
     public static String accept = "*/*";
 

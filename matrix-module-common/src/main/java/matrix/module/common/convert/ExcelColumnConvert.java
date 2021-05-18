@@ -1,6 +1,7 @@
 package matrix.module.common.convert;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import matrix.module.common.annotation.Excel;
 import matrix.module.common.bean.ExcelColumn;
 import matrix.module.common.exception.ServiceException;
@@ -136,7 +137,7 @@ public class ExcelColumnConvert {
     public static <T> T convertJsonToGeneric(JSONObject jsonObject, Class<T> clazz) {
         try {
             if (Map.class.isAssignableFrom(clazz)) {
-                return JSONObject.parseObject(jsonObject.toJSONString(), clazz);
+                return JSONObject.parseObject(JSONObject.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue), clazz, SerializerFeature.WRITE_MAP_NULL_FEATURES);
             } else {
                 //实体模式
                 T t = clazz.newInstance();

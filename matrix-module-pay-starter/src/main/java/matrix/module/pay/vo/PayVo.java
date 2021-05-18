@@ -3,7 +3,7 @@ package matrix.module.pay.vo;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import matrix.module.common.helper.Assert;
-import matrix.module.common.helper.encrypt.MD5;
+import matrix.module.common.utils.encrypt.MD5;
 import matrix.module.common.utils.RandomUtil;
 import matrix.module.pay.enums.PayMode;
 

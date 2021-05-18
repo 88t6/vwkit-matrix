@@ -1,4 +1,4 @@
-package matrix.module.common.helper.code;
+package matrix.module.common.helper;
 
 import matrix.module.common.bean.VerifyCode;
 import matrix.module.common.utils.RandomUtil;
@@ -16,7 +16,7 @@ public class VerifyCodeHelper {
 
     private Integer lineCount = 0;
 
-    private Random random = new Random();
+    private final Random random = new Random();
 
     /**
      * @param lineCount 模糊线数

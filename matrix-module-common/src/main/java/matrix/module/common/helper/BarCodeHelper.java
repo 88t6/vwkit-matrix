@@ -1,4 +1,4 @@
-package matrix.module.common.helper.code;
+package matrix.module.common.helper;
 
 import com.google.zxing.*;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
@@ -6,7 +6,6 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.HybridBinarizer;
 import matrix.module.common.exception.ServiceException;
-import matrix.module.common.helper.Assert;
 import matrix.module.common.utils.ImageUtil;
 import matrix.module.common.utils.RandomUtil;
 import matrix.module.common.utils.StreamUtil;

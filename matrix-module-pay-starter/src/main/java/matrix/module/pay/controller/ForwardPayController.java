@@ -1,7 +1,7 @@
 package matrix.module.pay.controller;
 
 import matrix.module.based.utils.JacksonUtil;
-import matrix.module.common.helper.code.QrCodeHelper;
+import matrix.module.common.helper.QrCodeHelper;
 import matrix.module.pay.builder.body.WepayPayBody;
 import matrix.module.pay.converter.HtmlConvert;
 import matrix.module.pay.entity.MatrixPayEntity;
