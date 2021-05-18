@@ -1,9 +1,8 @@
 package matrix.module.common.utils;
 
 import matrix.module.common.helper.Assert;
-
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 单例工具
@@ -14,7 +13,7 @@ public class SingletonUtil {
     /**
      * 单例字典
      */
-    private static final Map<Object, Object> SINGLETON_DICT = new HashMap<>();
+    private static final Map<Object, Object> SINGLETON_DICT = new ConcurrentHashMap<>();
 
     /**
      * 获取实例
