@@ -14,7 +14,7 @@ public class RedisProperties {
 
     private boolean enabled = false;
 
-    private boolean redisson = true;
+    private boolean redisson = false;
 
     private Long defaultExpire;
 

@@ -23,13 +23,14 @@ import org.springframework.util.StringUtils;
 @Configuration
 @ConditionalOnClass(Config.class)
 @EnableConfigurationProperties(RedisProperties.class)
-@ConditionalOnProperty(value = {"redis.enabled", "redis.redisson"})
+@ConditionalOnProperty(value = {"redis.enabled"})
 public class RedissonAutoConfiguration {
 
     @Autowired
     private RedisProperties redisProperties;
 
     @Bean
+    @ConditionalOnProperty(value = {"redis.redisson"})
     public RedissonClient redisson() {
         Config config = new Config();
         int timeout = redisProperties.getTimeout().intValue() * 1000;
