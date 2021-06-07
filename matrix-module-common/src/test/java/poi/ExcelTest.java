@@ -2,10 +2,12 @@ package poi;
 
 import com.alibaba.fastjson.JSONObject;
 import matrix.module.common.annotation.Excel;
+import matrix.module.common.bean.ExcelColumn;
 import matrix.module.common.enums.ExcelEnum;
 import matrix.module.common.helper.ExcelHelper;
 import matrix.module.common.listener.ExportMultiSheetListener;
 import matrix.module.common.listener.ImportSingleSheetCallBack;
+import org.apache.poi.ss.usermodel.*;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -49,6 +51,15 @@ public class ExcelTest {
     public void testExportForMap() {
         ExcelHelper excelHelper = ExcelHelper.getInstance("D:\\");
         String fileName = excelHelper.exportMultiForMap(new ExportMultiSheetListener<LinkedHashMap<String, Object>>() {
+
+            @Override
+            public void processingData(ExcelColumn column, Cell cell) {
+                super.processingData(column, cell);
+                if (column.getName().equals("str")) {
+                    cell.setCellComment(ExcelHelper.getExportDefaultComment(cell, "todo", "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"));
+                }
+            }
+
             @Override
             public LinkedHashMap<String, List<LinkedHashMap<String, Object>>> getData(Integer count) {
                 if (count == 0) {

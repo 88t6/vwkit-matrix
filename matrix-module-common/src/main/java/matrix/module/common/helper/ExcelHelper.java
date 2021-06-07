@@ -14,9 +14,14 @@ import matrix.module.common.utils.RandomUtil;
 import matrix.module.common.utils.StreamUtil;
 import matrix.module.common.utils.StringUtil;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.streaming.SXSSFCell;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -91,6 +96,12 @@ public class ExcelHelper {
             }
 
             @Override
+            public void processingData(ExcelColumn column, Cell cell) {
+                super.processingData(column, cell);
+                listener.processingData(column, cell);
+            }
+
+            @Override
             public void afterProcessData(Workbook workbook) {
                 super.afterProcessData(workbook);
                 listener.afterProcessData(workbook);
@@ -142,6 +153,12 @@ public class ExcelHelper {
             public void beforeProcessData(Workbook workbook) {
                 super.beforeProcessData(workbook);
                 listener.beforeProcessData(workbook);
+            }
+
+            @Override
+            public void processingData(ExcelColumn column, Cell cell) {
+                super.processingData(column, cell);
+                listener.processingData(column, cell);
             }
 
             @Override
@@ -267,25 +284,19 @@ public class ExcelHelper {
                         int cellIndex = (excelRow.getLastCellNum() < 0 ? 0 : excelRow.getLastCellNum());
                         for (ExcelColumn column : columns) {
                             Cell cell = excelRow.createCell(cellIndex++);
+                            CellStyle cellStyle = cellStyleMap.get(column.getType());
+                            if (cellStyle == null) {
+                                //创建cellStyle
+                                cellStyle = getExportDefaultCellStyle(column, book);
+                                cellStyleMap.put(column.getType(), cellStyle);
+                            }
+                            //设置样式
+                            cell.setCellStyle(cellStyle);
+                            //如果为空直接放入为空字符串
                             if (column.getValue() == null) {
                                 cell.setCellValue("");
                                 continue;
                             }
-                            CellStyle cellStyle = cellStyleMap.get(column.getType());
-                            if (cellStyle == null) {
-                                //创建cellStyle
-                                cellStyle = book.createCellStyle();
-                                if (Date.class.equals(column.getType())) {
-                                    cellStyle.setDataFormat(book.createDataFormat().getFormat("yyyy-MM-dd HH:mm:ss"));
-                                }
-                                cellStyleMap.put(column.getType(), cellStyle);
-                            }
-                            assert cellStyle != null;
-                            cellStyle.setAlignment(HorizontalAlignment.LEFT);
-                            cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-                            cellStyle.setWrapText(true);
-                            //设置样式
-                            cell.setCellStyle(cellStyle);
                             //设置值
                             if (Date.class.equals(column.getType())) {
                                 cell.setCellValue((Date) column.getValue());
@@ -298,6 +309,8 @@ public class ExcelHelper {
                             } else {
                                 cell.setCellValue(String.valueOf(column.getValue()));
                             }
+                            //后置单元格处理（处理批注，个性化颜色等等功能）
+                            listener.processingData(column, cell);
                         }
                     }
                 }
@@ -453,5 +466,42 @@ public class ExcelHelper {
             StreamUtil.closeStream(book);
             StreamUtil.closeStream(fis);
         }
+    }
+
+    /**
+     * 获取默认的单元格样式
+     * @param column 单元格数据
+     * @param workbook 工作簿
+     * @return 单元格样式
+     */
+    public static CellStyle getExportDefaultCellStyle(ExcelColumn column, Workbook workbook) {
+        CellStyle cellStyle = workbook.createCellStyle();
+        if (Date.class.equals(column.getType())) {
+            cellStyle.setDataFormat(workbook.createDataFormat().getFormat("yyyy-MM-dd HH:mm:ss"));
+        }
+        cellStyle.setAlignment(HorizontalAlignment.LEFT);
+        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        cellStyle.setWrapText(true);
+        return cellStyle;
+    }
+
+    /**
+     * 获取批注信息
+     * @param cell 单元格
+     * @param author 作者
+     * @param text 批注信息
+     * @return 批注信息
+     */
+    public static Comment getExportDefaultComment(Cell cell, String author, String text) {
+        Drawing<?> drawing = cell.getSheet().createDrawingPatriarch();
+        Comment comment = drawing.createCellComment(drawing.createAnchor(0, 0, 0, 0, cell.getColumnIndex(), cell.getRowIndex(),
+                cell.getColumnIndex() + 3, cell.getRowIndex() + 5));
+        if (cell instanceof SXSSFCell || cell instanceof XSSFCell) {
+            comment.setString(new XSSFRichTextString(text));
+        } else if (cell instanceof HSSFCell){
+            comment.setString(new HSSFRichTextString(text));
+        }
+        comment.setAuthor(author);
+        return comment;
     }
 }

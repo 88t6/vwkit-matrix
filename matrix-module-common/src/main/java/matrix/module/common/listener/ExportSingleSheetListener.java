@@ -1,5 +1,8 @@
 package matrix.module.common.listener;
 
+import matrix.module.common.bean.ExcelColumn;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.List;
@@ -13,6 +16,14 @@ import java.util.List;
 public abstract class ExportSingleSheetListener<T> {
 
     /**
+     * 获取数据
+     *
+     * @param count 处理次数
+     * @return 需要写入excel中的数据
+     */
+    public abstract List<T> getData(Integer count);
+
+    /**
      * 处理数据前操作
      * @param workbook 工作簿
      */
@@ -21,12 +32,13 @@ public abstract class ExportSingleSheetListener<T> {
     }
 
     /**
-     * 获取数据
-     *
-     * @param count 处理次数
-     * @return 需要写入excel中的数据
+     * 处理中的数据
+     * @param column 单元格信息
+     * @param cell 实际单元格
      */
-    public abstract List<T> getData(Integer count);
+    public void processingData(ExcelColumn column, Cell cell) {
+
+    }
 
     /**
      * 处理数据后操作
