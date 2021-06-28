@@ -138,7 +138,7 @@ public class DateUtil {
         }
 
         public TimeFormat customValue(String value) {
-            if ("".equals(this.value)) {
+            if (this == TimeFormat.CustomFormat) {
                 this.value = value;
             }
             return this;
