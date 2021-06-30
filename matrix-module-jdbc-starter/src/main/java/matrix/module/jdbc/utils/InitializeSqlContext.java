@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -34,10 +35,13 @@ import java.util.stream.Collectors;
  */
 public class InitializeSqlContext {
 
-    private static Logger logger = LogManager.getLogger(InitializeSqlContext.class);
+    private static final Logger logger = LogManager.getLogger(InitializeSqlContext.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private InitializeSqlContext initializeSqlContext;
 
     private JdbcProperties.InitSql initSql;
 
@@ -67,7 +71,11 @@ public class InitializeSqlContext {
                     initSqlTableRow = new InitSqlTableRow()
                             .setSqlFileName(fileEntity.getFileName())
                             .setFileSignature(MD5.get32(sqlContent));
-                    executeSql(sqlContent, initSqlTableRow);
+                    try {
+                        initializeSqlContext.executeSql(sqlContent, initSqlTableRow);
+                    } catch (ServiceException e) {
+                        //ignore
+                    }
                 } catch (Exception e) {
                     throw new ServiceException(e);
                 } finally {
@@ -147,7 +155,7 @@ public class InitializeSqlContext {
             //新建数据表
             String createTableSql = String.format("CREATE TABLE %s (" +
                     "  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID(自增长)', " +
-                    "  `SQL_FILE_NAME` VARCHAR(255) NOT NULL COMMENT 'sql文件名', " +
+                    "  `SQL_FILE_NAME` VARCHAR(255) UNIQUE NOT NULL COMMENT 'sql文件名', " +
                     "  `FILE_SIGNATURE` CHAR(32) NOT NULL COMMENT '文件内容签名', " +
                     "  `CREATE_TIME` DATETIME NOT NULL COMMENT '创建时间', " +
                     "  PRIMARY KEY (`ID`)" +
@@ -180,18 +188,23 @@ public class InitializeSqlContext {
     public void executeSql(String sqlContent, InitSqlTableRow initSqlTableRow) {
         if (!StringUtils.isEmpty(sqlContent) && initSqlTableRow != null) {
             //todo 这边应该取出来做下sql检查在处理
+            try {
+                jdbcTemplate.execute(String.format("INSERT INTO %s " +
+                                "(SQL_FILE_NAME, FILE_SIGNATURE, CREATE_TIME) " +
+                                "VALUES ('%s', '%s', NOW())",
+                        initSql.getTableName(),
+                        initSqlTableRow.getSqlFileName(),
+                        initSqlTableRow.getFileSignature()));
+            } catch (DuplicateKeyException e) {
+                logger.info(String.format("%s 已经被其他程序执行", initSqlTableRow.getSqlFileName()));
+                throw new ServiceException("插入失败，数据存在");
+            }
             String[] sqlList = sqlContent.replaceAll("\n\r", " ").split(";");
             for (String sql : sqlList) {
                 if (!StringUtils.isEmpty(sql)) {
                     jdbcTemplate.execute(sql);
                 }
             }
-            jdbcTemplate.execute(String.format("INSERT INTO %s " +
-                            "(SQL_FILE_NAME, FILE_SIGNATURE, CREATE_TIME) " +
-                            "VALUES ('%s', '%s', NOW())",
-                    initSql.getTableName(),
-                    initSqlTableRow.getSqlFileName(),
-                    initSqlTableRow.getFileSignature()));
         }
     }
 
